@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/trading_chart/static/css/main.47bab62f.css",
+    "main.js": "/trading_chart/static/js/main.3bce9fbc.js",
+    "static/js/453.5da29eea.chunk.js": "/trading_chart/static/js/453.5da29eea.chunk.js",
+    "index.html": "/trading_chart/index.html",
+    "main.47bab62f.css.map": "/trading_chart/static/css/main.47bab62f.css.map",
+    "main.3bce9fbc.js.map": "/trading_chart/static/js/main.3bce9fbc.js.map",
+    "453.5da29eea.chunk.js.map": "/trading_chart/static/js/453.5da29eea.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.47bab62f.css",
+    "static/js/main.3bce9fbc.js"
+  ]
+}
