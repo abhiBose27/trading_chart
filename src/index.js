@@ -5,10 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const defaultSpecs = {
+    symbol: "ETHUSDT",
+    interval: "1m",
+    bgColor: "Dark",
+}
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <App defaultSpecs={defaultSpecs}/>
 );
 
 // If you want to start measuring performance in your app, pass a function
