@@ -1,23 +1,20 @@
-import { useState, useEffect } from 'react';
-import { getExchangeInfo } from '../../data/binanceData';
+import { useState, useEffect } from "react"
+import { getExchangeInfo } from "../../data/binance"
 
 
 export const useFetchSymbols = () => {
-    const [result, setResult] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
+    const [result, setResult]         = useState(null)
+    const [isFetching, setIsFetching] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
-            setIsLoading(true)
+            setIsFetching(true)
             const data = await getExchangeInfo()
             setResult(data)
-            setIsLoading(false)
+            setIsFetching(false)
         }
         fetchData()
     }, [])
 
-    return [
-        result,
-        isLoading
-    ]
+    return [isFetching, result]
 }

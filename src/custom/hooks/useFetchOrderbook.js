@@ -20,8 +20,8 @@ const addDepths = (orders, maxTotal) => {
 const addPrecison = (orders) => {
     return orders.map((order) => {
         const orderPrice    = order[0]
-        const orderQty      = order[1].toFixed(4)
-        const orderTotalSum = order[2].toFixed(5)
+        const orderQty      = order[1]
+        const orderTotalSum = order[2]
         return [orderPrice, orderQty, orderTotalSum, order[3]]
     })
 }
@@ -47,7 +47,7 @@ const convertRawOrdersToOrders = (rawOrders) => {
 }
 
 export const useFetchOrderbook = (symbol) => {
-    const [orderbook, setOrderbook]   = useState(null)
+    const [result, setResult]         = useState(null)
     const [isFetching, setIsFetching] = useState(false)
 
     useEffect(() => {
@@ -74,7 +74,7 @@ export const useFetchOrderbook = (symbol) => {
                     bids: bids,
                     asks: asks
                 }
-                setOrderbook(message)
+                setResult(message)
             }
             setIsFetching(false)
         }
@@ -105,5 +105,5 @@ export const useFetchOrderbook = (symbol) => {
         }
     }, [symbol])
 
-    return [isFetching, orderbook]
+    return [isFetching, result]
 }

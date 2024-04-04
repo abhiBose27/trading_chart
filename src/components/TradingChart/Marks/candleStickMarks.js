@@ -1,46 +1,43 @@
-import React from 'react'
+import React from "react"
 import PropTypes from "prop-types"
-import { schemeReds, format, utcFormat, schemeGreens } from 'd3';
+
+import { formatDateToolTipFormat, formatValue, klineColor } from "../../../custom/tools/constants"
+import { ACTIONS } from "../../../custom/tools/reducer"
 
 
-const formatValue       = format('.2f');
-const formatString      = format('.3s');
-const formatDateCandles = utcFormat('%H:%M:%S %B %-d, %Y');
-
-export const CandleStickMarks = React.memo(({xScale, yScale, slicedData, updateHoveringData, height}) => {
-
+export const CandleStickMarks = React.memo(({xScale, yScale, slicedData, tradingChartDispatch, height}) => {
     return slicedData.map((d, idx) => (
         <g
             key={d.date}
-            onMouseEnter={() => updateHoveringData(d)}
+            onMouseEnter={() => tradingChartDispatch({type: ACTIONS.HOVERDATA, payload: d})}
             transform={`translate(${xScale(d.date) + xScale.bandwidth() / 2}, 0)`}
         >
             <line
                 y1={0}
                 y2={height}
                 strokeOpacity={0}
-                stroke={schemeReds[6][4]}
+                stroke={klineColor(d)}
                 width={xScale.bandwidth()}
             /> 
             
             <line
                 y1={yScale(d.low)}
                 y2={yScale(d.high)}
-                stroke={d.open > d.close ? schemeReds[6][4] : schemeGreens[6][4]}
+                stroke={klineColor(d)}
             />
             
              <line
                 y1={yScale(d.open)}
                 y2={yScale(d.close) === yScale(d.open) ? yScale(d.close) + 1 : yScale(d.close)}
+                stroke={klineColor(d)}
                 strokeWidth={xScale.bandwidth()}
-                stroke={d.open > d.close ? schemeReds[6][4] : schemeGreens[6][4]}
                 data-tip={
-                    `<b>${formatDateCandles(d.date)}</b><br />` +
-                    `Open: ${formatValue(d.open)}<br />` +
-                    `Close: ${formatValue(d.close)}<br />` +
-                    `Low: ${formatValue(d.low)}<br />` +
-                    `High: ${formatValue(d.high)}<br />` +
-                    `Volume: ${formatString(d.volume)}`
+                    `<b>${formatDateToolTipFormat(d.date)}</b><br />` +
+                    `Open: ${formatValue("~f")(d.open)}<br />` +
+                    `Close: ${formatValue("~f")(d.close)}<br />` +
+                    `Low: ${formatValue("~f")(d.low)}<br />` +
+                    `High: ${formatValue("~f")(d.high)}<br />` +
+                    `Volume: ${formatValue("~s")(d.volume)}`
                 }
                 data-for='mark-tooltip'
             />
@@ -52,6 +49,6 @@ CandleStickMarks.propTypes = {
     xScale: PropTypes.func.isRequired,
     yScale: PropTypes.func.isRequired,
     slicedData: PropTypes.array.isRequired,
-    updateHoveringData: PropTypes.func.isRequired,
+    tradingChartDispatch: PropTypes.func.isRequired,
     height: PropTypes.number.isRequired,
 }

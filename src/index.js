@@ -5,13 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const defaultSpecs = {
+const defaultAppSpecification = {
     symbol: "ETHUSDT",
     interval: "1m",
     bgColor: "Dark",
 }
 root.render(
-    <App defaultSpecs={defaultSpecs}/>
+    <App defaultAppSpecification={defaultAppSpecification}/>
 );
 
 // If you want to start measuring performance in your app, pass a function

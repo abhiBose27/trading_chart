@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios"
 
 export const getExchangeInfo = async() => {
     let requiredData = []
@@ -11,7 +11,7 @@ export const getExchangeInfo = async() => {
         if (symbol.status === "TRADING")
             requiredData.push(symbol.symbol)
     }
-    requiredData.sort()
+    requiredData.sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1)
     return requiredData
 }
 

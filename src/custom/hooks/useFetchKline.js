@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 
 const uiCrudeDataToData = (crudeData) => {
-    let klines = crudeData.map(klineData => {
+    return crudeData.map(klineData => {
         return {
             date: new Date(klineData[0]),
             open: parseFloat(klineData[1]),
@@ -10,10 +10,9 @@ const uiCrudeDataToData = (crudeData) => {
             low: parseFloat(klineData[3]),
             close: parseFloat(klineData[4]),
             volume: parseFloat(klineData[5]),
-            change: parseFloat(((klineData[4] / klineData[1] - 1) * 100).toFixed(4))
+            change: parseFloat(((klineData[4] / klineData[1] - 1) * 100))
         }
     })
-    return klines
 }
 
 export const useFetchKline = (symbol, interval) => {

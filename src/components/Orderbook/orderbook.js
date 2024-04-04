@@ -1,10 +1,13 @@
-import React from 'react'
+import React from "react"
 import PropTypes from "prop-types"
+import { schemeReds, schemeGreens } from "d3"
+
 import { useFetchOrderbook } from "../../custom/hooks/useFetchOrderbook"
+import { isDataReady, formatValue } from "../../custom/tools/constants"
 
 
-export const Orderbook = ({specs}) => {
-    const {symbol, bgColor, width, height} = specs
+export const Orderbook = ({orderbookSpecification}) => {
+    const {symbol, bgColor, width, height} = orderbookSpecification
     const [isFetching, orderbook]          = useFetchOrderbook(symbol)
     const depthBidColor                    = "rgba(111, 22, 14, 0.4)"
     const bidColor                         = "rgba(111, 22, 14, 0.05)"
@@ -12,7 +15,7 @@ export const Orderbook = ({specs}) => {
     const askColor                         = "rgba(60, 179, 113, 0.05)"
     const fontColor                        = bgColor === "Dark" ? "white" : "black"
     return (
-        !isFetching && orderbook && <table style={{height: height, width: width}}>
+        isDataReady(isFetching, orderbook) && <table style={{height: height, width: width}}>
             <thead>
                 <tr style={{color: fontColor, fontSize: "1vw"}}>
                     <th style={{textAlign: "initial"}}>Price</th>
@@ -22,20 +25,20 @@ export const Orderbook = ({specs}) => {
             </thead>
             <tbody>
                 {
-                    orderbook.bids.map((level) => (
+                    orderbook.asks.map((level) => (
                         <tr key={level} style={{backgroundImage: `linear-gradient(to left, ${depthBidColor} ${level[3]}%, ${bidColor} ${level[3]}% ${100-level[3]}%)`, fontSize: "75%"}}>
-                            <td style={{textAlign: "initial", color: "red"}}>{level[0]}</td>
-                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{level[1]}</td>
-                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{level[2]}</td>
+                            <td style={{textAlign: "initial", color: schemeReds[6][4]}}>{level[0]}</td>
+                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{formatValue(".4f")(level[1])}</td>
+                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{formatValue(".5f")(level[2])}</td>
                         </tr>
                     ))
                 }
                 {
-                    orderbook.asks.map((level) => (
+                    orderbook.bids.map((level) => (
                         <tr key={level} style={{backgroundImage: `linear-gradient(to left, ${depthAskColor} ${level[3]}%, ${askColor} ${level[3]}% ${100-level[3]}%)`, fontSize: "75%"}}>
-                            <td style={{textAlign: "initial", color: "green"}}>{level[0]}</td>
-                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{level[1]}</td>
-                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{level[2]}</td>
+                            <td style={{textAlign: "initial", color: schemeGreens[6][4]}}>{level[0]}</td>
+                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{formatValue(".4f")(level[1])}</td>
+                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{formatValue(".4f")(level[2])}</td>
                         </tr>
                     ))
                 }
@@ -45,5 +48,5 @@ export const Orderbook = ({specs}) => {
 }
 
 Orderbook.propTypes = {
-    specs: PropTypes.object.isRequired
+    orderbookSpecification: PropTypes.object.isRequired
 }

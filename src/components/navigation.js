@@ -1,25 +1,26 @@
-import Nav from 'react-bootstrap/Nav';
+import Nav from "react-bootstrap/Nav"
 import PropTypes from "prop-types"
-import NavDropdown  from 'react-bootstrap/NavDropdown';
-import Dropdown from 'react-bootstrap/Dropdown';
-import { ACTIONS } from '../custom/reducerActions';
+import NavDropdown  from "react-bootstrap/NavDropdown"
+import Dropdown from "react-bootstrap/Dropdown"
+
+import { ACTIONS } from "../custom/tools/reducer"
 
 
-export const NavigationBar = ({navbardispatch, specs, symbolsData}) => {
+export const NavigationBar = ({appDispatch, appSpecification, symbolsData}) => {
 
     const SetSymbol = (selectedKey) => 
-        navbardispatch({type: ACTIONS.NEWSYMBOL, payload: selectedKey})
+        appDispatch({type: ACTIONS.SYMBOL, payload: selectedKey})
     
     const SetInterval = (selectedKey) => 
-        navbardispatch({type: ACTIONS.NEWINTERVAL, payload: selectedKey})
+        appDispatch({type: ACTIONS.INTERVAL, payload: selectedKey})
 
     const SetColor = (selectedKey) => 
-        navbardispatch({type: ACTIONS.BGCOLOR, payload: selectedKey})
+        appDispatch({type: ACTIONS.BGCOLOR, payload: selectedKey})
     
     return (
         <div style={{display: "flex"}}>
            <Dropdown onSelect={SetSymbol}>
-                <Dropdown.Toggle id="dropdown-basic">{specs.symbol}</Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{appSpecification.symbol}</Dropdown.Toggle>
                 <Dropdown.Menu style={{ 
                     height: "30vh", 
                     overflowY: "auto", 
@@ -30,7 +31,7 @@ export const NavigationBar = ({navbardispatch, specs, symbolsData}) => {
                 </Dropdown.Menu> 
             </Dropdown>
             <Nav className="me-auto">
-                <NavDropdown onSelect={SetInterval} title={specs.interval} id="nav-dropdown">
+                <NavDropdown onSelect={SetInterval} title={appSpecification.interval} id="nav-dropdown">
                     <NavDropdown.Item eventKey="1s">1s</NavDropdown.Item>
                     <NavDropdown.Item eventKey="1m">1m</NavDropdown.Item>
                     <NavDropdown.Item eventKey="3m">3m</NavDropdown.Item>
@@ -44,7 +45,7 @@ export const NavigationBar = ({navbardispatch, specs, symbolsData}) => {
                     <NavDropdown.Item eventKey="1d">1d</NavDropdown.Item>
                     <NavDropdown.Item eventKey="1M">1M</NavDropdown.Item>
                 </NavDropdown>
-                <NavDropdown onSelect={SetColor} title={specs.bgColor} id="nav-dropdown">
+                <NavDropdown onSelect={SetColor} title={appSpecification.bgColor} id="nav-dropdown">
                     <NavDropdown.Item eventKey="Dark">Dark</NavDropdown.Item>
                     <NavDropdown.Item eventKey="Light">Light</NavDropdown.Item>
                 </NavDropdown>
@@ -54,7 +55,7 @@ export const NavigationBar = ({navbardispatch, specs, symbolsData}) => {
 }
 
 NavigationBar.propTypes = {
-    navbardispatch: PropTypes.func.isRequired,
-    specs: PropTypes.object.isRequired,
+    appDispatch: PropTypes.func.isRequired,
+    appSpecification: PropTypes.object.isRequired,
     symbolsData: PropTypes.array.isRequired
 }

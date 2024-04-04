@@ -1,23 +1,19 @@
-import * as d3 from "d3"
+import {scaleBand, min, max, scaleLinear} from "d3"
 import PropTypes from "prop-types"
-import React, { useMemo, useCallback, useState, useEffect } from "react"
+import React, { useMemo, useCallback, useEffect, useReducer } from "react"
+
 import { AxisXhoverText, AxisXticks, AxisXticksText } from "./Axis/axisX"
 import { AxisYticks, AxisYticksText, AxisYhoverText, AxisYCandleStickText } from "./Axis/axisY"
 import { VolumeMarks } from "./Marks/volumeMarks"
 import { CandleStickMarks } from "./Marks/candleStickMarks"
 import { Crosshair } from "./crosshair"
 import { Stats } from "./stats"
+import { isArrayEmpty } from "../../custom/tools/constants"
+import { ACTIONS, rootReducer } from "../../custom/tools/reducer"
 
 
-const isEmpty = (array) => Array.isArray(array) && array.length === 0
-
-export const MainChart = ({specs, klineData}) => {
-    const {symbol, width, height, bgColor, interval} = specs
-    const [brushExtent, setBrushExtent]              = useState([0, 0])
-    const [mouseCoords, setMouseCoords]              = useState({x: 0, y: 0})
-    const [displayCrosshair, setDisplayCrosshair]    = useState(false)
-    const [hoverData, setHoverData]                  = useState(null)
-    const chartComponentsDimensions                  = {
+const getChartComponentDimensions = (height, width) => {
+    return {
         yAxisTextBoxDimension: {width: 0.1 * width, height: 0.05 * height},
         xAxisTextBoxDimension: {width: 0.15 * width, height: 0.05 * height},
         statsSvgHeight       : 0.05 * height,
@@ -25,44 +21,58 @@ export const MainChart = ({specs, klineData}) => {
         chartWidth           : 0.90 * width,
         brushSize            : Math.floor(0.1 * width)
     }
+}
+
+const getTradingChartInitialState = () => {
+    return {
+        brushExtent: [0, 0],
+        mouseCoords: {x: 0, y: 0},
+        displayCrosshair: false,
+        hoverData: null
+    }
+}
+
+export const MainChart = ({tradingChartSpecification, klineData}) => {
+    const {symbol, width, height, bgColor, interval} = tradingChartSpecification
+    const chartComponentsDimensions                  = getChartComponentDimensions(height, width) 
+    const tradingChartInitialState                   = getTradingChartInitialState()
+    const [tradingChartState, tradingChartDispatch]  = useReducer(rootReducer, tradingChartInitialState)
 
     useEffect(() => {
-        setBrushExtent([
+        if (!tradingChartState.displayCrosshair) 
+            tradingChartDispatch({type: ACTIONS.HOVERDATA, payload: klineData[klineData.length - 1]})
+    }, [klineData, tradingChartState.displayCrosshair])
+
+    useEffect(() => {
+        tradingChartDispatch({type: ACTIONS.NEWBRUSHEXTENT, payload: [
             Math.max(0, klineData.length - chartComponentsDimensions.brushSize), 
             klineData.length - 1
-        ])
+        ]})
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [interval, symbol])
     
     useEffect(() => {
-        setBrushExtent(b => [
-            Math.max(0, b[1] + 1 - chartComponentsDimensions.brushSize), 
-            b[1]
-        ])
+        tradingChartDispatch({type: ACTIONS.UPDATEBRUSHEXTENT, payload: chartComponentsDimensions.brushSize})
     }, [chartComponentsDimensions.brushSize])
 
-    useEffect(() => {
-        if (!displayCrosshair) setHoverData(klineData[klineData.length - 1])
-    }, [klineData, displayCrosshair])
-
     const changeBrushExtent = e => {
-        if (e.deltaX !== 0 && brushExtent[0] + e.deltaX > -1 && brushExtent[1] + e.deltaX < klineData.length)
-            setBrushExtent([
-                brushExtent[0] + e.deltaX,
-                brushExtent[1] + e.deltaX
-            ])
+        if (e.deltaX !== 0 && tradingChartState.brushExtent[0] + e.deltaX > -1 && tradingChartState.brushExtent[1] + e.deltaX < klineData.length)
+            tradingChartDispatch({type: ACTIONS.NEWBRUSHEXTENT, payload: [
+                tradingChartState.brushExtent[0] + e.deltaX,
+                tradingChartState.brushExtent[1] + e.deltaX
+            ]})
     }
 
     const onMouseMove = e => {
-        setMouseCoords({
+        tradingChartDispatch({type: ACTIONS.UPDATEMOUSE, payload: {
             x: e.nativeEvent.x - Math.round(e.currentTarget.getBoundingClientRect().left),
             y: e.nativeEvent.y - Math.round(e.currentTarget.getBoundingClientRect().top)
-        })
+        }})
     }
 
-    const onMouseLeave = e => setDisplayCrosshair(false)
+    const onMouseLeave = e => tradingChartDispatch({type: ACTIONS.DISPLAYCROSSHAIR, payload: false})
 
-    const onMouseEnter = e => setDisplayCrosshair(true)
+    const onMouseEnter = e => tradingChartDispatch({type: ACTIONS.DISPLAYCROSSHAIR, payload: true})
 
     const getxScaleTicks = useCallback((d) => {
         switch (interval) {
@@ -95,36 +105,33 @@ export const MainChart = ({specs, klineData}) => {
     }, [interval])
 
     const slicedData = useMemo(() => 
-        brushExtent[0] !== brushExtent[1] ? klineData.slice(brushExtent[0], brushExtent[1] + 1) : [],
-    [brushExtent, klineData])
+        tradingChartState.brushExtent[0] !== tradingChartState.brushExtent[1] ? 
+            klineData.slice(tradingChartState.brushExtent[0], tradingChartState.brushExtent[1] + 1) : [],
+    [tradingChartState.brushExtent, klineData])
 
     const xScale = useMemo(() => {
-        return d3.scaleBand()
+        return scaleBand()
         .domain(slicedData.map(d => d.date))
         .range([0, chartComponentsDimensions.chartWidth])
         .padding(0.1)
     }, [slicedData, chartComponentsDimensions.chartWidth])
     
     const yPriceScale = useMemo(() => {
-        return d3.scaleLinear()
-        .domain([d3.min(slicedData, d => d.low), d3.max(slicedData, d => d.high)])
+        return scaleLinear()
+        .domain([min(slicedData, d => d.low), max(slicedData, d => d.high)])
         .rangeRound([chartComponentsDimensions.chartHeight, 0])
         .nice()
     }, [slicedData, chartComponentsDimensions.chartHeight])
 
     const yVolumeScale = useMemo(() => {
-        return d3.scaleLinear()
-        .domain([0, d3.max(slicedData, d => d.volume)])
+        return scaleLinear()
+        .domain([0, max(slicedData, d => d.volume)])
         .rangeRound([chartComponentsDimensions.chartHeight, 0])
         .nice()
     }, [slicedData, chartComponentsDimensions.chartHeight])
 
-    const updateHoveringData = useCallback((d) => {
-        setHoverData(d)
-    }, [])
-
     return (
-        !isEmpty(slicedData) && <div style={{
+        !isArrayEmpty(slicedData) && <div style={{
             width: width, 
             height: height, 
             boxShadow: "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px"
@@ -140,22 +147,22 @@ export const MainChart = ({specs, klineData}) => {
             >
                 <VolumeMarks
                     xScale={xScale}
-                    height={chartComponentsDimensions.chartHeight}
                     yScale={yVolumeScale}
                     slicedData={slicedData}
+                    height={chartComponentsDimensions.chartHeight}
                 />
                <CandleStickMarks
                     xScale={xScale}
                     yScale={yPriceScale}
-                    height={chartComponentsDimensions.chartHeight}
                     slicedData={slicedData}
-                    updateHoveringData={updateHoveringData}
+                    tradingChartDispatch={tradingChartDispatch}
+                    height={chartComponentsDimensions.chartHeight}
                 />
                 <AxisXticks
                     xScale={xScale}
                     bgColor={bgColor}
-                    height={chartComponentsDimensions.chartHeight}
                     getxScaleTicks={getxScaleTicks}
+                    height={chartComponentsDimensions.chartHeight}
                 />
                 <AxisYticks
                     bgColor={bgColor}
@@ -163,10 +170,10 @@ export const MainChart = ({specs, klineData}) => {
                     width={chartComponentsDimensions.chartWidth}
                 />
                 {
-                    displayCrosshair && <Crosshair
-                        x={mouseCoords.x}
-                        y={mouseCoords.y}
+                    tradingChartState.displayCrosshair && <Crosshair
                         bgColor={bgColor}
+                        x={tradingChartState.mouseCoords.x}
+                        y={tradingChartState.mouseCoords.y}
                         height={chartComponentsDimensions.chartHeight}
                         width={chartComponentsDimensions.chartWidth}
                     />
@@ -182,10 +189,10 @@ export const MainChart = ({specs, klineData}) => {
                     width={chartComponentsDimensions.yAxisTextBoxDimension.width}
                 />
                 {
-                    displayCrosshair && <AxisYhoverText
-                        y={mouseCoords.y}
+                    tradingChartState.displayCrosshair && <AxisYhoverText
                         bgColor={bgColor}
                         yScale={yPriceScale}
+                        y={tradingChartState.mouseCoords.y}
                         width={chartComponentsDimensions.yAxisTextBoxDimension.width}
                         height={chartComponentsDimensions.yAxisTextBoxDimension.height}
                     /> 
@@ -205,17 +212,17 @@ export const MainChart = ({specs, klineData}) => {
                 <AxisXticksText
                     xScale={xScale}
                     bgColor={bgColor}
-                    height={chartComponentsDimensions.xAxisTextBoxDimension.height}
                     interval={interval}
                     getxScaleTicks={getxScaleTicks}
+                    height={chartComponentsDimensions.xAxisTextBoxDimension.height}
                 />
                 {
-                    displayCrosshair && <AxisXhoverText
-                        x={mouseCoords.x}
+                    tradingChartState.displayCrosshair && <AxisXhoverText
                         bgColor={bgColor}
+                        x={tradingChartState.mouseCoords.x}
+                        hoverData={tradingChartState.hoverData}
                         height={chartComponentsDimensions.xAxisTextBoxDimension.height}
                         width={chartComponentsDimensions.xAxisTextBoxDimension.width}
-                        hoverData={hoverData}
                     />
                 }
             </svg>
@@ -227,7 +234,7 @@ export const MainChart = ({specs, klineData}) => {
                 <Stats
                     bgColor={bgColor}
                     height={chartComponentsDimensions.statsSvgHeight}
-                    hoverData={hoverData}
+                    hoverData={tradingChartState.hoverData}
                 />
             </svg>
         </div> 
@@ -235,6 +242,6 @@ export const MainChart = ({specs, klineData}) => {
 }
 
 MainChart.propTypes = {
-    specs: PropTypes.object.isRequired,
+    tradingChartSpecification: PropTypes.object.isRequired,
     klineData: PropTypes.array.isRequired
 }

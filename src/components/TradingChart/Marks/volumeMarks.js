@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 
 
 export const VolumeMarks = React.memo(({xScale, height, yScale, slicedData}) => {
-
     return slicedData.map((d, idx) => (
         <g
             key={d.date}

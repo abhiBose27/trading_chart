@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 
 
 export const Crosshair = React.memo(({x, y, bgColor, height, width}) => {
+    const strokeColor = bgColor === "Dark" ? "white" : "black"
     return (
         <>
             <line
@@ -12,7 +13,7 @@ export const Crosshair = React.memo(({x, y, bgColor, height, width}) => {
                 y2={height}
                 strokeOpacity={0.7}
                 strokeDasharray={3}
-                stroke={bgColor === "Dark" ? "white" : "black"}
+                stroke={strokeColor}
             />
             <line
                 y1={y}
@@ -21,7 +22,7 @@ export const Crosshair = React.memo(({x, y, bgColor, height, width}) => {
                 x2={width}
                 strokeDasharray={3}
                 strokeOpacity={0.7}
-                stroke={bgColor === "Dark" ? "white" : "black"}
+                stroke={strokeColor}
             />
         </>
     )

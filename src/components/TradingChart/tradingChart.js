@@ -1,23 +1,29 @@
 import ReactTooltip from "react-tooltip"
 import PropTypes from "prop-types"
-import { useEffect} from "react";
-import { MainChart } from "./main";
-import { useFetchKline } from "../../custom/hooks/useFetchKline";
+import { useEffect} from "react"
+
+import { MainChart } from "./main"
+import { useFetchKline } from "../../custom/hooks/useFetchKline"
+import { isDataReady } from "../../custom/tools/constants"
 
 
-export const TradingChart = ({specs}) => {           
-    const {symbol, interval}        = specs
-    const [isFetching, klineData]   = useFetchKline(symbol, interval)
+export const TradingChart = ({tradingChartSpecification}) => {           
+    const {symbol, interval}       = tradingChartSpecification
+    const [isFetching, klineData]  = useFetchKline(symbol, interval)
+    
     useEffect(() => ReactTooltip.rebuild())
+    
     return (
-        !isFetching && klineData && 
-        <>
-            <MainChart specs={specs} klineData={klineData}/>
+        isDataReady(isFetching, klineData) && <>
+            <MainChart 
+                tradingChartSpecification={tradingChartSpecification} 
+                klineData={klineData}
+            />
             <ReactTooltip id='mark-tooltip' place='right' effect='solid' html={true}/>
         </>
     )
 }
 
 TradingChart.propTypes = {
-    specs: PropTypes.object.isRequired
+    tradingChartSpecification: PropTypes.object.isRequired
 }
