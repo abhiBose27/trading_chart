@@ -1,7 +1,6 @@
 import ReactTooltip from "react-tooltip"
 import PropTypes from "prop-types"
 import { useEffect} from "react"
-
 import { MainChart } from "./main"
 import { useFetchKline } from "../../custom/hooks/useFetchKline"
 import { isDataReady } from "../../custom/tools/constants"

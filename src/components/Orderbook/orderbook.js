@@ -1,19 +1,19 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { schemeReds, schemeGreens } from "d3"
-
 import { useFetchOrderbook } from "../../custom/hooks/useFetchOrderbook"
-import { isDataReady, formatValue } from "../../custom/tools/constants"
+import { isDataReady, formatValue, isBgColorDark } from "../../custom/tools/constants"
 
 
 export const Orderbook = ({orderbookSpecification}) => {
     const {symbol, bgColor, width, height} = orderbookSpecification
     const [isFetching, orderbook]          = useFetchOrderbook(symbol)
+    const fontColor                        = isBgColorDark(bgColor) ? "white" : "black"
     const depthBidColor                    = "rgba(111, 22, 14, 0.4)"
     const bidColor                         = "rgba(111, 22, 14, 0.05)"
     const depthAskColor                    = "rgba(60, 179, 113, 0.4)"
     const askColor                         = "rgba(60, 179, 113, 0.05)"
-    const fontColor                        = bgColor === "Dark" ? "white" : "black"
+
     return (
         isDataReady(isFetching, orderbook) && <table style={{height: height, width: width}}>
             <thead>

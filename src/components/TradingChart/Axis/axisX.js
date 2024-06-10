@@ -1,10 +1,11 @@
 import React from "react"
 import PropTypes from "prop-types"
-
-import { isTimeIntervalGreaterThan1h, formatDateTimeFormat, formatDateYearFormat, formatDateTimeYearFormat } from "../../../custom/tools/constants"
+import { isTimeIntervalGreaterThan1h, formatDateTimeFormat, formatDateYearFormat, formatDateTimeYearFormat, isBgColorDark } from "../../../custom/tools/constants"
 
 
 export const AxisXticks = React.memo(({xScale, bgColor, height, getxScaleTicks}) => {
+    const strokeColor = isBgColorDark(bgColor) ? "white" : "black"
+
     return xScale
         .domain()
         .filter(getxScaleTicks)
@@ -16,7 +17,7 @@ export const AxisXticks = React.memo(({xScale, bgColor, height, getxScaleTicks})
                 <line
                     y2={height}
                     strokeOpacity={0.3}
-                    stroke={bgColor === "Dark" ? "white" : "black"}   
+                    stroke={strokeColor}   
                 />
                
             </g>
@@ -25,6 +26,8 @@ export const AxisXticks = React.memo(({xScale, bgColor, height, getxScaleTicks})
 
 export const AxisXticksText = React.memo(({xScale, bgColor, interval, getxScaleTicks, height}) => {
     const tickFormat = isTimeIntervalGreaterThan1h(interval) ? formatDateYearFormat : formatDateTimeFormat
+    const fillColor  = isBgColorDark(bgColor) ? "white" : "black"
+
     return xScale
         .domain()
         .filter(getxScaleTicks)
@@ -37,7 +40,7 @@ export const AxisXticksText = React.memo(({xScale, bgColor, interval, getxScaleT
                     dy="1%"
                     fontSize="0.7vw"
                     style={{ textAnchor: "middle" }}
-                    fill={bgColor === "Dark" ? "white" : "black"}
+                    fill={fillColor}
                 >
                     {tickFormat(tickValue)}
                 </text>
@@ -46,9 +49,12 @@ export const AxisXticksText = React.memo(({xScale, bgColor, interval, getxScaleT
 })
 
 export const AxisXhoverText = React.memo(({x, bgColor, hoverData, height, width}) => {
-    const xCoordRect = x - width / 2
-    const xCoordText = x - width / 2.5
-    const yCoordText = height / 1.5
+    const rectFillColor = isBgColorDark(bgColor) ? "white" : "black"
+    const textFillColor = isBgColorDark(bgColor) ? "black" : "white"
+    const xCoordRect    = x - width / 2
+    const xCoordText    = x - width / 2.5
+    const yCoordText    = height / 1.5
+    
     return (
         <>
             <rect
@@ -58,13 +64,13 @@ export const AxisXhoverText = React.memo(({x, bgColor, hoverData, height, width}
                 width={width}
                 x={xCoordRect}
                 height={height}
-                fill={bgColor === "Dark" ? "white" : "black"}
+                fill={rectFillColor}
             />
             <text
                 x={xCoordText}
                 y={yCoordText}
                 fontSize="0.8vw"
-                fill={bgColor === "Dark" ? "black" : "white"}
+                fill={textFillColor}
             >
                 {formatDateTimeYearFormat(hoverData?.date)}
             </text>

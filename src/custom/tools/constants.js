@@ -13,3 +13,23 @@ export const isTimeIntervalGreaterThan1h = (interval) => {
 }
 export const isDataReady = (isLoading, data) => !isLoading && data
 export const isArrayEmpty = (array) => Array.isArray(array) && array.length === 0
+export const isBgColorDark = (bgColor) => bgColor === "Dark"
+export const getChartComponentDimensions = (height, width) => {
+    return {
+        yAxisTextBoxDimension: {width: 0.1 * width, height: 0.05 * height},
+        xAxisTextBoxDimension: {width: 0.15 * width, height: 0.05 * height},
+        statsSvgHeight       : 0.05 * height,
+        chartHeight          : 0.90 * height,
+        chartWidth           : 0.90 * width,
+        brushSize            : Math.floor(0.1 * width)
+    }
+}
+
+export const getTradingChartInitialState = () => {
+    return {
+        brushExtent: [0, 0],
+        mouseCoords: {x: 0, y: 0},
+        displayCrosshair: false,
+        hoverData: null
+    }
+}

@@ -1,12 +1,12 @@
 import React from "react"
 import PropTypes from "prop-types"
-
-import { formatValue, formatDateTimeYearFormat, klineColor } from "../../custom/tools/constants"
+import { formatValue, formatDateTimeYearFormat, klineColor, isBgColorDark } from "../../custom/tools/constants"
 
 
 export const Stats = React.memo(({bgColor, height, hoverData}) => {
-    const metricColor = bgColor === "Dark" ? "white" : "black"
+    const metricColor = isBgColorDark(bgColor) ? "white" : "black"
     const valueColor  = klineColor(hoverData)
+
     return (
         <g>
             <text transform={`translate(5, ${height / 1.5})`} fontSize="0.8vw">

@@ -1,10 +1,11 @@
 import React from "react"
 import PropTypes from "prop-types"
-
-import { klineColor, formatValue } from "../../../custom/tools/constants"
+import { klineColor, formatValue, isBgColorDark } from "../../../custom/tools/constants"
 
 
 export const AxisYticks = React.memo(({bgColor, yScale, width}) => {
+    const strokeColor = isBgColorDark(bgColor) ? "white" : "black"
+
     return yScale
         .ticks()
         .slice(1, yScale.ticks().length - 1)
@@ -16,7 +17,7 @@ export const AxisYticks = React.memo(({bgColor, yScale, width}) => {
                 <line 
                     x2={width}
                     strokeOpacity={0.1}
-                    stroke={bgColor === "Dark" ? "white" : "black"} 
+                    stroke={strokeColor} 
                 />
             </g>
         ))
@@ -24,6 +25,8 @@ export const AxisYticks = React.memo(({bgColor, yScale, width}) => {
 })
 
 export const AxisYticksText = React.memo(({bgColor, yScale, width}) => {
+    const fillColor = isBgColorDark(bgColor) ? "white" : "black"
+
     return yScale
         .ticks()
         .slice(1, yScale.ticks().length - 1)
@@ -35,7 +38,7 @@ export const AxisYticksText = React.memo(({bgColor, yScale, width}) => {
                 <text
                     dy="1%"
                     fontSize="0.7vw"
-                    fill={bgColor === "Dark" ? "white" : "black"}
+                    fill={fillColor}
                 >
                     {formatValue("~f")(tickValue)}
                 </text>
@@ -46,8 +49,10 @@ export const AxisYticksText = React.memo(({bgColor, yScale, width}) => {
 export const AxisYCandleStickText = React.memo(({bgColor, yScale, lastCandleStick, width, height}) => {
     const yCoordRect = yScale(lastCandleStick.close) - height / 2
     const yCoordText = yScale(lastCandleStick.close) + height / 6
+    const fillColor  = isBgColorDark(bgColor) ? "black" : "white"
     const color      = klineColor(lastCandleStick)
     const xCoordText = width / 7
+
     return (
         <>
             <rect
@@ -63,7 +68,7 @@ export const AxisYCandleStickText = React.memo(({bgColor, yScale, lastCandleStic
                 x={xCoordText}
                 y={yCoordText}
                 fontSize="0.8vw"
-                fill={bgColor === "Dark" ? "black" : "white"}
+                fill={fillColor}
             >
                 {formatValue("~f")(lastCandleStick.close)} 
             </text>
@@ -72,9 +77,12 @@ export const AxisYCandleStickText = React.memo(({bgColor, yScale, lastCandleStic
 })
 
 export const AxisYhoverText = React.memo(({y, bgColor, yScale, width, height}) => {
-    const yCoordRect = y - height / 2
-    const yCoordText = y + height / 6
-    const xCoordText = width / 7
+    const rectFillColor = isBgColorDark(bgColor) ? "white" : "black"
+    const textFillColor = isBgColorDark(bgColor) ? "black" : "white"
+    const yCoordRect    = y - height / 2
+    const yCoordText    = y + height / 6
+    const xCoordText    = width / 7
+
     return (
         <>
             <rect
@@ -84,13 +92,13 @@ export const AxisYhoverText = React.memo(({y, bgColor, yScale, width, height}) =
                 width={width}
                 y={yCoordRect}
                 height={height}
-                fill={bgColor === "Dark" ? "white" : "black"}
+                fill={rectFillColor}
             />
             <text
                 x={xCoordText}
                 y={yCoordText}
                 fontSize="0.8vw"
-                fill={bgColor === "Dark" ? "black" : "white"}
+                fill={textFillColor}
             >
                 {formatValue("~f")(yScale.invert(y))}
             </text>

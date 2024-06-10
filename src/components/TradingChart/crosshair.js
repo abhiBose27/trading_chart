@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types"
+import { isBgColorDark } from "../../custom/tools/constants";
 
 
 export const Crosshair = React.memo(({x, y, bgColor, height, width}) => {
-    const strokeColor = bgColor === "Dark" ? "white" : "black"
+    const strokeColor = isBgColorDark(bgColor) ? "white" : "black"
+    
     return (
         <>
             <line

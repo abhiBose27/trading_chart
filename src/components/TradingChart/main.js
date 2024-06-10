@@ -1,36 +1,15 @@
 import {scaleBand, min, max, scaleLinear} from "d3"
 import PropTypes from "prop-types"
 import React, { useMemo, useCallback, useEffect, useReducer } from "react"
-
 import { AxisXhoverText, AxisXticks, AxisXticksText } from "./Axis/axisX"
 import { AxisYticks, AxisYticksText, AxisYhoverText, AxisYCandleStickText } from "./Axis/axisY"
 import { VolumeMarks } from "./Marks/volumeMarks"
 import { CandleStickMarks } from "./Marks/candleStickMarks"
 import { Crosshair } from "./crosshair"
 import { Stats } from "./stats"
-import { isArrayEmpty } from "../../custom/tools/constants"
+import { isArrayEmpty, getTradingChartInitialState, getChartComponentDimensions } from "../../custom/tools/constants"
 import { ACTIONS, rootReducer } from "../../custom/tools/reducer"
 
-
-const getChartComponentDimensions = (height, width) => {
-    return {
-        yAxisTextBoxDimension: {width: 0.1 * width, height: 0.05 * height},
-        xAxisTextBoxDimension: {width: 0.15 * width, height: 0.05 * height},
-        statsSvgHeight       : 0.05 * height,
-        chartHeight          : 0.90 * height,
-        chartWidth           : 0.90 * width,
-        brushSize            : Math.floor(0.1 * width)
-    }
-}
-
-const getTradingChartInitialState = () => {
-    return {
-        brushExtent: [0, 0],
-        mouseCoords: {x: 0, y: 0},
-        displayCrosshair: false,
-        hoverData: null
-    }
-}
 
 export const MainChart = ({tradingChartSpecification, klineData}) => {
     const {symbol, width, height, bgColor, interval} = tradingChartSpecification
@@ -75,33 +54,21 @@ export const MainChart = ({tradingChartSpecification, klineData}) => {
     const onMouseEnter = e => tradingChartDispatch({type: ACTIONS.DISPLAYCROSSHAIR, payload: true})
 
     const getxScaleTicks = useCallback((d) => {
-        switch (interval) {
-            case "1s":
-                return d.getUTCSeconds() % 30 === 0
-            case "1m":
-                return d.getUTCMinutes() % 15 === 0
-            case "3m":
-            case "5m":
-                return d.getUTCMinutes() === 0
-            case "15m":
-                return d.getUTCHours() % 2 === 0 && d.getUTCMinutes() === 0
-            case "30m":
-                return d.getUTCHours() % 4 === 0 && d.getUTCMinutes() === 0
-            case "1h": 
-                return d.getUTCHours() % 12 === 0
-            case "2h":
-                return d.getUTCHours() === 0
-            case "6h":
-                return d.getUTCDate() % 3 === 0 && d.getUTCHours() === 0
-            case "12h":
-                return d.getUTCDate() % 7 === 0 && d.getUTCHours() === 0
-            case "1d":
-                return d.getUTCDate() === 1
-            case "1M":
-                return d.getUTCMonth() === 0
-            default:
-               break
-        }   
+        const intervalToTicks = {
+            "1s" : d.getUTCSeconds() % 30 === 0,
+            "1m" : d.getUTCMinutes() % 15 === 0,
+            "3m" : d.getUTCMinutes() === 0,
+            "5m" : d.getUTCMinutes() === 0,
+            "15m": d.getUTCHours() % 2 === 0 && d.getUTCMinutes() === 0,
+            "30m": d.getUTCHours() % 4 === 0 && d.getUTCMinutes() === 0,
+            "1h" : d.getUTCHours() % 12 === 0,
+            "2h" : d.getUTCHours() === 0,
+            "6h" : d.getUTCDate() % 3 === 0 && d.getUTCHours() === 0,
+            "12h": d.getUTCDate() % 7 === 0 && d.getUTCHours() === 0,
+            "1d" : d.getUTCDate() === 1,
+            "1M" : d.getUTCMonth() === 0
+        }
+        return intervalToTicks[interval]
     }, [interval])
 
     const slicedData = useMemo(() => 
