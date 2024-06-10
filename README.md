@@ -1,6 +1,6 @@
 # Trading Chart
 
-Trading Chart consisting of OHLCV live data along with the live orderbook from Binance.
+Trading Chart consisting of OHLCV live data along with the live orderbook from Binance websockets and REST API.
 Features include changing the time period of the candlestick from 1s to 1month, live visualisation of the performance of all the spot market coins from Binance.
 
 # Getting Started
