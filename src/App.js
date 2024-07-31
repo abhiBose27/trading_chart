@@ -1,55 +1,55 @@
-import "bootstrap/dist/css/bootstrap.min.css"
-import PropTypes from "prop-types"
+import "fomantic-ui-css/semantic.css"
 import { useReducer} from "react"
-import { useFetchSymbols } from "./custom/hooks/useFetchSymbols"
-import { NavigationBar } from "./components/navigation"
+import { useFetchSymbols } from "./hooks/useFetchSymbols"
+import { SymbolNavigation } from "./components/Navigation/symbolNavigation"
 import { TradingChart } from "./components/TradingChart/tradingChart"
-import { useWindowSize } from "./custom/hooks/useWindowSize"
+import { useWindowSize } from ".//hooks/useWindowSize"
 import { Orderbook } from "./components/Orderbook/orderbook"
-import { isDataReady, isBgColorDark } from "./custom/tools/constants"
-import { rootReducer } from "./custom/tools/reducer"
+import { isDataReady, getTradingChartSpecification, getOrderbookSpecification, COLORS, defaultAppSpecification, getTradebookSpecification } from "./constants"
+import { rootReducer } from "./reducer"
+import { Tradebook } from "./components/Tradebook/tradebook"
 
 
-const App = ({defaultAppSpecification}) => {
-    const windowSize                      = useWindowSize()
-    const [isFetching, symbolsData]       = useFetchSymbols()
-    const [appSpecification, appDispatch] = useReducer(rootReducer, defaultAppSpecification)
-    const backgroundColor                 = isBgColorDark(appSpecification.bgColor) ? "#282c34": "white"
-    const tradingChartSpecification       = {...appSpecification, height: 0.85 * windowSize.height, width: 0.65 * windowSize.width}
-    const orderbookSpecification          = {...appSpecification, height: 0.85 * windowSize.height, width: 0.25 * windowSize.width}
-    
-    const AppView = isDataReady(isFetching, symbolsData) &&  <>
-            <div style={{marginTop: "1%", marginLeft: "3%"}}>
-                <NavigationBar
-                    appDispatch={appDispatch}
-                    symbolsData={symbolsData}
-                    appSpecification={appSpecification}
-                />
-            </div>
-            <div>
-                <div style={{marginTop: "1%", marginLeft:"3%", float: "left"}}>
-                    <TradingChart tradingChartSpecification={tradingChartSpecification}/>
-                </div>
-                <div style={{marginRight:"3%", float:"right"}}>
-                    <Orderbook orderbookSpecification={orderbookSpecification}/>
-                </div>
-            </div>
-        </>
+const App = () => {
+    const windowSize                = useWindowSize()
+    const [isFetching, symbolsData] = useFetchSymbols()
+    const [specification, dispatch] = useReducer(rootReducer, {symbol: defaultAppSpecification.symbol})
+    const tradingChartSpecification = getTradingChartSpecification(specification, windowSize.height, windowSize.width)
+    const orderbookSpecification    = getOrderbookSpecification(specification, windowSize.height, windowSize.width)
+    const tradebookSpecification    = getTradebookSpecification(specification, windowSize.height, windowSize.width)
 
     return (
         <div style={{
             position: "absolute",
             width: windowSize.width,
             height: windowSize.height,
-            backgroundColor: backgroundColor,
+            backgroundColor: COLORS.DARKGREY,
         }}>
-           {AppView}
+           {
+                isDataReady(isFetching, symbolsData) &&
+                <>
+                    <div style={{marginTop: "1%", marginLeft: "3.5%"}}>
+                        <SymbolNavigation
+                            dispatch={dispatch}
+                            symbolsData={symbolsData}
+                            specification={specification}
+                        />
+                    </div>
+                    <div style={{display: "flex", marginTop: "1%"}}>
+                        <div style={{marginLeft:"3.5%"}}>
+                            <Orderbook orderbookSpecification={orderbookSpecification}/>
+                        </div>
+                        <div style={{marginLeft:"2%"}}>
+                            <TradingChart tradingChartSpecification={tradingChartSpecification}/>
+                        </div>
+                        <div style={{marginLeft: "2%", marginRight: "2%"}}>
+                            <Tradebook tradebookSpecification={tradebookSpecification}/>
+                        </div>
+                    </div>
+                </>
+           }
         </div>
     )
-}
-
-App.propTypes = {
-    defaultAppSpecification: PropTypes.object.isRequired
 }
 
 export default App;

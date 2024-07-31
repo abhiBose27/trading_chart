@@ -1,49 +1,78 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { schemeReds, schemeGreens } from "d3"
-import { useFetchOrderbook } from "../../custom/hooks/useFetchOrderbook"
-import { isDataReady, formatValue, isBgColorDark } from "../../custom/tools/constants"
+import { schemeReds, schemeGreens, format } from "d3"
+import { useFetchOrderbook } from "../../hooks/useFetchOrderbook"
+import { COLORS, isDataReady } from "../../constants"
+import { config } from "./orderbookConfig"
 
 
 export const Orderbook = ({orderbookSpecification}) => {
-    const {symbol, bgColor, width, height} = orderbookSpecification
-    const [isFetching, orderbook]          = useFetchOrderbook(symbol)
-    const fontColor                        = isBgColorDark(bgColor) ? "white" : "black"
-    const depthBidColor                    = "rgba(111, 22, 14, 0.4)"
-    const bidColor                         = "rgba(111, 22, 14, 0.05)"
-    const depthAskColor                    = "rgba(60, 179, 113, 0.4)"
-    const askColor                         = "rgba(60, 179, 113, 0.05)"
+    const { symbol, width, height } = orderbookSpecification
+    const [isFetching, orderbook] = useFetchOrderbook(symbol)
+    const fontColor               = COLORS.WHITE
+    const depthBidColor           = config.depthBidColor
+    const bidColor                = config.bidColor
+    const depthAskColor           = config.depthAskColor
+    const askColor                = config.askColor
+    const boxShadow               = config.boxShadow
+    
+    // These are done based on quick calculation of height and width of the table
+    const cellFontSize                   = config.cellFontSize(height, width)
+    const cellHeaderfontSize             = config.cellHeaderFontSize(height, width)
+    //const orderBookDepthToDisplay        = config.orderBookDepthToDisplay(height, 38)
+
+    // Gives the gradient look to the orderbook based on the level
+    const getCellBackground = (depthColor, color, level) => {
+        return `linear-gradient(to left, ${depthColor} ${level[3]}%, ${color} ${level[3]}% ${100-level[3]}%)`
+    }
+
+   /*  const getUpdatedSidebook = (sidebook, sidebookType) => {
+        if (orderBookDepthToDisplay >= sidebook.length)
+            return sidebook
+        if (sidebookType === SIDEBOOK.ASKS)
+            return sidebook.slice(sidebook.length - orderBookDepthToDisplay)
+        return sidebook.slice(0, -(sidebook.length - orderBookDepthToDisplay))
+    } */
+
+    const isSymbolCorrect = () => orderbook?.symbol === symbol
 
     return (
-        isDataReady(isFetching, orderbook) && <table style={{height: height, width: width}}>
-            <thead>
-                <tr style={{color: fontColor, fontSize: "1vw"}}>
-                    <th style={{textAlign: "initial"}}>Price</th>
-                    <th style={{textAlign: "end"}}>Amount</th>
-                    <th style={{textAlign: "end"}}>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    orderbook.asks.map((level) => (
-                        <tr key={level} style={{backgroundImage: `linear-gradient(to left, ${depthBidColor} ${level[3]}%, ${bidColor} ${level[3]}% ${100-level[3]}%)`, fontSize: "75%"}}>
-                            <td style={{textAlign: "initial", color: schemeReds[6][4]}}>{level[0]}</td>
-                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{formatValue(".4f")(level[1])}</td>
-                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{formatValue(".5f")(level[2])}</td>
+        <div style={{width: width, boxShadow: boxShadow}}>
+            {
+                isDataReady(isFetching, orderbook) && 
+                isSymbolCorrect() && 
+                <table style={{width: "100%"}} cellSpacing="0">
+                    <thead style={{display: "block"}}>
+                        <tr style={{color: fontColor, fontSize: cellHeaderfontSize}}>
+                            <th style={{textAlign: "initial", width: "50%"}}>Price</th>
+                            <th style={{textAlign: "center", width: "10%"}}>Amount</th>
+                            <th style={{textAlign: "end", width: "40%"}}>Total</th>
                         </tr>
-                    ))
-                }
-                {
-                    orderbook.bids.map((level) => (
-                        <tr key={level} style={{backgroundImage: `linear-gradient(to left, ${depthAskColor} ${level[3]}%, ${askColor} ${level[3]}% ${100-level[3]}%)`, fontSize: "75%"}}>
-                            <td style={{textAlign: "initial", color: schemeGreens[6][4]}}>{level[0]}</td>
-                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{formatValue(".4f")(level[1])}</td>
-                            <td style={{textAlign: "end", color: fontColor, opacity: "0.8"}}>{formatValue(".4f")(level[2])}</td>
-                        </tr>
-                    ))
-                }
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody style={{height: height, overflowY: "auto", display: "block"}}>
+                        {
+                            orderbook.asks.map((level) => (
+                                <tr key={level} style={{backgroundImage: getCellBackground(depthBidColor, bidColor, level), fontSize: cellFontSize}}>
+                                    <td style={{textAlign: "initial", color: schemeReds[6][4], width: "50%"}}>{level[0]}</td>
+                                    <td style={{textAlign: "center", color: fontColor, opacity: "0.8", width: "10%"}}>{format(".4f")(level[1])}</td>
+                                    <td style={{textAlign: "end", color: fontColor, opacity: "0.8", width: "40%"}}>{format(".4f")(level[2])}</td>
+                                </tr>
+                            ))
+                        }
+                        {
+                            orderbook.bids.map((level) => (
+                                <tr key={level} style={{backgroundImage: getCellBackground(depthAskColor, askColor, level), fontSize: cellFontSize}}>
+                                    <td style={{textAlign: "initial", color: schemeGreens[6][4], width: "50%"}}>{level[0]}</td>
+                                    <td style={{textAlign: "center", color: fontColor, opacity: "0.8", width: "10%"}}>{format(".4f")(level[1])}</td>
+                                    <td style={{textAlign: "end", color: fontColor, opacity: "0.8", width: "40%"}}>{format(".4f")(level[2])}</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        
     )
 }
 

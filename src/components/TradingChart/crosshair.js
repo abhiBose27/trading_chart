@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types"
-import { isBgColorDark } from "../../custom/tools/constants";
+import { COLORS, isThemeDark } from "../../constants";
 
 
-export const Crosshair = React.memo(({x, y, bgColor, height, width}) => {
-    const strokeColor = isBgColorDark(bgColor) ? "white" : "black"
+export const Crosshair = React.memo(({x, y, theme, height, width}) => {
+    const strokeColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.WHITE
     
     return (
         <>
@@ -34,7 +34,7 @@ export const Crosshair = React.memo(({x, y, bgColor, height, width}) => {
 Crosshair.propTypes = {
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
-    bgColor: PropTypes.string.isRequired,
+    theme: PropTypes.string.isRequired,
     height: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired
 }

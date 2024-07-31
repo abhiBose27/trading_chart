@@ -1,15 +1,14 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { utcFormat, format } from "d3"
+import { ACTIONS, klineColor } from "../../../constants"
 
-import { formatDateToolTipFormat, formatValue, klineColor } from "../../../custom/tools/constants"
-import { ACTIONS } from "../../../custom/tools/reducer"
 
-
-export const CandleStickMarks = React.memo(({xScale, yScale, slicedData, tradingChartDispatch, height}) => {
+export const CandleStickMarks = React.memo(({xScale, yScale, slicedData, dispatch, height}) => {
     return slicedData.map((d, idx) => (
         <g
             key={d.date}
-            onMouseEnter={() => tradingChartDispatch({type: ACTIONS.HOVERDATA, payload: d})}
+            onMouseEnter={() => dispatch({type: ACTIONS.HOVERDATA, payload: d})}
             transform={`translate(${xScale(d.date) + xScale.bandwidth() / 2}, 0)`}
         >
             <line
@@ -32,12 +31,12 @@ export const CandleStickMarks = React.memo(({xScale, yScale, slicedData, trading
                 stroke={klineColor(d)}
                 strokeWidth={xScale.bandwidth()}
                 data-tip={
-                    `<b>${formatDateToolTipFormat(d.date)}</b><br />` +
-                    `Open: ${formatValue("~f")(d.open)}<br />` +
-                    `Close: ${formatValue("~f")(d.close)}<br />` +
-                    `Low: ${formatValue("~f")(d.low)}<br />` +
-                    `High: ${formatValue("~f")(d.high)}<br />` +
-                    `Volume: ${formatValue("~s")(d.volume)}`
+                    `<b>${utcFormat("%H:%M:%S %B %-d, %Y")(d.date)}</b><br />` +
+                    `Open: ${format("~f")(d.open)}<br />` +
+                    `Close: ${format("~f")(d.close)}<br />` +
+                    `Low: ${format("~f")(d.low)}<br />` +
+                    `High: ${format("~f")(d.high)}<br />` +
+                    `Volume: ${format("~s")(d.volume)}`
                 }
                 data-for='mark-tooltip'
             />
@@ -49,6 +48,6 @@ CandleStickMarks.propTypes = {
     xScale: PropTypes.func.isRequired,
     yScale: PropTypes.func.isRequired,
     slicedData: PropTypes.array.isRequired,
-    tradingChartDispatch: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
     height: PropTypes.number.isRequired,
 }

@@ -71,6 +71,7 @@ export const useFetchOrderbook = (symbol) => {
                 const bids = convertRawOrdersToOrders(crudeMessaage.data.bids)
                 const asks = convertRawOrdersToOrders(crudeMessaage.data.asks)
                 const message = {
+                    symbol: symbol,
                     bids: bids,
                     asks: asks
                 }
