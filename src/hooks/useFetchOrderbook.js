@@ -57,7 +57,7 @@ export const useFetchOrderbook = (symbol) => {
 
         const handleOnOpen = () => {
             ws.send(JSON.stringify({
-                id     : "1",
+                id     : "310",
                 method : "SUBSCRIBE",
                 params : [
                     `${symbol.toLowerCase()}@depth20@1000ms`

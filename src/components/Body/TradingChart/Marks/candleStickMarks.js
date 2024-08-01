@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { utcFormat, format } from "d3"
-import { ACTIONS, klineColor } from "../../../constants"
+import { ACTIONS, klineColor } from "../../../../tools"
 
 
 export const CandleStickMarks = React.memo(({xScale, yScale, slicedData, dispatch, height}) => {
@@ -12,7 +12,6 @@ export const CandleStickMarks = React.memo(({xScale, yScale, slicedData, dispatc
             transform={`translate(${xScale(d.date) + xScale.bandwidth() / 2}, 0)`}
         >
             <line
-                y1={0}
                 y2={height}
                 strokeOpacity={0}
                 stroke={klineColor(d)}

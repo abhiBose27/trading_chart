@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { format, utcFormat } from "d3"
-import { klineColor, isThemeDark, COLORS } from "../../constants"
+import { klineColor, isThemeDark, COLORS } from "../../../tools"
 
 
 export const Stats = React.memo(({theme, height, hoverData}) => {
@@ -47,7 +47,7 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
                 {
                     Object.keys(hoverData.movingAverages)
                     .map((maValue, idx) => (
-                        <>
+                        <React.Fragment key={`moving-average-${idx}`}>
                             <tspan
                                 opacity={0.5} 
                                 fill={metricColor} 
@@ -58,7 +58,7 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
                             <tspan fill={hoverData.movingAverages[maValue].color}>
                                 {format("~f")(hoverData.movingAverages[maValue].value)}
                             </tspan>
-                        </>
+                        </React.Fragment>
                     )
                 )}
             </text>

@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { utcFormat } from "d3"
-import { COLORS, isThemeDark } from "../../../constants"
+import { COLORS, isThemeDark } from "../../../../tools"
 
 
 export const AxisXticks = React.memo(({xScale, theme, height, getxScaleTicks}) => {
@@ -71,8 +71,8 @@ export const AxisXhoverText = React.memo(({x, hoverData, height, width}) => {
             <text
                 x={xCoordText}
                 y={yCoordText}
-                fontSize="0.8vw"
                 fill={COLORS.WHITE}
+                fontSize="0.8vw"
                 dominantBaseline="middle"
             >
                 {utcFormat("%Y/%m/%d %H:%M:%S")(hoverData?.date)}

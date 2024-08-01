@@ -1,7 +1,7 @@
 import { Button, Dropdown, Form, FormGroup, Icon, FormInput, Menu, Modal, ModalContent, FormCheckbox } from "semantic-ui-react"
-import { ACTIONS } from "../../../constants"
+import { ACTIONS } from "../../../../tools"
 import { useState } from "react"
-import { checkIndicator, updateMovingAverage } from "../../../reducer"
+import { checkIndicator, updateMovingAverage } from "../../../../reducer"
 
 
 export const ChartFeatureNavigation = ({dispatch, specification}) => {

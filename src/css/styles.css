@@ -1,0 +1,104 @@
+
+.orderbook-container, .symbol-nav-container {
+    margin-left: 3.5%;
+}
+
+.symbol-nav-container, .main-container {
+    margin-top: 1%;
+}
+
+.main-container {
+    display: flex;
+}
+
+.tradingchart-container, .tradebook-container {
+    margin-left: 2%;
+}
+
+.tradebook-container {
+    margin-right: 2%;
+}
+
+.orderbook, .tradebook {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.orderbook-table, .tradebook-table {
+    width: 100%;
+}
+
+.orderbook-table thead, .tradebook-table thead {
+    display: block;
+}
+
+.orderbook-table tbody, .tradebook-table tbody {
+    overflow-y: auto;
+    display: block;
+}
+
+.orderbook-table th:nth-child(2), 
+.orderbook-table td:nth-child(2),
+.tradebook-table th:nth-child(2),
+.tradebook-table th:nth-child(2) {
+    text-align: center;
+    width: 10%;
+}
+
+.orderbook-table th:first-child, 
+.orderbook-table td:first-child,
+.tradebook-table th:first-child,
+.tradebook-table td:first-child {
+    text-align: initial;
+    width: 50%;
+}
+
+.orderbook-table th:last-child, 
+.orderbook-table td:last-child,
+.tradebook-table th:last-child,
+.tradebook-table td:last-child {
+    text-align: end;
+    width: 40%;
+}
+
+.orderbook-table td:last-child, 
+.orderbook-table td:nth-child(2),
+.tradebook-table td:last-child,
+.tradebook-table td:nth-child(2) {
+    opacity: 0.8;
+}
+
+.chart {
+    cursor: crosshair;
+    height: 80%;
+    width: 90%;
+}
+
+@keyframes ticker {
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    padding: 10px 0;
+  }
+  
+  .ticker {
+    padding-left: 100%;
+    display: inline-block;
+  }
+  
+  .ticker.animate {
+    animation: ticker 300s linear infinite;
+  }
+  
+  .footer:hover, .ticker.animate:hover {
+    animation-play-state: paused;
+  }

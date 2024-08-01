@@ -7,8 +7,8 @@ import { VolumeMarks } from "../Marks/volumeMarks"
 import { CandleStickMarks } from "../Marks/candleStickMarks"
 import { Crosshair } from "../crosshair"
 import { Stats } from "../stats"
-import { ACTIONS, isThemeDark, COLORS } from "../../../constants"
-import { rootReducer } from "../../../reducer"
+import { ACTIONS, isThemeDark, COLORS } from "../../../../tools"
+import { rootReducer } from "../../../../reducer"
 import { IndicatorMarks } from "../Marks/indicatorMarks"
 import { config } from "../tradingChartConfig"
 
@@ -139,14 +139,14 @@ export const MainChart = ({specification, klineData}) => {
                 />
                 <CandleStickMarks
                     xScale={xScale}
+                    dispatch={dispatch}
                     yScale={yPriceScale}
                     slicedData={slicedData}
-                    dispatch={dispatch}
                     height={chartComponentsDimensions.chartHeight}
                 />
                 <AxisXticks
-                    xScale={xScale}
                     theme={theme}
+                    xScale={xScale}
                     getxScaleTicks={getxScaleTicks}
                     height={chartComponentsDimensions.chartHeight}
                 />
@@ -155,7 +155,10 @@ export const MainChart = ({specification, klineData}) => {
                     yScale={yPriceScale}
                     width={chartComponentsDimensions.chartWidth}
                 />
-                <IndicatorMarks lineConfigs={lineConfigs} slicedData={slicedData}/>
+                <IndicatorMarks 
+                    lineConfigs={lineConfigs} 
+                    slicedData={slicedData}    
+                />
                 {
                     tradingChartState.displayCrosshair && <Crosshair
                         theme={theme}

@@ -1,7 +1,7 @@
 import ReactTooltip from "react-tooltip"
 import PropTypes from "prop-types"
 import { useEffect, useReducer} from "react"
-import { rootReducer } from "../../reducer"
+import { rootReducer } from "../../../reducer"
 import { ChartFeatureNavigation } from "./Navigation/chartFeatureNavigation"
 import { Chart } from "./Chart/chart"
 

@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { format } from "d3"
-import { klineColor, isThemeDark, COLORS } from "../../../constants"
+import { klineColor, isThemeDark, COLORS } from "../../../../tools"
 
 
 export const AxisYticks = React.memo(({theme, yScale, width}) => {

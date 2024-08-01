@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { SIDE } from "../constants"
+import { SIDE } from "../tools"
 
 
 const convertRawTradesToTrades = (rawTrades) => {
