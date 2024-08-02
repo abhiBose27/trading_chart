@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { utcFormat } from "d3"
-import { COLORS, isThemeDark } from "../../../../tools"
+import { COLORS, isThemeDark } from "../../../../Tools"
 
 
 export const AxisXticks = React.memo(({xScale, theme, height, getxScaleTicks}) => {

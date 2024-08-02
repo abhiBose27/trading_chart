@@ -1,4 +1,4 @@
-import { ACTIONS } from "./tools"
+import { ACTIONS } from "./Actions"
 
 export const rootReducer = (state, action) => {
     switch (action.type) {

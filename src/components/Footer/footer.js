@@ -1,14 +1,14 @@
 import PropTypes from "prop-types"
 import React, { useEffect, useState } from "react"
-import { get24hTicker } from "../../data/binance"
+import { get24hTicker } from "../../Data/HttpBinance"
 import { schemeGreens, schemeReds, format } from "d3"
-import { COLORS } from "../../tools"
+import { COLORS } from "../../Tools"
 
 
 export const Footer = ({symbolsData}) => {
     const [startAnimation, setStartAnimation] = useState(false)
-    const [footerData, setFooterData] = useState([])
-    const relevantSymbols = symbolsData.filter(symbol => symbol.endsWith("USDT"))
+    const [footerData, setFooterData]         = useState([])
+    const relevantSymbols                     = symbolsData.filter(symbol => symbol.endsWith("USDT"))
 
     const getFontColorOnPercent = (priceChangePercent) => Math.sign(priceChangePercent) === -1 ? schemeReds[6][4] : schemeGreens[6][4]
 
@@ -26,8 +26,8 @@ export const Footer = ({symbolsData}) => {
     return (
         <footer className="footer">
             <div className={`ticker ${startAnimation ? "animate" : ""}`}>
-                {footerData.slice(0, 100).map((data, idx) => (
-                    <React.Fragment key={`footer-${idx}`}>
+                {footerData.slice(0, 100).map(data => (
+                    <React.Fragment key={data.id}>
                         <span style={{color: COLORS.WHITE}}>
                             {`${data.symbol}:`} &nbsp;
                         </span>

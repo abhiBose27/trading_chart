@@ -1,8 +1,8 @@
 import PropTypes from "prop-types"
 import { Loader } from "semantic-ui-react"
-import { isDataReady } from "../../../../tools"
-import { useFetchKline } from "../../../../hooks/useFetchKline"
-import { MainChart } from "./main"
+import { isDataReady } from "../../../../Tools"
+import { useFetchKline } from "../../../../Hooks/useFetchKline"
+import { MainChart } from "./Main"
 import { useEffect } from "react"
 import ReactTooltip from "react-tooltip"
 

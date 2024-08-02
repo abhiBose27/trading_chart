@@ -1,17 +1,5 @@
 import { schemeReds, schemeGreens } from "d3"
 
-export const ACTIONS = {
-    THEME: "theme",
-    SYMBOL: "symbol",
-    INTERVAL: "interval",
-    UPDATEMOUSE: "updateMouseCoords",
-    UPDATEBRUSHSIZE: "updateBrushSize",
-    NEWBRUSHEXTENT: "newBrushExtent",
-    DISPLAYCROSSHAIR: "displayCrosshair",
-    HOVERDATA: "hoverData",
-    UPDATEINDICATOR: "updateIndicator"
-}
-
 export const SIDEBOOK = {
     ASKS: "asks",
     BIDS: "bids"
@@ -27,7 +15,11 @@ export const COLORS = {
     GREY: "#363c47",
     BLACK: "black",
     WHITE: "#f0f2f6",
-    CHARTGREY: "#222837"
+    CHARTGREY: "#222837",
+    DEPTHBIDCOLOR: "rgba(111, 22, 14, 0.4)",
+    BIDCOLOR: "rgba(111, 22, 14, 0.05)",
+    DEPTHASKCOLOR: "rgba(60, 179, 113, 0.4)",
+    ASKCOLOR: "rgba(60, 179, 113, 0.05)"
 }
 
 export const defaultAppSpecification = {

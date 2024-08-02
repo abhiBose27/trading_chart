@@ -1,19 +1,21 @@
 import "fomantic-ui-css/semantic.css"
-import "./css/styles.css"
-import { useFetchSymbols } from "./hooks/useFetchSymbols"
-import { isDataReady } from "./tools"
-import { Footer } from "./components/Footer/footer"
-import { Body } from "./components/Body/body"
+import "./Css/styles.css"
+import { useFetchSymbols } from "./Hooks/useFetchSymbols"
+import { COLORS, isDataReady } from "./Tools"
+import { Footer } from "./Components/Footer/Footer"
+import { Body } from "./Components/Body/Body"
+import { useWindowSize } from "./Hooks/useWindowSize"
 
 
 const App = () => {
+    const { width, height }         = useWindowSize()
     const [isFetching, symbolsData] = useFetchSymbols()
     return (
         isDataReady(isFetching, symbolsData) && 
-        <>
-            <Body symbolsData={symbolsData}/>
+        <div className="app-container" style={{width: width, height: height, backgroundColor: COLORS.DARKGREY}}>
+            <Body symbolsData={symbolsData} width={width} height={height}/>
             <Footer symbolsData={symbolsData}/>
-        </>
+        </div>
        
     )
 }

@@ -7,7 +7,7 @@ export const getExchangeInfo = async() => {
     if (response.status !== 200)
         return requiredData
     const crudeData = response.data
-    for (let symbol of crudeData.symbols) {
+    for (const symbol of crudeData.symbols) {
         if (symbol.status === "TRADING")
             requiredData.push(symbol.symbol)
     }
@@ -21,8 +21,9 @@ export const get24hTicker = async(symbols) => {
     if (response.status !== 200)
         return []
     const crudeData = response.data.filter(symbol => symbols.includes(symbol.symbol))
-    return crudeData.map(elm => {
+    return crudeData.map((elm, idx) => {
         return {
+            id: idx,
             symbol: elm.symbol, 
             priceChange: parseFloat(elm.priceChange), 
             priceChangePercent: parseFloat(elm.priceChangePercent), 

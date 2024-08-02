@@ -18,11 +18,14 @@ const addDepths = (orders, maxTotal) => {
 }
 
 const addPrecison = (orders) => {
-    return orders.map((order) => {
+    return orders.map((order, idx) => {
         const orderPrice    = order[0]
         const orderQty      = order[1]
         const orderTotalSum = order[2]
-        return [orderPrice, orderQty, orderTotalSum, order[3]]
+        return {
+            id: idx, 
+            level: [orderPrice, orderQty, orderTotalSum, order[3]]
+        }
     })
 }
 
@@ -47,7 +50,7 @@ const convertRawOrdersToOrders = (rawOrders) => {
 }
 
 export const useFetchOrderbook = (symbol) => {
-    const [result, setResult]         = useState(null)
+    const [data, setData]         = useState(null)
     const [isFetching, setIsFetching] = useState(false)
 
     useEffect(() => {
@@ -55,7 +58,7 @@ export const useFetchOrderbook = (symbol) => {
         const url = "wss://stream.binance.com:9443/stream"
         const ws = new WebSocket(url)
 
-        const handleOnOpen = () => {
+        ws.onopen = () => {
             ws.send(JSON.stringify({
                 id     : "310",
                 method : "SUBSCRIBE",
@@ -65,36 +68,29 @@ export const useFetchOrderbook = (symbol) => {
             }))
         }
 
-        const handleOnMessage = (event) => {
-            const crudeMessaage = JSON.parse(event?.data)
-            if (crudeMessaage.data) {
-                const bids = convertRawOrdersToOrders(crudeMessaage.data.bids)
-                const asks = convertRawOrdersToOrders(crudeMessaage.data.asks)
-                const message = {
-                    symbol: symbol,
-                    bids: bids,
-                    asks: asks
-                }
-                setResult(message)
-            }
-            setIsFetching(false)
-        }
-
-        const handleOnError = (event) => {
+        ws.onerror = (event) => {
             if (event?.data) {
                 const errMsg = JSON.parse(event.data)
                 console.log(errMsg)
             }
         }
 
-        ws.addEventListener("open", handleOnOpen)
-        ws.addEventListener("message", handleOnMessage)
-        ws.addEventListener("error", handleOnError)
+        ws.onmessage = (event) => {
+            const crudeMessaage = JSON.parse(event?.data)
+            if (crudeMessaage.data) {
+                const message = {
+                    symbol: symbol,
+                    result: {
+                        bids: convertRawOrdersToOrders(crudeMessaage.data.bids),
+                        asks: convertRawOrdersToOrders(crudeMessaage.data.asks)
+                    }
+                }
+                setData(message)
+            }
+            setIsFetching(false)
+        }
 
         return () => {
-            ws.removeEventListener("open", handleOnOpen)
-            ws.removeEventListener("message", handleOnOpen)
-            ws.removeEventListener("error", handleOnOpen)
             ws.send(JSON.stringify({
                 id     : "312",
                 method : "UNSUBSCRIBE",
@@ -106,5 +102,5 @@ export const useFetchOrderbook = (symbol) => {
         }
     }, [symbol])
 
-    return [isFetching, result]
+    return [isFetching, data]
 }

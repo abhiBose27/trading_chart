@@ -1,3 +1,10 @@
+.app-container {
+    position: absolute;
+}
+
+.main-container {
+    display: flex;
+}
 
 .orderbook-container, .symbol-nav-container {
     margin-left: 3.5%;
@@ -5,10 +12,6 @@
 
 .symbol-nav-container, .main-container {
     margin-top: 1%;
-}
-
-.main-container {
-    display: flex;
 }
 
 .tradingchart-container, .tradebook-container {
@@ -67,19 +70,14 @@
     opacity: 0.8;
 }
 
-.chart {
-    cursor: crosshair;
-    height: 80%;
-    width: 90%;
-}
 
 @keyframes ticker {
     to {
       transform: translateX(-100%);
     }
-  }
+}
   
-  .footer {
+.footer {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -87,18 +85,22 @@
     overflow: hidden;
     white-space: nowrap;
     box-sizing: border-box;
-    padding: 10px 0;
-  }
-  
-  .ticker {
+    padding: 0.2% 0;
+}
+
+.ticker {
     padding-left: 100%;
     display: inline-block;
-  }
-  
-  .ticker.animate {
+}
+
+.ticker.animate {
     animation: ticker 300s linear infinite;
-  }
-  
-  .footer:hover, .ticker.animate:hover {
+}
+
+.footer:hover, .ticker.animate:hover {
     animation-play-state: paused;
-  }
+}
+
+.ticker span {
+    font-size: 85%;
+}

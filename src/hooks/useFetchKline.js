@@ -5,8 +5,7 @@ const addMovingAverages = (klineData, indicators) => {
     const updatedKlineData = []
     for (let i = 0; i < klineData.length; i++) {
         const movingAverages = {}
-        for (let j = 0; j < indicators.length; j++) {
-            const indicator          = indicators[j]
+        for (const indicator of indicators) {
             if (!indicator.checked)
                 continue
             const movingAverageValue = indicator.movingAverageValue
@@ -24,9 +23,10 @@ const addMovingAverages = (klineData, indicators) => {
     return updatedKlineData
 }
 
-const uiCrudeDataToData = (crudeData, indicators) => {
-    let klineData = crudeData.map(klineData => {
+const convertRawKlinesToKlines = (crudeData, indicators) => {
+    let klineData = crudeData.map((klineData, idx) => {
         return {
+            id: idx,
             date: new Date(klineData[0]),
             open: parseFloat(klineData[1]),
             high: parseFloat(klineData[2]),
@@ -40,7 +40,7 @@ const uiCrudeDataToData = (crudeData, indicators) => {
 }
 
 export const useFetchKline = (symbol, interval, indicators) => {
-    const [result, setResult]         = useState(null)
+    const [data, setData]             = useState(null)
     const [isFetching, setIsFetching] = useState(false)
     const [socket, setSocket]         = useState(null)
 
@@ -76,7 +76,7 @@ export const useFetchKline = (symbol, interval, indicators) => {
 
         return () => {
             ws.close()
-            setResult(null)
+            setData(null)
         }
     }, [symbol, interval])
 
@@ -86,12 +86,10 @@ export const useFetchKline = (symbol, interval, indicators) => {
         socket.onmessage = (event) => {
             const newMessage = JSON.parse(event.data) 
             if (newMessage.status === 200)
-                setResult({interval: interval, result: uiCrudeDataToData(newMessage.result, indicators)})
-            setIsFetching(prevState => {
-                if (prevState) return false
-            })
+                setData({interval: interval, result: convertRawKlinesToKlines(newMessage.result, indicators)})
+            setIsFetching(false)
         }
     }, [socket, indicators, interval])
 
-    return [isFetching, result]
+    return [isFetching, data]
 }

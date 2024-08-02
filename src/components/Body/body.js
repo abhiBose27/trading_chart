@@ -1,27 +1,21 @@
+import PropTypes from "prop-types"
 import { useReducer } from "react"
-import { useWindowSize } from "../../hooks/useWindowSize"
-import { rootReducer } from "../../reducer"
-import { COLORS, defaultAppSpecification, getOrderbookSpecification, getTradebookSpecification, getTradingChartSpecification } from "../../tools"
-import { SymbolNavigation } from "./Navigation/symbolNavigation"
-import { Orderbook } from "./Orderbook/orderbook"
-import { TradingChart } from "./TradingChart/tradingChart"
-import { Tradebook } from "./Tradebook/tradebook"
+import { rootReducer } from "../../Store/Reducer"
+import { SymbolNavigation } from "./SymbolsNavigation/SymbolNavigation"
+import { Orderbook } from "./Orderbook/Orderbook"
+import { TradingChart } from "./TradingChart/TradingChart"
+import { Tradebook } from "./Tradebook/Tradebook"
+import { defaultAppSpecification, getOrderbookSpecification, getTradebookSpecification, getTradingChartSpecification } from "../../Tools"
 
 
-export const Body = ({symbolsData}) => {
-    const windowSize                = useWindowSize()
+export const Body = ({symbolsData, width, height}) => {
     const [specification, dispatch] = useReducer(rootReducer, {symbol: defaultAppSpecification.symbol})
-    const tradingChartSpecification = getTradingChartSpecification(specification, windowSize.height, windowSize.width)
-    const orderbookSpecification    = getOrderbookSpecification(specification, windowSize.height, windowSize.width)
-    const tradebookSpecification    = getTradebookSpecification(specification, windowSize.height, windowSize.width)
+    const tradingChartSpecification = getTradingChartSpecification(specification, height, width)
+    const orderbookSpecification    = getOrderbookSpecification(specification, height, width)
+    const tradebookSpecification    = getTradebookSpecification(specification, height, width)
 
     return (
-        <div style={{
-            position: "absolute",
-            width: windowSize.width,
-            height: windowSize.height,
-            backgroundColor: COLORS.DARKGREY,
-        }}>
+        <>
             <div className="symbol-nav-container">
                 <SymbolNavigation
                     dispatch={dispatch}
@@ -40,6 +34,12 @@ export const Body = ({symbolsData}) => {
                     <Tradebook tradebookSpecification={tradebookSpecification}/>
                 </div>
             </div>
-        </div>
+        </>
     )
+}
+
+Body.propTypes = {
+    symbolsData: PropTypes.array.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired
 }

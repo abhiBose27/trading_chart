@@ -1,10 +1,11 @@
+import PropTypes from "prop-types"
 import { Button, Dropdown, Form, FormGroup, Icon, FormInput, Menu, Modal, ModalContent, FormCheckbox } from "semantic-ui-react"
-import { ACTIONS } from "../../../../tools"
+import { ACTIONS } from "../../../../Store/Actions"
 import { useState } from "react"
-import { checkIndicator, updateMovingAverage } from "../../../../reducer"
+import { checkIndicator, updateMovingAverage } from "../../../../Store/Reducer"
 
 
-export const ChartFeatureNavigation = ({dispatch, specification}) => {
+export const ChartNavigation = ({dispatch, specification}) => {
     const { theme, interval, indicators, width } = specification
     const [showIndicators, setShowIndicators]    = useState(false)
     const [localIndicators, setLocalIndicators]  = useState(indicators)
@@ -89,6 +90,10 @@ export const ChartFeatureNavigation = ({dispatch, specification}) => {
                 </ModalContent>
             </Modal>
         </div>
-       
     )
+}
+
+ChartNavigation.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    specification: PropTypes.object.isRequired
 }

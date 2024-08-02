@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types"
-import { COLORS, isThemeDark } from "../../../tools";
+import { COLORS, isThemeDark } from "../../../../Tools";
 
 
 export const Crosshair = React.memo(({x, y, theme, height, width}) => {
-    const strokeColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.WHITE
+    const strokeColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
     
     return (
         <>

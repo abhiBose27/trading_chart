@@ -1,9 +1,9 @@
 import ReactTooltip from "react-tooltip"
 import PropTypes from "prop-types"
 import { useEffect, useReducer} from "react"
-import { rootReducer } from "../../../reducer"
-import { ChartFeatureNavigation } from "./Navigation/chartFeatureNavigation"
-import { Chart } from "./Chart/chart"
+import { rootReducer } from "../../../Store/Reducer"
+import { ChartNavigation } from "./ChartNavigation/ChartNavigation"
+import { Chart } from "./Chart/Chart"
 
 
 export const TradingChart = ({tradingChartSpecification}) => {
@@ -27,7 +27,7 @@ export const TradingChart = ({tradingChartSpecification}) => {
 
     return (
         <>
-            <ChartFeatureNavigation dispatch={dispatch} specification={{...tradingChartSpecification, ...specification}}/>
+            <ChartNavigation dispatch={dispatch} specification={{...tradingChartSpecification, ...specification}}/>
             <Chart specification={{...tradingChartSpecification, ...specification}}/>
         </>
     )

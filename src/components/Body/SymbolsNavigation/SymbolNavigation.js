@@ -1,16 +1,12 @@
 import PropTypes from "prop-types"
 import { Dropdown } from "semantic-ui-react"
-import { ACTIONS } from "../../../tools"
-import { useMemo } from "react"
+import { ACTIONS } from "../../../Store/Actions"
+import React from "react"
 
 
-export const SymbolNavigation = ({dispatch, specification, symbolsData}) => {
+export const SymbolNavigation = React.memo(({dispatch, specification, symbolsData}) => {
     
-    const symbolsOptions = useMemo(() => {
-        return symbolsData.map(elm => {
-            return {key: elm, text: elm, value: elm}
-        })
-    }, [symbolsData])
+    const symbolsOptions = symbolsData.map(elm => {return {key: elm, text: elm, value: elm}})
 
     const SetSymbol = (e, { value }) => dispatch({type: ACTIONS.SYMBOL, payload: value})
 
@@ -28,7 +24,7 @@ export const SymbolNavigation = ({dispatch, specification, symbolsData}) => {
             search
         />
     )
-}
+})
 
 SymbolNavigation.propTypes = {
     dispatch: PropTypes.func.isRequired,
