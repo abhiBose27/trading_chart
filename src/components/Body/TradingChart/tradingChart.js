@@ -2,8 +2,8 @@ import ReactTooltip from "react-tooltip"
 import PropTypes from "prop-types"
 import { useEffect, useReducer} from "react"
 import { rootReducer } from "../../../Store/Reducer"
-import { ChartNavigation } from "./ChartNavigation/ChartNavigation"
-import { Chart } from "./Chart/Chart"
+import { ChartNavigation } from "./ChartNavigation"
+import { ChartWrapper } from "./Chart/ChartWrapper"
 
 
 export const TradingChart = ({tradingChartSpecification}) => {
@@ -28,7 +28,7 @@ export const TradingChart = ({tradingChartSpecification}) => {
     return (
         <>
             <ChartNavigation dispatch={dispatch} specification={{...tradingChartSpecification, ...specification}}/>
-            <Chart specification={{...tradingChartSpecification, ...specification}}/>
+            <ChartWrapper specification={{...tradingChartSpecification, ...specification}}/>
         </>
     )
 }

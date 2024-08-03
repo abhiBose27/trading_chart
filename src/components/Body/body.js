@@ -6,9 +6,11 @@ import { Orderbook } from "./Orderbook/Orderbook"
 import { TradingChart } from "./TradingChart/TradingChart"
 import { Tradebook } from "./Tradebook/Tradebook"
 import { defaultAppSpecification, getOrderbookSpecification, getTradebookSpecification, getTradingChartSpecification } from "../../Tools"
+import { useWindowSize } from "../../Hooks/useWindowSize"
 
 
-export const Body = ({symbolsData, width, height}) => {
+export const Body = ({symbolsData}) => {
+    const { width, height }         = useWindowSize()
     const [specification, dispatch] = useReducer(rootReducer, {symbol: defaultAppSpecification.symbol})
     const tradingChartSpecification = getTradingChartSpecification(specification, height, width)
     const orderbookSpecification    = getOrderbookSpecification(specification, height, width)
@@ -40,6 +42,4 @@ export const Body = ({symbolsData, width, height}) => {
 
 Body.propTypes = {
     symbolsData: PropTypes.array.isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired
 }

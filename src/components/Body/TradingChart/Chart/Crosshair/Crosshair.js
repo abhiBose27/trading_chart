@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types"
-import { COLORS, isThemeDark } from "../../../../Tools";
+import { COLORS, isThemeDark } from "../../../../../Tools";
 
 
 export const Crosshair = React.memo(({x, y, theme, height, width}) => {

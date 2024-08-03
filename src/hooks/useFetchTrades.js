@@ -24,8 +24,8 @@ export const useFetchTrades = (symbol) => {
         const url = "wss://ws-api.binance.com:443/ws-api/v3"
         const ws  = new WebSocket(url)
 
-        ws.onopen= () => {
-            const sendData = () => {
+        const sendData = () => {
+            if (ws.readyState === ws.OPEN)
                 ws.send(JSON.stringify({
                     id: "314",
                     method: "trades.recent",
@@ -34,7 +34,9 @@ export const useFetchTrades = (symbol) => {
                         limit: 50
                     }
                 }))
-            }
+        }
+
+        ws.onopen= () => {
             const msgInterval = setInterval(() => sendData(), 500)
             ws.onclose = () => clearInterval(msgInterval)
         }
@@ -53,7 +55,10 @@ export const useFetchTrades = (symbol) => {
             setIsFetching(false)
         }
 
-        return () => ws.close()
+        return () => {
+            if (ws.readyState === ws.OPEN)
+                ws.close()
+        }
         
     }, [symbol])
 

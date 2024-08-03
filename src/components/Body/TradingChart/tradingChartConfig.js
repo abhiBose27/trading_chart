@@ -1,15 +1,25 @@
-
 export const config = {
-    boxShadow: "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+    getInitialChartState: (brushSize, klineDataLength) => {
+        return {
+            brushExtent:  [Math.max(0, klineDataLength - brushSize), klineDataLength - 1],
+            mouseCoords: {x: 0, y: 0},
+            displayCrosshair: false,
+            hoverData: null 
+        }
+    },
     getChartComponentDimensions: (height, width) => {
         const chartHeight = 0.8 * height
         const chartWidth  = 0.9 * width
         const yAxisTextBoxDimensionWidth = width - chartWidth
         const xAxisTextBoxDimensionHeight = (height - chartHeight) / 4
         const statsSvgHeight = height - (chartHeight + xAxisTextBoxDimensionHeight)
+        const xAxisTextBoxDimensionWidth = 0.15 * width
+        const yAxisTextBoxDimensionHeight = 0.04 * height
         return {
-            yAxisTextBoxDimension: {width: yAxisTextBoxDimensionWidth, height: 0.04 * height},
-            xAxisTextBoxDimension: {width: 0.15 * width, height: xAxisTextBoxDimensionHeight},
+            yAxisTextBoxDimensionWidth: yAxisTextBoxDimensionWidth,
+            yAxisTextBoxDimensionHeight: yAxisTextBoxDimensionHeight,
+            xAxisTextBoxDimensionHeight: xAxisTextBoxDimensionHeight,
+            xAxisTextBoxDimensionWidth: xAxisTextBoxDimensionWidth,
             statsSvgHeight       : statsSvgHeight,
             chartHeight          : chartHeight,
             chartWidth           : chartWidth,

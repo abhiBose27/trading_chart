@@ -1,8 +1,8 @@
 import PropTypes from "prop-types"
 import { Button, Dropdown, Form, FormGroup, Icon, FormInput, Menu, Modal, ModalContent, FormCheckbox } from "semantic-ui-react"
-import { ACTIONS } from "../../../../Store/Actions"
+import { ACTIONS } from "../../../Store/Actions"
 import { useState } from "react"
-import { checkIndicator, updateMovingAverage } from "../../../../Store/Reducer"
+import { checkIndicator, updateMovingAverage } from "../../../Store/Reducer"
 
 
 export const ChartNavigation = ({dispatch, specification}) => {

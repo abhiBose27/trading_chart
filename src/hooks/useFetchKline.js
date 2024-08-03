@@ -51,20 +51,23 @@ export const useFetchKline = (symbol, interval, indicators) => {
         setSocket(ws)
         
         const sendData = () => {
-            ws.send(JSON.stringify({
-                id: "312",
-                method: "uiKlines",
-                params: {
-                    symbol: symbol,
-                    interval: interval,
-                    limit: 1000
-                }
-            }))
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({
+                    id: "312",
+                    method: "uiKlines",
+                    params: {
+                        symbol: symbol,
+                        interval: interval,
+                        limit: 1000
+                    }
+                }))
+            }
         }
         
         ws.onopen = () => {
             const msgInterval = setInterval(() => sendData(), 1000)
             ws.onclose = () => clearInterval(msgInterval)
+            
         }
 
         ws.onerror = (event) => {
@@ -75,9 +78,12 @@ export const useFetchKline = (symbol, interval, indicators) => {
         }
 
         return () => {
-            ws.close()
-            setData(null)
+            if (ws.readyState === ws.OPEN) {
+                ws.close()
+                setData(null)
+            }
         }
+
     }, [symbol, interval])
 
     useEffect(() => {

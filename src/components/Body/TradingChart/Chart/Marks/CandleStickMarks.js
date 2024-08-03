@@ -1,11 +1,11 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { utcFormat, format } from "d3"
-import { klineColor } from "../../../../Tools"
-import { ACTIONS } from "../../../../Store/Actions"
+import { klineColor } from "../../../../../Tools"
+import { ACTIONS } from "../../../../../Store/Actions"
 
 
-export const CandleStickMarks = React.memo(({xScale, yScale, slicedData, dispatch, height}) => {
+export const CandleStickMarks = React.memo(({xScale, yPriceScale, slicedData, dispatch, height}) => {
     return slicedData.map((d, idx) => (
         <g
             key={d.date}
@@ -20,14 +20,14 @@ export const CandleStickMarks = React.memo(({xScale, yScale, slicedData, dispatc
             /> 
             
             <line
-                y1={yScale(d.low)}
-                y2={yScale(d.high)}
+                y1={yPriceScale(d.low)}
+                y2={yPriceScale(d.high)}
                 stroke={klineColor(d)}
             />
             
              <line
-                y1={yScale(d.open)}
-                y2={yScale(d.close) === yScale(d.open) ? yScale(d.close) + 1 : yScale(d.close)}
+                y1={yPriceScale(d.open)}
+                y2={yPriceScale(d.close) === yPriceScale(d.open) ? yPriceScale(d.close) + 1 : yPriceScale(d.close)}
                 stroke={klineColor(d)}
                 strokeWidth={xScale.bandwidth()}
                 data-tip={
@@ -46,7 +46,7 @@ export const CandleStickMarks = React.memo(({xScale, yScale, slicedData, dispatc
 
 CandleStickMarks.propTypes = {
     xScale: PropTypes.func.isRequired,
-    yScale: PropTypes.func.isRequired,
+    yPriceScale: PropTypes.func.isRequired,
     slicedData: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
     height: PropTypes.number.isRequired,

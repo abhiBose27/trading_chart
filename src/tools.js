@@ -28,7 +28,7 @@ export const defaultAppSpecification = {
     theme: "Dark"
 }
 
-export const klineColor = (d) => d.open > d.close ? schemeReds[6][4] : schemeGreens[6][4]
+export const klineColor = (d) => d?.open > d?.close ? schemeReds[6][4] : schemeGreens[6][4]
 
 export const isDataReady = (isLoading, data) => !isLoading && data
 

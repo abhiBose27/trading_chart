@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { format, utcFormat } from "d3"
-import { klineColor, isThemeDark, COLORS } from "../../../../Tools"
+import { klineColor, isThemeDark, COLORS } from "../../../../../Tools"
 
 
 export const Stats = React.memo(({theme, height, hoverData}) => {
@@ -10,7 +10,7 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
 
     return (
         hoverData && <> 
-            <text transform={`translate(5, ${height / 10})`} fontSize="0.7vw">
+            <text transform={`translate(10, ${height / 8})`} fontSize="0.7vw">
                 <tspan opacity={0.5} fill={metricColor}>
                     {utcFormat("%Y/%m/%d %H:%M:%S")(hoverData.date)}
                 </tspan>
@@ -43,7 +43,7 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
                     {format("~f")(hoverData.change) + "%"}
                 </tspan>
             </text>
-            <text transform={`translate(5, ${height / 3})`} fontSize="0.7vw">
+            <text transform={`translate(10, ${height / 3})`} fontSize="0.7vw">
                 {
                     Object.keys(hoverData.movingAverages)
                     .map((maValue, idx) => (
@@ -69,5 +69,5 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
 Stats.propTypes = { 
     theme: PropTypes.string.isRequired,
     height: PropTypes.number.isRequired,
-    hoverData: PropTypes.object.isRequired
+    hoverData: PropTypes.object
 }

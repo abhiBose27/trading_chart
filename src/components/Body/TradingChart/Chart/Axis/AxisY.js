@@ -1,53 +1,41 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { format } from "d3"
-import { klineColor, isThemeDark, COLORS } from "../../../../Tools"
+import { klineColor, isThemeDark, COLORS } from "../../../../../Tools"
 
 
-export const AxisYticks = React.memo(({theme, yScale, width}) => {
-    const strokeColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
-    return yScale
-        .ticks()
-        .slice(1, yScale.ticks().length - 1)
-        .map(tickValue => (
+export const HorizontalTicks = React.memo(({theme, yPriceScale, width}) => {
+    const fillColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
+    const ticks = yPriceScale.ticks()
+    return ticks.slice(1, ticks.length - 1).map(tickValue => (
             <g
                 key={tickValue}
-                transform={`translate(0, ${yScale(tickValue)})`}
+                transform={`translate(0, ${yPriceScale(tickValue)})`}
             >
-                <line 
-                    x2={width}
-                    strokeOpacity={0.1}
-                    stroke={strokeColor} 
-                />
+                <line x2={width} stroke={fillColor} strokeOpacity={0.1}/>
             </g>
         ))
 
 })
 
-export const AxisYticksText = React.memo(({theme, yScale, width}) => {
+export const AxisYticksText = React.memo(({theme, yPriceScale, width}) => {
     const fillColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
-    return yScale
-        .ticks()
-        .slice(1, yScale.ticks().length - 1)
-        .map(tickValue => (
+    const ticks = yPriceScale.ticks()
+    return ticks.slice(1, ticks.length - 1).map(tickValue => (
             <g
                 key={tickValue}
-                transform={`translate(${width / 5}, ${yScale(tickValue)})`}
+                transform={`translate(${width / 5}, ${yPriceScale(tickValue)})`}
             >
-                <text
-                    fill={fillColor}
-                    fontSize="0.7vw"
-                    dominantBaseline="middle"
-                >
+                <text fill={fillColor} fontSize="0.7vw" dominantBaseline="middle">
                     {format("~f")(tickValue)}
                 </text>
             </g>
         ))
 })
 
-export const AxisYCandleStickText = React.memo(({yScale, lastCandleStick, width, height}) => {
+export const AxisYCandleStickText = React.memo(({yPriceScale, lastCandleStick, width, height}) => {
     const xCoordRect = 0
-    const yCoordRect = yScale(lastCandleStick.close) - height / 2
+    const yCoordRect = yPriceScale(lastCandleStick.close) - height / 2
     const yCoordText = yCoordRect + height / 2
     const xCoordText = xCoordRect + height / 2
     const fillColor  = klineColor(lastCandleStick)
@@ -75,11 +63,11 @@ export const AxisYCandleStickText = React.memo(({yScale, lastCandleStick, width,
     )
 })
 
-export const AxisYhoverText = React.memo(({y, yScale, width, height}) => {
-    const xCoordRect    = 0
-    const yCoordRect    = y - height / 2
-    const yCoordText    = yCoordRect + height / 2
-    const xCoordText    = xCoordRect + height / 2
+export const AxisYhoverText = React.memo(({y, yPriceScale, width, height}) => {
+    const xCoordRect = 0
+    const yCoordRect = y - height / 2
+    const yCoordText = yCoordRect + height / 2
+    const xCoordText = xCoordRect + height / 2
     return (
         <>
             <rect
@@ -98,35 +86,35 @@ export const AxisYhoverText = React.memo(({y, yScale, width, height}) => {
                 fill={COLORS.WHITE}
                 dominantBaseline="middle"
             >
-                {format("~f")(yScale.invert(y))}
+                {format("~f")(yPriceScale.invert(y))}
             </text>
         </>
         
     )
 })
 
-AxisYticks.propTypes = {
+HorizontalTicks.propTypes = {
     theme: PropTypes.string.isRequired,
-    yScale: PropTypes.func.isRequired,
+    yPriceScale: PropTypes.func.isRequired,
     width: PropTypes.number.isRequired,
 }
 
 AxisYticksText.propTypes = {
     theme: PropTypes.string.isRequired,
-    yScale: PropTypes.func.isRequired,
+    yPriceScale: PropTypes.func.isRequired,
     width: PropTypes.number.isRequired,
 }
 
 AxisYCandleStickText.propTypes = {
-    yScale: PropTypes.func.isRequired,
-    lastCandleStick: PropTypes.object.isRequired,
+    yPriceScale: PropTypes.func.isRequired,
+    lastCandleStick: PropTypes.object,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired
 }
 
 AxisYhoverText.propTypes = {
     y: PropTypes.number.isRequired,
-    yScale: PropTypes.func.isRequired,
+    yPriceScale: PropTypes.func.isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired
 }
