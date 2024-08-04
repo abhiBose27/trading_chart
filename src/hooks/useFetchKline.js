@@ -1,24 +1,56 @@
 import { useState, useEffect } from "react";
 
 
-const addMovingAverages = (klineData, indicators) => {
+const addMovingAverage = (klineData, parameters, idx) => {
+    const movingAverages = {}
+    for (const parameter of parameters) {
+        if (!parameter.checked)
+            continue
+        const movingAverageValue = parameter.movingAverageValue
+        if (idx < movingAverageValue - 1) {
+            movingAverages[movingAverageValue] = {value: null, color: parameter.color}
+            continue
+        }
+        let sum = 0
+        for (let k = 0; k < movingAverageValue; k++)
+            sum += klineData[idx - k].close
+        movingAverages[movingAverageValue] = {value: sum / movingAverageValue, color: parameter.color}
+    }
+    return movingAverages
+}
+
+const addExponentialMovingAverage = (klineData, updatedKlineData, parameters, i) => {
+    const movingAverages = {}
+    for (const parameter of parameters) {
+        if (!parameter.checked)
+            continue
+        const movingAverageValue = parameter.movingAverageValue
+        const alpha = 2 / (movingAverageValue + 1)
+        if (i === 0) {
+            movingAverages[movingAverageValue] = {value: klineData[0].close, color: parameter.color}
+            continue
+        }
+        const previousEma = updatedKlineData[i - 1].indicators["EMA"][movingAverageValue].value
+        const ema = klineData[i].close * alpha + previousEma * (1 - alpha)
+        movingAverages[movingAverageValue] = {value: ema, color: parameter.color}
+    }
+    return movingAverages
+}
+
+const addIndicatorsToKlineData = (klineData, indicators) => {
     const updatedKlineData = []
     for (let i = 0; i < klineData.length; i++) {
-        const movingAverages = {}
-        for (const indicator of indicators) {
-            if (!indicator.checked)
+        const processedIndicator = {}
+        for (const indicatorType in indicators) {
+            if (!indicators[indicatorType].checked)
                 continue
-            const movingAverageValue = indicator.movingAverageValue
-            if (i < movingAverageValue - 1) {
-                Object.assign(movingAverages, {[movingAverageValue]: {value: null, color: indicator.color}})
-                continue
-            }
-            let sum = 0
-            for (let k = 0; k < movingAverageValue; k++)
-                sum += klineData[i - k].close
-            Object.assign(movingAverages, {[movingAverageValue]: {value: sum / movingAverageValue, color: indicator.color}})
+            const parameters = indicators[indicatorType].parameters
+            if (indicatorType === "MA")
+                processedIndicator[indicatorType] = addMovingAverage(klineData, parameters, i)
+            if (indicatorType === "EMA")
+                processedIndicator[indicatorType] = addExponentialMovingAverage(klineData, updatedKlineData, parameters, i)
         }
-        updatedKlineData.push({...klineData[i], movingAverages: movingAverages})
+        updatedKlineData.push({...klineData[i], indicators: processedIndicator})
     }
     return updatedKlineData
 }
@@ -36,7 +68,7 @@ const convertRawKlinesToKlines = (crudeData, indicators) => {
             change: parseFloat(((klineData[4] / klineData[1] - 1) * 100))
         }
     })
-    return addMovingAverages(klineData, indicators)
+    return addIndicatorsToKlineData(klineData, indicators)
 }
 
 export const useFetchKline = (symbol, interval, indicators) => {
@@ -51,17 +83,15 @@ export const useFetchKline = (symbol, interval, indicators) => {
         setSocket(ws)
         
         const sendData = () => {
-            if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({
-                    id: "312",
-                    method: "uiKlines",
-                    params: {
-                        symbol: symbol,
-                        interval: interval,
-                        limit: 1000
-                    }
-                }))
-            }
+            ws.send(JSON.stringify({
+                id: "312",
+                method: "uiKlines",
+                params: {
+                    symbol: symbol,
+                    interval: interval,
+                    limit: 1000
+                }
+            }))
         }
         
         ws.onopen = () => {

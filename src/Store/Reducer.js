@@ -30,14 +30,3 @@ export const rootReducer = (state, action) => {
             throw new Error('Unexpected action in App Component')
     }
 }
-
-export const updateMovingAverage = (indicators, payload) => {
-    const updateIndicators = [...indicators]
-    updateIndicators[payload.key - 1] = {...indicators[payload.key - 1], movingAverageValue: parseInt(payload.value)}
-    return updateIndicators
-}
-export const checkIndicator = (indicators, payload) => {
-    const updateIndicators = [...indicators]
-    updateIndicators[payload.key - 1] = {...indicators[payload.key - 1], checked: payload.value}
-    return updateIndicators
-}

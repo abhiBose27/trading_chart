@@ -8,6 +8,35 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
     const metricColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
     const valueColor  = klineColor(hoverData)
 
+    const getIndicatorsJSX = () => {
+        const indicatorJSX = []
+        const ids = {indicatorTypeId: 0, valueId: 0}
+        for (const indicatorType in hoverData.indicators) {
+            const children = []
+            for (const value in hoverData.indicators[indicatorType]) {
+                children.push(
+                    <React.Fragment key={ids.valueId}>
+                        <tspan opacity={0.5} fill={metricColor} dx={ids.valueId !== 0 ? "2%": null}>
+                            {`${indicatorType}(${value}): `}
+                        </tspan>
+                        <tspan fill={hoverData.indicators[indicatorType][value].color}>
+                            {format("~f")(hoverData.indicators[indicatorType][value].value)}
+                        </tspan>
+                    </React.Fragment>
+                )
+                ids.valueId++
+            }
+            indicatorJSX.push(
+                <text key={ids.indicatorTypeId} transform={`translate(10, ${height / (3 - ids.indicatorTypeId - 0.2)})`} fontSize="0.7vw">
+                    {children}
+                </text>
+            )
+            ids.indicatorTypeId++
+            ids.valueId = 0
+        }
+        return indicatorJSX
+    }
+
     return (
         hoverData && <> 
             <text transform={`translate(10, ${height / 8})`} fontSize="0.7vw">
@@ -43,25 +72,7 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
                     {format("~f")(hoverData.change) + "%"}
                 </tspan>
             </text>
-            <text transform={`translate(10, ${height / 3})`} fontSize="0.7vw">
-                {
-                    Object.keys(hoverData.movingAverages)
-                    .map((maValue, idx) => (
-                        <React.Fragment key={`moving-average-${idx}`}>
-                            <tspan
-                                opacity={0.5} 
-                                fill={metricColor} 
-                                dx={idx !== 0 ? "2%" : null}
-                            >
-                                {`MA(${maValue}): `}
-                            </tspan>
-                            <tspan fill={hoverData.movingAverages[maValue].color}>
-                                {format("~f")(hoverData.movingAverages[maValue].value)}
-                            </tspan>
-                        </React.Fragment>
-                    )
-                )}
-            </text>
+            {getIndicatorsJSX()}
         </>
     )
 })

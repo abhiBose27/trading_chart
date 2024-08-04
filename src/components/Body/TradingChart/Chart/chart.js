@@ -83,14 +83,22 @@ export const Chart = ({specification, klineData}) => {
     }, [slicedData, chartComponentsDimensions.chartHeight])
 
     const lineConfigs = useMemo(() => {
-        const movingAverageValues = Object.keys(slicedData[0].movingAverages)
-        return movingAverageValues.map((movingAverageValue, idx) => {
-            return {
-                id: idx,
-                color: slicedData[0].movingAverages[movingAverageValue].color,
-                lineScale: line().x(d => xScale(d.date)).y(d => yPriceScale(d.movingAverages[movingAverageValue].value)).defined(d => d.movingAverages[movingAverageValue].value)
+        const configs = []
+        let id = 0
+        for (const indicatorType in slicedData[0].indicators) {
+            const indicatorValues = slicedData[0].indicators[indicatorType]
+            for (const value in indicatorValues) {
+                configs.push({
+                    id: id,
+                    color: indicatorValues[value].color,
+                    lineScale: line().x(d => xScale(d.date)).y(d => yPriceScale(d.indicators[indicatorType][value].value))
+                                .defined(d => d.indicators[indicatorType][value].value)
+                })
+                id++
             }
-        })
+        }
+        return configs
+
     }, [slicedData, xScale, yPriceScale])
 
     const changeBrushExtent = e => { 
@@ -113,8 +121,8 @@ export const Chart = ({specification, klineData}) => {
 
     const onMouseEnter = e => dispatch({type: ACTIONS.DISPLAYCROSSHAIR, payload: true})
 
-    return (
-        <div className="chart" style={{width: width, backgroundColor: backgroundColor}}>
+    const getMainComponentJSX = () => {
+        return (
             <svg
                 cursor="crosshair"
                 width={chartWidth}
@@ -124,25 +132,97 @@ export const Chart = ({specification, klineData}) => {
                 onMouseLeave={onMouseLeave}
                 onWheel={changeBrushExtent}
             >
-                <VolumeMarks xScale={xScale} height={chartHeight} yVolumeScale={yVolumeScale} slicedData={slicedData}/>
-                <CandleStickMarks xScale={xScale} yPriceScale={yPriceScale} height={chartHeight} dispatch={dispatch} slicedData={slicedData}/>
+                <VolumeMarks xScale={xScale} height={chartHeight} slicedData={slicedData} yVolumeScale={yVolumeScale}/>
+                <CandleStickMarks 
+                    xScale={xScale}
+                    dispatch={dispatch}
+                    height={chartHeight} 
+                    slicedData={slicedData}
+                    yPriceScale={yPriceScale}
+                />
                 <VerticalTicks theme={theme} xScale={xScale} height={chartHeight} getXScaleTicks={getXScaleTicks}/>
                 <HorizontalTicks theme={theme} width={chartWidth} yPriceScale={yPriceScale}/>
                 <IndicatorMarks slicedData={slicedData} lineConfigs={lineConfigs}/>
-                {chartState.displayCrosshair && <Crosshair theme={theme} x={chartState.mouseCoords.x} y={chartState.mouseCoords.y} width={chartWidth} height={chartHeight}/>}
+                {
+                    chartState.displayCrosshair && 
+                    <Crosshair 
+                        theme={theme} 
+                        x={chartState.mouseCoords.x} 
+                        y={chartState.mouseCoords.y} 
+                        width={chartWidth} 
+                        height={chartHeight}
+                    />
+                }
             </svg>
+        )
+    }
+
+    const getAxisYJSX = () => {
+        return (
             <svg height={chartHeight} width={yAxisTextBoxDimensionWidth}>
-                <AxisYticksText theme={theme} yPriceScale={yPriceScale} width={yAxisTextBoxDimensionWidth}/>
-                <AxisYCandleStickText yPriceScale={yPriceScale} lastCandleStick={slicedData[slicedData.length - 1]} width={yAxisTextBoxDimensionWidth} height={yAxisTextBoxDimensionHeight}/>
-                {chartState.displayCrosshair && <AxisYhoverText y={chartState.mouseCoords.y} yPriceScale={yPriceScale} width={yAxisTextBoxDimensionWidth} height={yAxisTextBoxDimensionHeight}/>}
+                <AxisYticksText 
+                    theme={theme} 
+                    yPriceScale={yPriceScale} 
+                    width={yAxisTextBoxDimensionWidth}
+                />
+                <AxisYCandleStickText 
+                    yPriceScale={yPriceScale}  
+                    width={yAxisTextBoxDimensionWidth} 
+                    height={yAxisTextBoxDimensionHeight}
+                    lastCandleStick={slicedData[slicedData.length - 1]}
+                />
+                {
+                    chartState.displayCrosshair && 
+                    <AxisYhoverText
+                        yPriceScale={yPriceScale}
+                        y={chartState.mouseCoords.y}
+                        width={yAxisTextBoxDimensionWidth} 
+                        height={yAxisTextBoxDimensionHeight}
+
+                    />
+                }
             </svg>
+        )
+    }
+
+    const getAxisXJSX = () => {
+        return (
             <svg height={xAxisTextBoxDimensionHeight} width={chartWidth}>
-                <AxisXticksText theme={theme} xScale={xScale} interval={interval} getXScaleTicks={getXScaleTicks} height={xAxisTextBoxDimensionHeight}/>
-                {chartState.displayCrosshair && <AxisXhoverText theme={theme} x={chartState.mouseCoords.x} hoverData={chartState.hoverData} width={xAxisTextBoxDimensionWidth} height={xAxisTextBoxDimensionHeight}/>}
+                <AxisXticksText 
+                    theme={theme} 
+                    xScale={xScale} 
+                    interval={interval} 
+                    getXScaleTicks={getXScaleTicks} 
+                    height={xAxisTextBoxDimensionHeight}
+                />
+                {
+                    chartState.displayCrosshair && 
+                    <AxisXhoverText 
+                        theme={theme} 
+                        x={chartState.mouseCoords.x} 
+                        hoverData={chartState.hoverData} 
+                        width={xAxisTextBoxDimensionWidth} 
+                        height={xAxisTextBoxDimensionHeight}
+                    />
+                }
             </svg>
+        )
+    }
+
+    const getStatsJSX = () => {
+        return (
             <svg height={statsSvgHeight} width={chartWidth}>
                 <Stats theme={theme} hoverData={chartState.hoverData} height={statsSvgHeight}/>
             </svg>
+        )
+    }
+
+    return (
+        <div className="chart" style={{width: width, backgroundColor: backgroundColor}}>
+            {getMainComponentJSX()}
+            {getAxisYJSX()}
+            {getAxisXJSX()}
+            {getStatsJSX()}
         </div> 
     )
 }
