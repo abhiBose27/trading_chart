@@ -56,6 +56,26 @@ const addWeightedMovingAverage = (klineData, parameters, idx) => {
     return movingAverages
 }
 
+const addVolumeWeightedAveragePrice = (klineData, parameters, idx) => {
+    const vwap = {}
+    for (const parameter of parameters) {
+        const vwapLength = parameter.length
+        if (idx < vwapLength - 1) {
+            vwap[vwapLength] = {value: null, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+            continue   
+        }
+        let cumulativePrice = 0
+        let cumulativeVolume = 0
+        for (let k = 0; k < vwapLength; k++) {
+            const typicalPrice = (klineData[idx - k].close + klineData[idx - k].high + klineData[idx - k].low) / 3
+            cumulativePrice += typicalPrice * klineData[idx - k].volume
+            cumulativeVolume += klineData[idx - k].volume
+        }
+        vwap[vwapLength] = {value: cumulativePrice / cumulativeVolume, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+    }
+    return vwap
+}
+
 const addIndicatorsToKlineData = (klineData, indicators) => {
     const updatedKlineData = []
     for (let i = 0; i < klineData.length; i++) {
@@ -64,6 +84,8 @@ const addIndicatorsToKlineData = (klineData, indicators) => {
             if (!indicators[indicatorType].checked)
                 continue
             const parameters = indicators[indicatorType].parameters
+            if (indicatorType === "VWAP")
+                processedIndicator[indicatorType] = addVolumeWeightedAveragePrice(klineData, parameters, i)
             if (indicatorType === "MA")
                 processedIndicator[indicatorType] = addMovingAverage(klineData, parameters, i)
             if (indicatorType === "EMA")

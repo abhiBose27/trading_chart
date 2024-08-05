@@ -54,6 +54,9 @@ export const Indicator = ({
             case "STROKEWIDTH":
                 updateIndicators[indicatorTypeClicked].parameters[key - 1] = {...localIndicators[indicatorTypeClicked].parameters[key - 1], lineStrokeWidth: parseInt(value)}
                 break
+            case "VWAPLENGTH":
+                updateIndicators[indicatorTypeClicked].parameters[key - 1] = {...localIndicators[indicatorTypeClicked].parameters[key - 1], length: parseInt(value)}
+                break
             default:
                 break;
         }
@@ -78,25 +81,37 @@ export const Indicator = ({
         return (    
             indicatorTypeClicked && localIndicators[indicatorTypeClicked].parameters.map(parameter => (
                 <FormGroup key={parameter.key} inline>
-                    <FormCheckbox
-                        slider
-                        checked={parameter.checked} 
-                        label={`${indicatorTypeClicked}${parameter.key}`} 
-                        onChange={(e, { checked }) => setValues(checked, parameter.key, "CHECK")}
-                    />
-                    <FormInput
-                        size="mini"
-                        type="number"
-                        disabled={!parameter.checked}
-                        value={parameter.movingAverageValue}
-                        onChange={(e, { value }) => setValues(value, parameter.key, "MOVINGAVERAGEVALUE")}
-                        error={isNaN(parameter.movingAverageValue)}
-                    />
+                    {
+                        indicatorTypeClicked === "VWAP" ? 
+                        <FormInput
+                            size="mini"
+                            type="number"
+                            value={parameter.length}
+                            error={isNaN(parameter.length)}
+                            onChange={(e, { value }) => setValues(value, parameter.key, "VWAPLENGTH")}
+                        /> :
+                        <>
+                            <FormCheckbox
+                                slider
+                                checked={parameter.checked} 
+                                label={`${indicatorTypeClicked}${parameter.key}`} 
+                                onChange={(e, { checked }) => setValues(checked, parameter.key, "CHECK")}
+                            />
+                            <FormInput
+                                size="mini"
+                                type="number"
+                                disabled={!parameter.checked}
+                                value={parameter.movingAverageValue}
+                                error={isNaN(parameter.movingAverageValue)}
+                                onChange={(e, { value }) => setValues(value, parameter.key, "MOVINGAVERAGEVALUE")}
+                            />
+                        </>
+                    }
                     <Dropdown
                         selection
                         button
                         options={optionsforStrokeWidth}
-                        defaultValue={parameter.lineStrokeWidth}
+                        value={parameter.lineStrokeWidth}
                         onChange={(e, { value }) => setValues(value, parameter.key, "STROKEWIDTH")}
                     />
                     <Icon className="circle" color={parameter.color} size="large"/>

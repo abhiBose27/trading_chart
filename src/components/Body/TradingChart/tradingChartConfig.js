@@ -75,15 +75,13 @@ export const config = {
                     {key: 9, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "brown"}
                 ]
             },
-            /* "VWAP": {
-                key: 3,
+            "VWAP": {
+                key: 4,
                 checked: false,
-                parameters: {
-                    key: 1,
-                    length: 0,
-                    color: "olive"
-                }
-            } */
+                parameters: [
+                    {key: 1, length: 14, lineStrokeWidth: 2, color: "olive"}
+                ]
+            }
         }
     }
 }
