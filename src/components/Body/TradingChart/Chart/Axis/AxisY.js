@@ -6,7 +6,7 @@ import { klineColor, isThemeDark, COLORS } from "../../../../../Tools"
 
 export const HorizontalTicks = React.memo(({theme, yPriceScale, width}) => {
     const fillColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
-    const ticks = yPriceScale.ticks()
+    const ticks     = yPriceScale.ticks()
     return ticks.slice(1, ticks.length - 1).map(tickValue => (
             <g
                 key={tickValue}
@@ -20,7 +20,7 @@ export const HorizontalTicks = React.memo(({theme, yPriceScale, width}) => {
 
 export const AxisYticksText = React.memo(({theme, yPriceScale, width}) => {
     const fillColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
-    const ticks = yPriceScale.ticks()
+    const ticks     = yPriceScale.ticks()
     return ticks.slice(1, ticks.length - 1).map(tickValue => (
             <g
                 key={tickValue}

@@ -19,20 +19,39 @@ const addMovingAverage = (klineData, parameters, idx) => {
     return movingAverages
 }
 
-const addExponentialMovingAverage = (klineData, updatedKlineData, parameters, i) => {
+const addExponentialMovingAverage = (klineData, updatedKlineData, parameters, idx) => {
     const movingAverages = {}
     for (const parameter of parameters) {
         if (!parameter.checked)
             continue
         const movingAverageValue = parameter.movingAverageValue
         const alpha = 2 / (movingAverageValue + 1)
-        if (i === 0) {
+        if (idx === 0) {
             movingAverages[movingAverageValue] = {value: klineData[0].close, color: parameter.color}
             continue
         }
-        const previousEma = updatedKlineData[i - 1].indicators["EMA"][movingAverageValue].value
-        const ema = klineData[i].close * alpha + previousEma * (1 - alpha)
+        const previousEma = updatedKlineData[idx - 1].indicators["EMA"][movingAverageValue].value
+        const ema = klineData[idx].close * alpha + previousEma * (1 - alpha)
         movingAverages[movingAverageValue] = {value: ema, color: parameter.color}
+    }
+    return movingAverages
+}
+
+const addWeightedMovingAverage = (klineData, parameters, idx) => {
+    const movingAverages = {}
+    for (const parameter of parameters) {
+        if (!parameter.checked)
+            continue
+        const movingAverageValue = parameter.movingAverageValue
+        const denominator = movingAverageValue * (movingAverageValue + 1) / 2
+        if (idx < movingAverageValue - 1) {
+            movingAverages[movingAverageValue] = {value: null, color: parameter.color}
+            continue
+        }
+        let weightedSum = 0
+        for (let k = 0; k < movingAverageValue; k++)
+            weightedSum += klineData[idx - k].close * (movingAverageValue - k)
+        movingAverages[movingAverageValue] = {value: weightedSum / denominator, color: parameter.color}
     }
     return movingAverages
 }
@@ -49,6 +68,8 @@ const addIndicatorsToKlineData = (klineData, indicators) => {
                 processedIndicator[indicatorType] = addMovingAverage(klineData, parameters, i)
             if (indicatorType === "EMA")
                 processedIndicator[indicatorType] = addExponentialMovingAverage(klineData, updatedKlineData, parameters, i)
+            if (indicatorType === "WMA")
+                processedIndicator[indicatorType] = addWeightedMovingAverage(klineData, parameters, i)
         }
         updatedKlineData.push({...klineData[i], indicators: processedIndicator})
     }

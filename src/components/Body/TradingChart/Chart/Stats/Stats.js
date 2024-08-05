@@ -8,7 +8,7 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
     const metricColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
     const valueColor  = klineColor(hoverData)
 
-    const getIndicatorsJSX = () => {
+    const getIndicatorsStatsJSX = () => {
         const indicatorJSX = []
         const ids = {indicatorTypeId: 0, valueId: 0}
         for (const indicatorType in hoverData.indicators) {
@@ -37,8 +37,8 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
         return indicatorJSX
     }
 
-    return (
-        hoverData && <> 
+    const getOHLCVStatsJSX = () => {
+        return (
             <text transform={`translate(10, ${height / 8})`} fontSize="0.7vw">
                 <tspan opacity={0.5} fill={metricColor}>
                     {utcFormat("%Y/%m/%d %H:%M:%S")(hoverData.date)}
@@ -72,7 +72,14 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
                     {format("~f")(hoverData.change) + "%"}
                 </tspan>
             </text>
-            {getIndicatorsJSX()}
+        )
+    }
+
+    return (
+        hoverData && 
+        <>
+            {getOHLCVStatsJSX()}
+            {getIndicatorsStatsJSX()}
         </>
     )
 })

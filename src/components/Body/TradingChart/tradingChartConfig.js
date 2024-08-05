@@ -59,6 +59,21 @@ export const config = {
                     {key: 8, checked: false, movingAverageValue: 0, color: "yellow"},
                     {key: 9, checked: false, movingAverageValue: 0, color: "brown"}
                 ]
+            },
+            "WMA": {
+                key: 2,
+                checked: false,
+                parameters: [
+                    {key: 1, checked: false, movingAverageValue: 0, color: "orange"},
+                    {key: 2, checked: false, movingAverageValue: 0, color: "pink"},
+                    {key: 3, checked: false, movingAverageValue: 0, color: "teal"},
+                    {key: 4, checked: false, movingAverageValue: 0, color: "purple"},
+                    {key: 5, checked: true, movingAverageValue: 30, color: "blue"},
+                    {key: 6, checked: false, movingAverageValue: 0, color: "red"},
+                    {key: 7, checked: false, movingAverageValue: 0, color: "olive"},
+                    {key: 8, checked: false, movingAverageValue: 0, color: "yellow"},
+                    {key: 9, checked: false, movingAverageValue: 0, color: "brown"}
+                ]
             }
         }
     }

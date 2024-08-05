@@ -18,8 +18,8 @@ export const VerticalTicks = React.memo(({xScale, theme, height, getXScaleTicks}
 })
 
 export const AxisXticksText = React.memo(({xScale, theme, interval, getXScaleTicks, height}) => {
-    const fillColor  = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
-    const ticks = xScale.domain().filter(getXScaleTicks)
+    const fillColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
+    const ticks     = xScale.domain().filter(getXScaleTicks)
     const tickFormat = (tickValue) => {
         if (interval === "1s")
             return utcFormat("%H:%M:%S")(tickValue)
