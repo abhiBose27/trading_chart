@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { useState } from "react"
-import { Modal, ModalContent, Grid, GridRow, Form, FormField, GridColumn, FormGroup, FormCheckbox, FormInput, Icon, Button } from "semantic-ui-react"
+import { Modal, ModalContent, Grid, GridRow, Form, FormField, GridColumn, FormGroup, FormCheckbox, FormInput, Icon, Button, Dropdown } from "semantic-ui-react"
 
 
 export const Indicator = ({
@@ -10,6 +10,13 @@ export const Indicator = ({
     localIndicators,
     setLocalIndicators,
 }) => {
+
+    const optionsforStrokeWidth = [
+        { key: 1, text: 1, value: 1 },
+        { key: 2, text: 2, value: 2 },
+        { key: 3, text: 3, value: 3 },
+        { key: 4, text: 4, value: 4 }
+    ]
 
     // Hard Coded initialised. Needs to be changed
     const [indicatorTypeClicked, setIndicatorTypeClicked] = useState("MA")
@@ -43,6 +50,9 @@ export const Indicator = ({
                 break
             case "MOVINGAVERAGEVALUE":
                 updateIndicators[indicatorTypeClicked].parameters[key - 1] = {...localIndicators[indicatorTypeClicked].parameters[key - 1], movingAverageValue: parseInt(value)}
+                break
+            case "STROKEWIDTH":
+                updateIndicators[indicatorTypeClicked].parameters[key - 1] = {...localIndicators[indicatorTypeClicked].parameters[key - 1], lineStrokeWidth: parseInt(value)}
                 break
             default:
                 break;
@@ -80,6 +90,14 @@ export const Indicator = ({
                         disabled={!parameter.checked}
                         value={parameter.movingAverageValue}
                         onChange={(e, { value }) => setValues(value, parameter.key, "MOVINGAVERAGEVALUE")}
+                        error={isNaN(parameter.movingAverageValue)}
+                    />
+                    <Dropdown
+                        selection
+                        button
+                        options={optionsforStrokeWidth}
+                        defaultValue={parameter.lineStrokeWidth}
+                        onChange={(e, { value }) => setValues(value, parameter.key, "STROKEWIDTH")}
                     />
                     <Icon className="circle" color={parameter.color} size="large"/>
                 </FormGroup>
@@ -88,11 +106,11 @@ export const Indicator = ({
     }
 
     return (
-        <Modal size="tiny" open={showIndicators} onClose={triggerIndicators}>
+        <Modal size="small" open={showIndicators} onClose={triggerIndicators}>
             <ModalContent>
                 <Grid columns={2} divided>
                     <GridRow stretched>
-                        <GridColumn width={5}>
+                        <GridColumn width={4}>
                             <Form> 
                                 {getIndicatorTypeCheckboxesJSX()}
                             </Form>

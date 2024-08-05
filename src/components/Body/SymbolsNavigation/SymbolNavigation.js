@@ -4,7 +4,7 @@ import { ACTIONS } from "../../../Store/Actions"
 import React from "react"
 
 
-export const SymbolNavigation = React.memo(({dispatch, specification, symbolsData}) => {
+export const SymbolNavigation =({dispatch, specification, symbolsData}) => {
     
     const symbolsOptions = symbolsData.map(elm => {return {key: elm, text: elm, value: elm}})
 
@@ -24,7 +24,7 @@ export const SymbolNavigation = React.memo(({dispatch, specification, symbolsDat
             search
         />
     )
-})
+}
 
 SymbolNavigation.propTypes = {
     dispatch: PropTypes.func.isRequired,

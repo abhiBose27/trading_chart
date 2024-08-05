@@ -8,13 +8,13 @@ const addMovingAverage = (klineData, parameters, idx) => {
             continue
         const movingAverageValue = parameter.movingAverageValue
         if (idx < movingAverageValue - 1) {
-            movingAverages[movingAverageValue] = {value: null, color: parameter.color}
+            movingAverages[movingAverageValue] = {value: null, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
             continue
         }
         let sum = 0
         for (let k = 0; k < movingAverageValue; k++)
             sum += klineData[idx - k].close
-        movingAverages[movingAverageValue] = {value: sum / movingAverageValue, color: parameter.color}
+        movingAverages[movingAverageValue] = {value: sum / movingAverageValue, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
     }
     return movingAverages
 }
@@ -27,12 +27,12 @@ const addExponentialMovingAverage = (klineData, updatedKlineData, parameters, id
         const movingAverageValue = parameter.movingAverageValue
         const alpha = 2 / (movingAverageValue + 1)
         if (idx === 0) {
-            movingAverages[movingAverageValue] = {value: klineData[0].close, color: parameter.color}
+            movingAverages[movingAverageValue] = {value: klineData[0].close, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
             continue
         }
         const previousEma = updatedKlineData[idx - 1].indicators["EMA"][movingAverageValue].value
         const ema = klineData[idx].close * alpha + previousEma * (1 - alpha)
-        movingAverages[movingAverageValue] = {value: ema, color: parameter.color}
+        movingAverages[movingAverageValue] = {value: ema, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
     }
     return movingAverages
 }
@@ -45,13 +45,13 @@ const addWeightedMovingAverage = (klineData, parameters, idx) => {
         const movingAverageValue = parameter.movingAverageValue
         const denominator = movingAverageValue * (movingAverageValue + 1) / 2
         if (idx < movingAverageValue - 1) {
-            movingAverages[movingAverageValue] = {value: null, color: parameter.color}
+            movingAverages[movingAverageValue] = {value: null, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
             continue
         }
         let weightedSum = 0
         for (let k = 0; k < movingAverageValue; k++)
             weightedSum += klineData[idx - k].close * (movingAverageValue - k)
-        movingAverages[movingAverageValue] = {value: weightedSum / denominator, color: parameter.color}
+        movingAverages[movingAverageValue] = {value: weightedSum / denominator, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
     }
     return movingAverages
 }

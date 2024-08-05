@@ -7,13 +7,13 @@ export const IndicatorMarks = React.memo(({lineConfigs, slicedData}) => {
    return <g transform="translate(0, 0)">
         {
             lineConfigs.map(config => 
-                <path 
-                    key={config.id} 
-                    d={config.lineScale(slicedData)} 
-                    className="line" 
-                    fill="none" 
-                    stroke={config.color} 
-                    strokeWidth={2}
+                <path
+                    fill="none"
+                    key={config.id}
+                    className="line"
+                    stroke={config.color}
+                    d={config.lineScale(slicedData)}
+                    strokeWidth={config.strokeWidth}
                 />
             )
         }

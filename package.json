@@ -4,6 +4,9 @@
   "homepage": "https://abhiBose27.github.io/trading_chart",
   "private": true,
   "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -12,6 +15,7 @@
     "d3": "^7.8.5",
     "fomantic-ui": "^2.9.3",
     "fomantic-ui-css": "^2.9.3",
+    "framer-motion": "^11.3.21",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",

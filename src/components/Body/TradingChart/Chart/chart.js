@@ -90,6 +90,7 @@ export const Chart = ({specification, klineData}) => {
             for (const value in indicatorValues) {
                 configs.push({
                     id: id,
+                    strokeWidth: indicatorValues[value].strokeWidth,
                     color: indicatorValues[value].color,
                     lineScale: line().x(d => xScale(d.date)).y(d => yPriceScale(d.indicators[indicatorType][value].value))
                                 .defined(d => d.indicators[indicatorType][value].value)
