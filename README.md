@@ -1,8 +1,9 @@
 # Trading Chart
 
-Trading Chart consisting of OHLCV live data along with the live orderbook from Binance websockets and REST API.
-Features include changing the time period of the candlesticks from 1second to 1month, live visualisation of the performance of all the spot market coins from Binance.
-Tech stack involving D3.js, Bootstrap.
+UI interface representing live movement of crypto using websockets and rest api.
+It has primarily 3 components, the trading chart, the orderbook, and the market trades.
+Includes the functionality of basic data modeling using indicators like VWAP, WMA, MA, EMA to analyse the trends and movements of the prices on different time periods.
+Tech stack involves ReactJs, D3.js, Semantic UI, Pure Websockets. REST API
 
 # Getting Started
 
@@ -30,13 +31,3 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
