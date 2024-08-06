@@ -8,7 +8,6 @@ import { Indicator } from "./Indicator"
 export const ChartNavigation = ({dispatch, specification}) => {
     const { theme, interval, indicators, width } = specification
     const [showIndicators, setShowIndicators]    = useState(false)
-    const [localIndicators, setLocalIndicators]  = useState(JSON.parse(JSON.stringify(indicators)))
     const intervalOptions                        = [
         {key: "1s", text: "1s", value: "1s"},
         {key: "1m", text: "1m", value: "1m"},
@@ -32,11 +31,6 @@ export const ChartNavigation = ({dispatch, specification}) => {
 
     const setTheme = (e, { value }) => dispatch({type: ACTIONS.THEME, payload: value})
 
-    const onSubmit = () => {
-        dispatch({type: ACTIONS.UPDATEINDICATOR, payload: JSON.parse(JSON.stringify(localIndicators))})
-        setShowIndicators(false)
-    }
-
     const triggerIndicators = () => setShowIndicators(prevState => !prevState)
     
     return (
@@ -59,11 +53,10 @@ export const ChartNavigation = ({dispatch, specification}) => {
                 </Button>
             </Menu>
             <Indicator
-                formSubmit={onSubmit}
-                localIndicators={localIndicators}
+                dispatch={dispatch}
+                indicators={indicators}
                 showIndicators={showIndicators} 
                 triggerIndicators={triggerIndicators}
-                setLocalIndicators={setLocalIndicators}
             />
         </div>
     )

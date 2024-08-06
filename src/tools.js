@@ -10,6 +10,20 @@ export const SIDE = {
     SELL: "sell"
 }
 
+export const INDICATORPROPERTYTYPES = {
+    CHECK: "check",
+    MOVINGAVERAGEVALUE: "movingAverageValue",
+    STROKEWIDTH: "strokeWidth",
+    VWAPLENGTH: "vwapLength"
+}
+
+export const INDICATORTYPES = {
+    VWAP: "VWAP",
+    EMA: "EMA",
+    MA: "MA",
+    WMA: "WMA"
+}
+
 export const COLORS = {
     DARKGREY: "#282c34",
     GREY: "#363c47",

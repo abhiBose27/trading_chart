@@ -91,7 +91,7 @@
     overflow: hidden;
     white-space: nowrap;
     box-sizing: border-box;
-    padding: 0.2% 0;
+    padding: 0.1% 0;
 }
 
 .ticker {
@@ -108,5 +108,5 @@
 }
 
 .ticker span {
-    font-size: 85%;
+    font-size: 80%;
 }
