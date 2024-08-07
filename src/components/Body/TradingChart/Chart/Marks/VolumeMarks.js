@@ -6,11 +6,10 @@ export const VolumeMarks = React.memo(({xScale, height, yVolumeScale, slicedData
     return slicedData.map(d => (
         <g
             key={d.date}
-            transform={`translate(${xScale(d.date)}, 0)`}
+            fillOpacity="0.3"
+            transform={`translate(${xScale(d.date)}, ${yVolumeScale(d.volume)})`}
         >
             <rect
-                fillOpacity={0.3}
-                y={yVolumeScale(d.volume)}
                 width={xScale.bandwidth()}
                 height={Math.max(height - yVolumeScale(d.volume), 0)}
             />

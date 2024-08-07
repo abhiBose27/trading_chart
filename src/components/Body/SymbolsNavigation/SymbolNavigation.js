@@ -8,20 +8,20 @@ export const SymbolNavigation =({dispatch, specification, symbolsData}) => {
     
     const symbolsOptions = symbolsData.map(elm => {return {key: elm, text: elm, value: elm}})
 
-    const SetSymbol = (e, { value }) => dispatch({type: ACTIONS.SYMBOL, payload: value})
+    const setSymbol = (e, { value }) => dispatch({type: ACTIONS.SYMBOL, payload: value})
 
     return (
         <Dropdown
             className="icon"
-            onChange={SetSymbol} 
             icon="dollar sign"
-            defaultValue={specification.symbol}
-            options={symbolsOptions}
             floating
             labeled 
             button
             selection
             search
+            onChange={setSymbol}
+            options={symbolsOptions}
+            value={specification.symbol}
         />
     )
 }

@@ -10,14 +10,16 @@ export const VerticalTicks = React.memo(({xScale, theme, height, getXScaleTicks}
     return ticks.slice(1, ticks.length).map(tickValue => (
             <g
                 key={tickValue}
+                stroke={fillColor}
+                strokeOpacity="0.1"
                 transform={`translate(${xScale(tickValue) + xScale.bandwidth() / 2}, 0)`}
             >
-                <line y2={height} stroke={fillColor} strokeOpacity={0.1}/>
+                <line y2={height}/>
             </g>
         ))    
 })
 
-export const AxisXticksText = React.memo(({xScale, theme, interval, getXScaleTicks, height}) => {
+export const AxisXticksText = React.memo(({xScale, theme, interval, height, getXScaleTicks}) => {
     const fillColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
     const ticks     = xScale.domain().filter(getXScaleTicks)
     const tickFormat = (tickValue) => {
@@ -31,9 +33,13 @@ export const AxisXticksText = React.memo(({xScale, theme, interval, getXScaleTic
     return ticks.slice(1, ticks.length).map(tickValue => (
             <g
                 key={tickValue}
-                transform={`translate(${xScale(tickValue) + xScale.bandwidth() / 2}, ${height / 1.5})`}
+                fill={fillColor}
+                fontSize="0.7dvw"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                transform={`translate(${xScale(tickValue) + xScale.bandwidth() / 2}, ${height / 2})`}
             >
-                <text fill={fillColor} fontSize="0.7vw" textAnchor="middle">
+                <text>
                     {tickFormat(tickValue)}
                 </text>
             </g>
@@ -41,32 +47,25 @@ export const AxisXticksText = React.memo(({xScale, theme, interval, getXScaleTic
 })
 
 export const AxisXhoverText = React.memo(({x, hoverData, height, width}) => {
-    const yCoordRect = 0
-    const xCoordRect = x - width / 2
-    const xCoordText = xCoordRect + height / 2
-    const yCoordText = yCoordRect + height / 2
     return (
-        <>
+        <g fontSize="0.8dvw" transform={`translate(${x - width / 2}, 0)`}>
             <rect
-                rx={9}
+                rx="9"
+                opacity="0.9"
                 width={width}
                 height={height}
-                opacity={0.9}
-                x={xCoordRect}
-                y={yCoordRect}
                 fill={COLORS.GREY}
             />
             <text
-                x={xCoordText}
-                y={yCoordText}
-                fontSize="0.8vw"
+                x={height / 2}
+                y={height / 2}
                 fill={COLORS.WHITE}
                 dominantBaseline="middle"
             >
                 {utcFormat("%Y/%m/%d %H:%M:%S")(hoverData?.date)}
             </text>
             
-        </>
+        </g>
     )
 })
 

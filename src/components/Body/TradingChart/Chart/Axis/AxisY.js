@@ -4,91 +4,84 @@ import { format } from "d3"
 import { klineColor, isThemeDark, COLORS } from "../../../../../Tools"
 
 
-export const HorizontalTicks = React.memo(({theme, yPriceScale, width}) => {
+export const HorizontalTicks = React.memo(({theme, width, yPriceScale}) => {
     const fillColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
     const ticks     = yPriceScale.ticks()
     return ticks.slice(1, ticks.length - 1).map(tickValue => (
             <g
                 key={tickValue}
+                stroke={fillColor}
+                strokeOpacity="0.1"
                 transform={`translate(0, ${yPriceScale(tickValue)})`}
             >
-                <line x2={width} stroke={fillColor} strokeOpacity={0.1}/>
+                <line x2={width}/>
             </g>
         ))
 
 })
 
-export const AxisYticksText = React.memo(({theme, yPriceScale, width}) => {
+export const AxisYticksText = React.memo(({theme, width, yPriceScale}) => {
     const fillColor = isThemeDark(theme) ? COLORS.WHITE : COLORS.BLACK
     const ticks     = yPriceScale.ticks()
     return ticks.slice(1, ticks.length - 1).map(tickValue => (
             <g
                 key={tickValue}
-                transform={`translate(${width / 5}, ${yPriceScale(tickValue)})`}
+                fill={fillColor}
+                fontSize="0.7dvw"
+                dominantBaseline="middle"
+                transform={`translate(${width / 8}, ${yPriceScale(tickValue)})`}
             >
-                <text fill={fillColor} fontSize="0.7vw" dominantBaseline="middle">
+                <text>
                     {format("~f")(tickValue)}
                 </text>
             </g>
         ))
 })
 
-export const AxisYCandleStickText = React.memo(({yPriceScale, lastCandleStick, width, height}) => {
-    const xCoordRect = 0
-    const yCoordRect = yPriceScale(lastCandleStick.close) - height / 2
-    const yCoordText = yCoordRect + height / 2
-    const xCoordText = xCoordRect + height / 2
-    const fillColor  = klineColor(lastCandleStick)
+export const AxisYCandleStickText = React.memo(({width, height, lastCandleStick, yPriceScale}) => {
     return (
-        <>
+        <g 
+            fontSize="0.8dvw" 
+            transform={`translate(0, ${yPriceScale(lastCandleStick.close) - height / 2})`}
+        >
             <rect
-                rx={9}
-                opacity={0.9}
-                x={xCoordRect}
-                y={yCoordRect}
-                fill={fillColor}
+                rx="9"
+                opacity="0.9"
                 width={width}
                 height={height}
+                fill={klineColor(lastCandleStick)}
             />
             <text
-                x={xCoordText}
-                y={yCoordText}
-                fontSize="0.8vw"
+                x={height / 2}
+                y={height / 2}
                 fill={COLORS.WHITE}
                 dominantBaseline="middle"
             >
                 {format("~f")(lastCandleStick.close)} 
             </text>
-        </>
+        </g>
     )
 })
 
-export const AxisYhoverText = React.memo(({y, yPriceScale, width, height}) => {
-    const xCoordRect = 0
-    const yCoordRect = y - height / 2
-    const yCoordText = yCoordRect + height / 2
-    const xCoordText = xCoordRect + height / 2
+export const AxisYhoverText = React.memo(({y, width, height, yPriceScale}) => {
     return (
-        <>
+        <g fontSize="0.8dvw" transform={`translate(0, ${y - height / 2})`}>
             <rect
-                rx={9}
-                opacity={0.9}
-                x={xCoordRect}
-                y={yCoordRect}
+                rx="9"
+                opacity="0.9"
                 width={width}
                 height={height}
                 fill={COLORS.GREY}
             />
             <text
-                x={xCoordText}
-                y={yCoordText}
-                fontSize="0.8vw"
+                x={height / 2}
+                y={height / 2}
                 fill={COLORS.WHITE}
                 dominantBaseline="middle"
             >
                 {format("~f")(yPriceScale.invert(y))}
             </text>
-        </>
+        </g>
         
     )
 })

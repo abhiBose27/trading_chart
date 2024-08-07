@@ -2,105 +2,127 @@ import { useState, useEffect } from "react";
 import { INDICATORTYPES } from "../Tools";
 
 
-const addMovingAverage = (klineData, parameters, idx) => {
-    const movingAverages = {}
+const sanityCheckIfIndicatorExists = (klineData, indicatorType, idx) => {
+    if (!("indicators" in klineData[idx]))
+        klineData[idx].indicators = {}
+    if (!(indicatorType in klineData[idx].indicators))
+        klineData[idx].indicators[indicatorType] = {}
+}
+
+const addMovingAverage = (klineData, parameters) => {
     for (const parameter of parameters) {
         if (!parameter.checked)
             continue
-        const movingAverageValue = parameter.movingAverageValue
-        if (idx < movingAverageValue - 1) {
-            movingAverages[movingAverageValue] = {value: null, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
-            continue
-        }
+        let windowStart = 0
         let sum = 0
-        for (let k = 0; k < movingAverageValue; k++)
-            sum += klineData[idx - k].close
-        movingAverages[movingAverageValue] = {value: sum / movingAverageValue, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+        const movingAverageValue = parameter.movingAverageValue            
+        for (let windowEnd = 0; windowEnd < klineData.length; windowEnd++) {
+            sum += klineData[windowEnd].close
+            sanityCheckIfIndicatorExists(klineData, INDICATORTYPES.MA, windowEnd)
+            if (windowEnd < movingAverageValue - 1)
+                klineData[windowEnd].indicators[INDICATORTYPES.MA][movingAverageValue] = {value: null, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+            else {
+                klineData[windowEnd].indicators[INDICATORTYPES.MA][movingAverageValue] = {value: sum / movingAverageValue, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+                sum -= klineData[windowStart].close
+                windowStart++
+            }
+        }
     }
-    return movingAverages
 }
 
-const addExponentialMovingAverage = (klineData, updatedKlineData, parameters, idx) => {
-    const movingAverages = {}
+const addExponentialMovingAverage = (klineData, parameters) => {
     for (const parameter of parameters) {
         if (!parameter.checked)
             continue
         const movingAverageValue = parameter.movingAverageValue
         const alpha = 2 / (movingAverageValue + 1)
-        if (idx === 0) {
-            movingAverages[movingAverageValue] = {value: klineData[0].close, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
-            continue
-        }
-        const previousEma = updatedKlineData[idx - 1].indicators[INDICATORTYPES.EMA][movingAverageValue].value
-        const ema = klineData[idx].close * alpha + previousEma * (1 - alpha)
-        movingAverages[movingAverageValue] = {value: ema, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+        for (let i = 0; i < klineData.length; i++) {
+            sanityCheckIfIndicatorExists(klineData, INDICATORTYPES.EMA, i)
+            if (i === 0) {
+                klineData[i].indicators[INDICATORTYPES.EMA][movingAverageValue] = {value: klineData[0].close, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+                continue
+            }
+            const previousEma = klineData[i - 1].indicators[INDICATORTYPES.EMA][movingAverageValue].value
+            const ema =  klineData[i].close * alpha + previousEma * (1 - alpha)
+            klineData[i].indicators[INDICATORTYPES.EMA][movingAverageValue] = {value: ema, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+        } 
     }
-    return movingAverages
 }
 
-const addWeightedMovingAverage = (klineData, parameters, idx) => {
-    const movingAverages = {}
+const addWeightedMovingAverage = (klineData, parameters) => {
     for (const parameter of parameters) {
         if (!parameter.checked)
             continue
         const movingAverageValue = parameter.movingAverageValue
         const denominator = movingAverageValue * (movingAverageValue + 1) / 2
-        if (idx < movingAverageValue - 1) {
-            movingAverages[movingAverageValue] = {value: null, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
-            continue
+        let windowStart = 0
+        for (let windowEnd = 0; windowEnd < klineData.length; windowEnd++) {
+            sanityCheckIfIndicatorExists(klineData, INDICATORTYPES.WMA, windowEnd)
+            if (windowEnd < movingAverageValue - 1) {
+                klineData[windowEnd].indicators[INDICATORTYPES.WMA][movingAverageValue] = {value: null, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+                continue
+            }
+            let weightedSum = 0
+            for (let k = 0; k <= windowEnd - windowStart; k++)
+                weightedSum += klineData[windowEnd - k].close * (movingAverageValue - k)
+            klineData[windowEnd].indicators[INDICATORTYPES.WMA][movingAverageValue] = {value: weightedSum / denominator, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+            windowStart++
+            
         }
-        let weightedSum = 0
-        for (let k = 0; k < movingAverageValue; k++)
-            weightedSum += klineData[idx - k].close * (movingAverageValue - k)
-        movingAverages[movingAverageValue] = {value: weightedSum / denominator, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
     }
-    return movingAverages
 }
 
-const addVolumeWeightedAveragePrice = (klineData, parameters, idx) => {
-    const vwap = {}
+const addVolumeWeightedAveragePrice = (klineData, parameters) => {
     for (const parameter of parameters) {
         const vwapLength = parameter.length
-        if (idx < vwapLength - 1) {
-            vwap[vwapLength] = {value: null, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
-            continue   
-        }
         let cumulativePrice = 0
         let cumulativeVolume = 0
-        for (let k = 0; k < vwapLength; k++) {
-            const typicalPrice = (klineData[idx - k].close + klineData[idx - k].high + klineData[idx - k].low) / 3
-            cumulativePrice += typicalPrice * klineData[idx - k].volume
-            cumulativeVolume += klineData[idx - k].volume
+        let windowStart = 0
+        for (let windowEnd = 0; windowEnd < klineData.length; windowEnd++) {
+            cumulativePrice += klineData[windowEnd].volume * (klineData[windowEnd].high + klineData[windowEnd].low + klineData[windowEnd].close) / 3
+            cumulativeVolume += klineData[windowEnd].volume
+            sanityCheckIfIndicatorExists(klineData, INDICATORTYPES.VWAP, windowEnd)
+            if (windowEnd < vwapLength - 1)
+                klineData[windowEnd].indicators[INDICATORTYPES.VWAP][vwapLength] = {value: null, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+            else {
+                klineData[windowEnd].indicators[INDICATORTYPES.VWAP][vwapLength] = {value: cumulativePrice / cumulativeVolume, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
+                cumulativePrice -= klineData[windowStart].volume * (klineData[windowStart].high + klineData[windowStart].low + klineData[windowStart].close) / 3
+                cumulativeVolume -= klineData[windowStart].volume
+                windowStart++
+            }
         }
-        vwap[vwapLength] = {value: cumulativePrice / cumulativeVolume, color: parameter.color, strokeWidth: parameter.lineStrokeWidth}
     }
-    return vwap
 }
 
-const processIndicatorType = (indicatorType, parameters, updatedKlineData, klineData, idx) => {
+const processIndicatorType = (indicatorType, parameters, klineData) => {
     if (indicatorType === INDICATORTYPES.VWAP)
-        return addVolumeWeightedAveragePrice(klineData, parameters, idx)
+        addVolumeWeightedAveragePrice(klineData, parameters)
     if (indicatorType === INDICATORTYPES.MA)
-        return addMovingAverage(klineData, parameters, idx)
+        addMovingAverage(klineData, parameters)
     if (indicatorType === INDICATORTYPES.EMA)
-        return addExponentialMovingAverage(klineData, updatedKlineData, parameters, idx)
+        addExponentialMovingAverage(klineData, parameters)
     if (indicatorType === INDICATORTYPES.WMA)
-        return addWeightedMovingAverage(klineData, parameters, idx)
+        addWeightedMovingAverage(klineData, parameters)
 }
 
-const addIndicatorsToKlineData = (klineData, indicators) => {
-    const updatedKlineData = []
-    for (let i = 0; i < klineData.length; i++) {
-        const processedIndicator = {}
-        for (const indicatorType in indicators) {
-            if (!indicators[indicatorType].checked)
-                continue
-            const parameters = indicators[indicatorType].parameters
-            processedIndicator[indicatorType] = processIndicatorType(indicatorType, parameters, updatedKlineData, klineData, i)
+/*
+Return :- {
+    ...,
+    indicators: {
+        "MA": {
+            7: {value: null, color: null, strokeWidth: null}
         }
-        updatedKlineData.push({...klineData[i], indicators: processedIndicator})
     }
-    return updatedKlineData
+}
+*/
+const addIndicatorsToKlineData = (klineData, indicators) => {
+    for (const indicatorType in indicators) {
+        if (!indicators[indicatorType].checked)
+            continue
+        const parameters = indicators[indicatorType].parameters
+        processIndicatorType(indicatorType, parameters, klineData)
+    }
+    return klineData
 }
 
 const convertRawKlinesToKlines = (crudeData, indicators) => {
