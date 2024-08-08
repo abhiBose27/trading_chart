@@ -153,15 +153,16 @@ export const useFetchKline = (symbol, interval, indicators) => {
         setSocket(ws)
         
         const sendData = () => {
-            ws.send(JSON.stringify({
-                id: "312",
-                method: "uiKlines",
-                params: {
-                    symbol: symbol,
-                    interval: interval,
-                    limit: 1000
-                }
-            }))
+            if (ws.readyState === ws.OPEN)
+                ws.send(JSON.stringify({
+                    id: "312",
+                    method: "uiKlines",
+                    params: {
+                        symbol: symbol,
+                        interval: interval,
+                        limit: 1000
+                    }
+                }))
         }
         
         ws.onopen = () => {

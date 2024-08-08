@@ -59,13 +59,14 @@ export const useFetchOrderbook = (symbol) => {
         const ws = new WebSocket(url)
 
         ws.onopen = () => {
-            ws.send(JSON.stringify({
-                id     : "310",
-                method : "SUBSCRIBE",
-                params : [
-                    `${symbol.toLowerCase()}@depth20@1000ms`
-                ]
-            }))
+            if (ws.readyState === ws.OPEN)
+                ws.send(JSON.stringify({
+                    id     : "310",
+                    method : "SUBSCRIBE",
+                    params : [
+                        `${symbol.toLowerCase()}@depth20@1000ms`
+                    ]
+                }))
         }
 
         ws.onerror = (event) => {

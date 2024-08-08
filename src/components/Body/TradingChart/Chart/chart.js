@@ -12,6 +12,7 @@ import { AxisYCandleStickText, AxisYhoverText, AxisYticksText, HorizontalTicks }
 import { IndicatorMarks } from "./Marks/IndicatorMarks"
 import { Crosshair } from "./Crosshair/Crosshair"
 import { Stats } from "./Stats/Stats"
+import { MarketPriceMark } from "./Marks/MarketPriceMark"
 
 
 export const Chart = ({specification, klineData}) => {
@@ -144,6 +145,7 @@ export const Chart = ({specification, klineData}) => {
                 <VerticalTicks theme={theme} xScale={xScale} height={chartHeight} getXScaleTicks={getXScaleTicks}/>
                 <HorizontalTicks theme={theme} width={chartWidth} yPriceScale={yPriceScale}/>
                 <IndicatorMarks slicedData={slicedData} lineConfigs={lineConfigs}/>
+                <MarketPriceMark width={chartWidth} yPriceScale={yPriceScale} lastCandleStick={slicedData[slicedData.length - 1]}/>
                 {
                     chartState.displayCrosshair && 
                     <Crosshair 

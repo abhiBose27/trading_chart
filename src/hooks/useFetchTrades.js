@@ -25,14 +25,15 @@ export const useFetchTrades = (symbol) => {
         const ws  = new WebSocket(url)
 
         const sendData = () => {
-            ws.send(JSON.stringify({
-                id: "314",
-                method: "trades.recent",
-                params: {
-                    symbol: symbol,
-                    limit: 50
-                }
-            }))
+            if (ws.readyState === ws.OPEN)
+                ws.send(JSON.stringify({
+                    id: "314",
+                    method: "trades.recent",
+                    params: {
+                        symbol: symbol,
+                        limit: 50
+                    }
+                }))
         }
 
         ws.onopen= () => {

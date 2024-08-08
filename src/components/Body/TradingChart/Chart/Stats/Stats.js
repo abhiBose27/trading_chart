@@ -9,10 +9,9 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
     const valueColor  = klineColor(hoverData)
 
     const getIndicatorTypeStatJSX = (id, indicatorType, metricColor, parameter) => {
-        const dx = id !== 0 ? "2%" : null
         return (
             <React.Fragment key={id}>
-                <tspan fontSize="0.6dvw" opacity="0.5" fill={metricColor} dx={dx}>
+                <tspan fontSize="0.6dvw" opacity="0.5" fill={metricColor} dx={id !== 0 ? "2%" : null}>
                     {`${indicatorType}(${parameter}): `}
                 </tspan>
                 <tspan fontSize="0.6dvw" fill={hoverData.indicators[indicatorType][parameter].color}>
@@ -51,31 +50,31 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
                 <tspan opacity="0.5" fill={metricColor}>
                     {utcFormat("%Y/%m/%d %H:%M:%S")(hoverData.date)}
                 </tspan>
-                <tspan opacity="0.5" fill={metricColor} dx="2%">Open: </tspan>
+                <tspan opacity="0.5" dx="2%" fill={metricColor}>Open: </tspan>
                 <tspan fill={valueColor}>
                     {format("~f")(hoverData.open)}
                 </tspan>
-                <tspan opacity="0.5" fill={metricColor} dx="2%">High: </tspan>
+                <tspan opacity="0.5" dx="2%" fill={metricColor}>High: </tspan>
                 <tspan fill={valueColor}>
                     {format("~f")(hoverData.high)}
                 </tspan>
-                <tspan opacity="0.5" fill={metricColor} dx="2%">Low: </tspan>
+                <tspan opacity="0.5" dx="2%" fill={metricColor}>Low: </tspan>
                 <tspan fill={valueColor}>
                     {format("~f")(hoverData.low)}
                 </tspan>
-                <tspan opacity="0.5" fill={metricColor} dx="2%">Close: </tspan>
+                <tspan opacity="0.5" dx="2%" fill={metricColor}>Close: </tspan>
                 <tspan fill={valueColor}>
                     {format("~f")(hoverData.close)}
                 </tspan>
-                <tspan opacity="0.5" fill={metricColor} dx="2%">Vol(Base): </tspan>
+                <tspan opacity="0.5" dx="2%" fill={metricColor}>Vol(Base): </tspan>
                 <tspan fill={valueColor}>
                     {format("~s")(hoverData.volume)}
                 </tspan>
-                <tspan opacity="0.5" fill={metricColor} dx="2%">Vol(Quote): </tspan>
+                <tspan opacity="0.5" dx="2%" fill={metricColor}>Vol(Quote): </tspan>
                 <tspan fill={valueColor}>
                     {format("~s")(hoverData.volume * hoverData.close)}
                 </tspan>
-                <tspan opacity="0.5" fill={metricColor} dx="2%">CHANGE: </tspan>
+                <tspan opacity="0.5" dx="2%" fill={metricColor}>CHANGE: </tspan>
                 <tspan fill={valueColor}>
                     {format("~f")(hoverData.change) + "%"}
                 </tspan>
