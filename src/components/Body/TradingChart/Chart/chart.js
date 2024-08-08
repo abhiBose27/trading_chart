@@ -18,7 +18,8 @@ import { MarketPriceMark } from "./Marks/MarketPriceMark"
 export const Chart = ({specification, klineData}) => {
     const { height, width, theme, interval } = specification
     const chartComponentsDimensions          = config.getChartComponentDimensions(height, width)
-    const [chartState, dispatch]             = useReducer(rootReducer, config.getInitialChartState(chartComponentsDimensions.brushSize, klineData.length))
+    const initialChartState                  = config.getInitialChartState(chartComponentsDimensions.brushSize, klineData.length)
+    const [chartState, dispatch]             = useReducer(rootReducer, initialChartState)
     const backgroundColor                    = isThemeDark(theme) ? COLORS.CHARTGREY : COLORS.WHITE
     const { 
         chartHeight, 

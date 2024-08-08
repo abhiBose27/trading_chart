@@ -15,7 +15,7 @@ export const Indicator = ({
     // Hard Coded initialised. Needs to be changed
     const [indicatorTypeClicked, setIndicatorTypeClicked] = useState("MA")
     const [isError, setIsError]                           = useState(false)
-    const [localIndicators, setLocalIndicators]           = useState(JSON.parse(JSON.stringify(indicators)))
+    const [localIndicators, setLocalIndicators]           = useState(() => JSON.parse(JSON.stringify(indicators)))
     const optionsforStrokeWidth = [
         { key: 1, text: 1, value: 1 },
         { key: 2, text: 2, value: 2 },
