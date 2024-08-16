@@ -12,16 +12,18 @@ export const SIDE = {
 
 export const INDICATORPROPERTYTYPES = {
     CHECK: "check",
-    MOVINGAVERAGEVALUE: "movingAverageValue",
+    PERIOD: "period",
     STROKEWIDTH: "strokeWidth",
-    VWAPLENGTH: "vwapLength"
+    LENGTH: "length",
+    MULTIPLIER: "MULTIPLIER"
 }
 
 export const INDICATORTYPES = {
     VWAP: "VWAP",
     EMA: "EMA",
     MA: "MA",
-    WMA: "WMA"
+    WMA: "WMA",
+    BOLL: "BOLL"
 }
 
 export const COLORS = {

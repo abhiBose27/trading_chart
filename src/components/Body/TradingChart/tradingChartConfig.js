@@ -34,45 +34,45 @@ export const config = {
                 key: 1,
                 checked: false,
                 parameters: [
-                    {key: 1, checked: true, movingAverageValue: 7, "lineStrokeWidth": 2, color: "orange"},
-                    {key: 2, checked: true, movingAverageValue: 25, "lineStrokeWidth": 2, color: "pink"},
-                    {key: 3, checked: false, movingAverageValue: 0, "lineStrokeWidth": 2, color: "teal"},
-                    {key: 4, checked: false, movingAverageValue: 0, "lineStrokeWidth": 2, color: "purple"},
-                    {key: 5, checked: false, movingAverageValue: 0, "lineStrokeWidth": 2, color: "blue"},
-                    {key: 6, checked: false, movingAverageValue: 0, "lineStrokeWidth": 2, color: "red"},
-                    {key: 7, checked: false, movingAverageValue: 0, "lineStrokeWidth": 2, color: "olive"},
-                    {key: 8, checked: false, movingAverageValue: 0, "lineStrokeWidth": 2, color: "yellow"},
-                    {key: 9, checked: false, movingAverageValue: 0, "lineStrokeWidth": 2, color: "brown"}
+                    {key: 1, checked: false, period: 0, "lineStrokeWidth": 2, color: "orange"},
+                    {key: 2, checked: false, period: 0, "lineStrokeWidth": 2, color: "pink"},
+                    {key: 3, checked: false, period: 0, "lineStrokeWidth": 2, color: "teal"},
+                    {key: 4, checked: false, period: 0, "lineStrokeWidth": 2, color: "purple"},
+                    {key: 5, checked: false, period: 0, "lineStrokeWidth": 2, color: "blue"},
+                    {key: 6, checked: false, period: 0, "lineStrokeWidth": 2, color: "red"},
+                    {key: 7, checked: false, period: 0, "lineStrokeWidth": 2, color: "olive"},
+                    {key: 8, checked: false, period: 0, "lineStrokeWidth": 2, color: "yellow"},
+                    {key: 9, checked: false, period: 0, "lineStrokeWidth": 2, color: "brown"}
                 ]
             },
             "EMA": {
                 key: 2,
                 checked: false,
                 parameters: [
-                    {key: 1, checked: true, movingAverageValue: 10, lineStrokeWidth: 2, color: "orange"},
-                    {key: 2, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "pink"},
-                    {key: 3, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "teal"},
-                    {key: 4, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "purple"},
-                    {key: 5, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "blue"},
-                    {key: 6, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "red"},
-                    {key: 7, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "olive"},
-                    {key: 8, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "yellow"},
-                    {key: 9, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "brown"}
+                    {key: 1, checked: false, period: 0, lineStrokeWidth: 2, color: "orange"},
+                    {key: 2, checked: false, period: 0, lineStrokeWidth: 2, color: "pink"},
+                    {key: 3, checked: false, period: 0, lineStrokeWidth: 2, color: "teal"},
+                    {key: 4, checked: false, period: 0, lineStrokeWidth: 2, color: "purple"},
+                    {key: 5, checked: false, period: 0, lineStrokeWidth: 2, color: "blue"},
+                    {key: 6, checked: false, period: 0, lineStrokeWidth: 2, color: "red"},
+                    {key: 7, checked: false, period: 0, lineStrokeWidth: 2, color: "olive"},
+                    {key: 8, checked: false, period: 0, lineStrokeWidth: 2, color: "yellow"},
+                    {key: 9, checked: false, period: 0, lineStrokeWidth: 2, color: "brown"}
                 ]
             },
             "WMA": {
                 key: 3,
                 checked: false,
                 parameters: [
-                    {key: 1, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "orange"},
-                    {key: 2, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "pink"},
-                    {key: 3, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "teal"},
-                    {key: 4, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "purple"},
-                    {key: 5, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "blue"},
-                    {key: 6, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "red"},
-                    {key: 7, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "olive"},
-                    {key: 8, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "yellow"},
-                    {key: 9, checked: false, movingAverageValue: 0, lineStrokeWidth: 2, color: "brown"}
+                    {key: 1, checked: false, period: 0, lineStrokeWidth: 2, color: "orange"},
+                    {key: 2, checked: false, period: 0, lineStrokeWidth: 2, color: "pink"},
+                    {key: 3, checked: false, period: 0, lineStrokeWidth: 2, color: "teal"},
+                    {key: 4, checked: false, period: 0, lineStrokeWidth: 2, color: "purple"},
+                    {key: 5, checked: false, period: 0, lineStrokeWidth: 2, color: "blue"},
+                    {key: 6, checked: false, period: 0, lineStrokeWidth: 2, color: "red"},
+                    {key: 7, checked: false, period: 0, lineStrokeWidth: 2, color: "olive"},
+                    {key: 8, checked: false, period: 0, lineStrokeWidth: 2, color: "yellow"},
+                    {key: 9, checked: false, period: 0, lineStrokeWidth: 2, color: "brown"}
                 ]
             },
             "VWAP": {
@@ -80,6 +80,17 @@ export const config = {
                 checked: false,
                 parameters: [
                     {key: 1, length: 14, lineStrokeWidth: 2, color: "olive"}
+                ]
+            },
+            "BOLL": {
+                key: 5,
+                checked: false,
+                parameters : [
+                    {key: 1, length: 20},
+                    {key: 2, multiplier: 2},
+                    {key: 3, checked: false, label: "UP", lineStrokeWidth: 2, color: "teal"},
+                    {key: 4, checked: false, label: "MB", lineStrokeWidth: 2, color: "pink"},
+                    {key: 5, checked: false, label: "DN", lineStrokeWidth: 2, color: "teal"},
                 ]
             }
         }

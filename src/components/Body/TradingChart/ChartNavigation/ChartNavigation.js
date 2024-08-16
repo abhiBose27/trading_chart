@@ -49,7 +49,7 @@ export const ChartNavigation = ({dispatch, specification}) => {
                     options={themeOptions}
                 />
                 <Button icon inverted basic onClick={triggerIndicators}>
-                    <Icon name="world"/>
+                    <Icon name="chartline"/>
                 </Button>
             </Menu>
             <Indicator

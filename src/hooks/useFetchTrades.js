@@ -37,7 +37,7 @@ export const useFetchTrades = (symbol) => {
         }
 
         ws.onopen= () => {
-            const msgInterval = setInterval(() => sendData(), 500)
+            const msgInterval = setInterval(() => sendData(), 1000)
             ws.onclose = () => clearInterval(msgInterval)
         }
 

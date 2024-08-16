@@ -12,8 +12,7 @@ export const Indicator = ({
     indicators,
 }) => {
 
-    // Hard Coded initialised. Needs to be changed
-    const [indicatorTypeClicked, setIndicatorTypeClicked] = useState("MA")
+    const [indicatorTypeClicked, setIndicatorTypeClicked] = useState(INDICATORTYPES.MA)
     const [isError, setIsError]                           = useState(false)
     const [localIndicators, setLocalIndicators]           = useState(() => JSON.parse(JSON.stringify(indicators)))
     const optionsforStrokeWidth = [
@@ -50,14 +49,17 @@ export const Indicator = ({
             case INDICATORPROPERTYTYPES.CHECK:
                 updateIndicators[indicatorTypeClicked].parameters[key - 1] = {...localIndicators[indicatorTypeClicked].parameters[key - 1], checked: value}
                 break
-            case INDICATORPROPERTYTYPES.MOVINGAVERAGEVALUE:
-                updateIndicators[indicatorTypeClicked].parameters[key - 1] = {...localIndicators[indicatorTypeClicked].parameters[key - 1], movingAverageValue: parseInt(value)}
+            case INDICATORPROPERTYTYPES.PERIOD:
+                updateIndicators[indicatorTypeClicked].parameters[key - 1] = {...localIndicators[indicatorTypeClicked].parameters[key - 1], period: parseInt(value)}
                 break
             case INDICATORPROPERTYTYPES.STROKEWIDTH:
                 updateIndicators[indicatorTypeClicked].parameters[key - 1] = {...localIndicators[indicatorTypeClicked].parameters[key - 1], lineStrokeWidth: parseInt(value)}
                 break
-            case INDICATORPROPERTYTYPES.VWAPLENGTH:
+            case INDICATORPROPERTYTYPES.LENGTH:
                 updateIndicators[indicatorTypeClicked].parameters[key - 1] = {...localIndicators[indicatorTypeClicked].parameters[key - 1], length: parseInt(value)}
+                break
+            case INDICATORPROPERTYTYPES.MULTIPLIER:
+                updateIndicators[indicatorTypeClicked].parameters[key - 1] = {...localIndicators[indicatorTypeClicked].parameters[key - 1], multiplier: parseInt(value)}
                 break
             default:
                 break;
@@ -72,8 +74,9 @@ export const Indicator = ({
             const parameters = localIndicators[indicatorType].parameters
             for (const parameter of parameters) {
                 for (const property in parameter) {
-                    if (property === "color" || !isNaN(parameter[property]))
+                    if (property === "color" || property === "label" || !isNaN(parameter[property])) {
                         continue
+                    }
                     return false
                 }
             }
@@ -87,6 +90,7 @@ export const Indicator = ({
             return
         }
         dispatch({type: ACTIONS.UPDATEINDICATOR, payload: JSON.parse(JSON.stringify(localIndicators))})
+        setIsError(false)
         triggerIndicators()
     }
 
@@ -104,36 +108,16 @@ export const Indicator = ({
         ))
     }
 
-    const getIndicatorTypeParametersJSX = () => {
-        return (    
-            indicatorTypeClicked && localIndicators[indicatorTypeClicked].parameters.map(parameter => (
+    const getVwapJSX = () => {
+        return (
+            localIndicators[indicatorTypeClicked].parameters.map(parameter => (
                 <FormGroup key={parameter.key} inline>
-                    {
-                        indicatorTypeClicked === INDICATORTYPES.VWAP ? 
-                        <FormInput
-                            size="mini"
-                            type="number"
-                            value={String(parameter.length)}
-                            error={isNaN(parameter.length)}
-                            onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.VWAPLENGTH)}
-                        /> :
-                        <>
-                            <FormCheckbox
-                                slider
-                                checked={parameter.checked} 
-                                label={`${indicatorTypeClicked}${parameter.key}`} 
-                                onChange={(e, { checked }) => setValues(checked, parameter.key, INDICATORPROPERTYTYPES.CHECK)}
-                            />
-                            <FormInput
-                                size="mini"
-                                type="number"
-                                disabled={!parameter.checked}
-                                value={String(parameter.movingAverageValue)}
-                                error={isNaN(parameter.movingAverageValue)}
-                                onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.MOVINGAVERAGEVALUE)}
-                            />
-                        </>
-                    }
+                    <FormInput
+                        type="number"
+                        value={String(parameter.length)}
+                        error={isNaN(parameter.length)}
+                        onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.LENGTH)}
+                    />
                     <Dropdown
                         selection
                         button
@@ -145,6 +129,110 @@ export const Indicator = ({
                 </FormGroup>
             ))
         )
+    }
+
+    const getMovingAverageJSX = () => {
+        return (
+            localIndicators[indicatorTypeClicked].parameters.map(parameter => (
+                <FormGroup key={parameter.key} inline>
+                    <FormCheckbox
+                        slider
+                        checked={parameter.checked} 
+                        label={`${indicatorTypeClicked}${parameter.key}`} 
+                        onChange={(e, { checked }) => setValues(checked, parameter.key, INDICATORPROPERTYTYPES.CHECK)}
+                    />
+                    <FormInput
+                        size="mini"
+                        type="number"
+                        disabled={!parameter.checked}
+                        value={String(parameter.period)}
+                        error={isNaN(parameter.period)}
+                        onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.PERIOD)}
+                    />
+                    <Dropdown
+                        selection
+                        button
+                        options={optionsforStrokeWidth}
+                        value={parameter.lineStrokeWidth}
+                        onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.STROKEWIDTH)}
+                    />
+                    <Icon className="circle" color={parameter.color} size="large"/>
+                </FormGroup>
+            ))
+        )
+    }
+
+    const getBollingerBandsJSX = () => {
+        return (
+            localIndicators[indicatorTypeClicked].parameters.map(parameter => {
+                switch (parameter.key) {
+                    case 1:
+                        return (
+                            <FormGroup unstackable key={parameter.key}>
+                                <FormInput
+                                    size="large"
+                                    type="number"
+                                    label="Length"
+                                    value={String(parameter.length)}
+                                    error={isNaN(parameter.length)}
+                                    onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.LENGTH)}
+                                />
+                            </FormGroup>
+                        )
+                    case 2:
+                        return (
+                            <FormGroup key={parameter.key}>
+                                <FormInput
+                                    size="large"
+                                    type="number"
+                                    label="Multiplier"
+                                    value={String(parameter.multiplier)}
+                                    error={isNaN(parameter.multiplier)}
+                                    onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.MULTIPLIER)}
+                                />
+                            </FormGroup>
+                        )
+                    case 3:
+                    case 4:
+                    case 5:
+                        return (
+                            <FormGroup key={parameter.key} inline>
+                                <FormCheckbox
+                                    slider
+                                    checked={parameter.checked} 
+                                    label={parameter.label}
+                                    onChange={(e, { checked }) => setValues(checked, parameter.key, INDICATORPROPERTYTYPES.CHECK)}
+                                />
+                                <Dropdown
+                                    selection
+                                    button
+                                    value={parameter.lineStrokeWidth}
+                                    options={optionsforStrokeWidth}
+                                    onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.STROKEWIDTH)}
+                                />
+                                <Icon className="circle" color={parameter.color} size="large"/>
+                            </FormGroup>
+                        ) 
+                    default:
+                        throw new Error("Invalid Parameter Key")
+                }
+            })
+        )
+    }
+
+    const getIndicatorTypeParametersJSX = () => {
+        switch (indicatorTypeClicked) {
+            case INDICATORTYPES.VWAP:
+                return getVwapJSX()
+            case INDICATORTYPES.EMA:
+            case INDICATORTYPES.WMA:
+            case INDICATORTYPES.MA:
+                return getMovingAverageJSX()
+            case INDICATORTYPES.BOLL:
+                return getBollingerBandsJSX()
+            default:
+                throw new Error("Invalid Indicator Type")
+        }
     }
 
     return (

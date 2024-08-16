@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import React, { useMemo, useCallback, useEffect, useReducer } from "react"
-import { scaleBand, min, max, scaleLinear, line } from "d3"
-import { isThemeDark, COLORS } from "../../../../Tools"
+import { scaleBand, min, max, scaleLinear, line, area, curveCardinal } from "d3"
+import { isThemeDark, COLORS, INDICATORTYPES } from "../../../../Tools"
 import { rootReducer } from "../../../../Store/Reducer"
 import { ACTIONS } from "../../../../Store/Actions"
 import { config } from "../TradingChartConfig"
@@ -85,20 +85,31 @@ export const Chart = ({specification, klineData}) => {
     }, [slicedData, chartComponentsDimensions.chartHeight])
 
     const lineConfigs = useMemo(() => {
-        const configs = []
         let id = 0
-        for (const indicatorType in slicedData[0].indicators) {
-            const indicatorValues = slicedData[0].indicators[indicatorType]
+        const configs = []
+        const indicators = slicedData[0].indicators
+        for (const indicatorType in indicators) {
+            const indicatorValues = indicators[indicatorType]
             for (const value in indicatorValues) {
-                configs.push({
-                    id: id,
-                    strokeWidth: indicatorValues[value].strokeWidth,
+                if (indicatorType.includes(INDICATORTYPES.BOLL) && !indicatorValues[value].checked)
+                    continue
+                const config = {
+                    id: id++,
                     color: indicatorValues[value].color,
+                    strokeWidth: indicatorValues[value].strokeWidth,
                     lineScale: line().x(d => xScale(d.date)).y(d => yPriceScale(d.indicators[indicatorType][value].value))
-                                .defined(d => d.indicators[indicatorType][value].value)
-                })
-                id++
+                                .defined(d => d.indicators[indicatorType][value].value),
+                }
+                configs.push(config)
             }
+            if (indicatorType.includes(INDICATORTYPES.BOLL))
+                configs.push({
+                    id: id++,
+                    areaScale: area().curve(curveCardinal).x(d => xScale(d.date))
+                    .y0(d => yPriceScale(d.indicators[indicatorType]["UP"].value))
+                    .y1(d => yPriceScale(d.indicators[indicatorType]["DN"].value))
+                    .defined(d => d.indicators[indicatorType]["UP"].value)
+                })
         }
         return configs
 
