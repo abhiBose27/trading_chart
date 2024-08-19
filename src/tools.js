@@ -39,9 +39,7 @@ export const COLORS = {
 }
 
 export const defaultAppSpecification = {
-    symbol: "ETHUSDT",
-    interval: "1m",
-    theme: "Dark"
+    symbol: "ETHUSDT"
 }
 
 export const klineColor = (d) => d?.open > d?.close ? schemeReds[6][4] : schemeGreens[6][4]

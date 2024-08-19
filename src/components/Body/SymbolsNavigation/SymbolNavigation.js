@@ -4,14 +4,13 @@ import { ACTIONS } from "../../../Store/Actions"
 import React, { useState } from "react"
 
 
-export const SymbolNavigation =({dispatch, specification, symbolsData}) => {
+export const SymbolNavigation = React.memo(({dispatch, symbol, symbolsData}) => {
 
-    const [localSymbol, setLocalSymbol] = useState(specification.symbol)
-    
+    const [localSymbol, setLocalSymbol] = useState(symbol)
     const symbolsOptions = symbolsData.map(elm => {return {key: elm, text: elm, value: elm}})
 
     const setSymbol = (e, data) => {
-        if (localSymbol !== specification.symbol)
+        if (localSymbol !== symbol)
             dispatch({type: ACTIONS.SYMBOL, payload: localSymbol})
     }
 
@@ -31,13 +30,14 @@ export const SymbolNavigation =({dispatch, specification, symbolsData}) => {
             onChange={onChange}
             onClose={setSymbol}
             options={symbolsOptions}
-            value={specification.symbol}
+            value={symbol}
         />
     )
-}
+})
+
 
 SymbolNavigation.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    specification: PropTypes.object.isRequired,
+    symbol: PropTypes.string.isRequired,
     symbolsData: PropTypes.array.isRequired
 }

@@ -1,14 +1,14 @@
 import PropTypes from "prop-types"
 import { Button, Dropdown, Icon, Menu } from "semantic-ui-react"
 import { ACTIONS } from "../../../../Store/Actions"
-import { useState } from "react"
+import React, { useState } from "react"
 import { Indicator } from "./Indicator"
 
 
-export const ChartNavigation = ({dispatch, specification}) => {
-    const { theme, interval, indicators, width } = specification
-    const [showIndicators, setShowIndicators]    = useState(false)
-    const intervalOptions                        = [
+export const ChartNavigation = React.memo(({dispatch, width, specification}) => {
+    const [showIndicators, setShowIndicators] = useState(false)
+    const { theme, interval, indicators}      = specification
+    const intervalOptions                     = [
         {key: "1s", text: "1s", value: "1s"},
         {key: "1m", text: "1m", value: "1m"},
         {key: "3m", text: "3m", value: "3m"},
@@ -22,34 +22,34 @@ export const ChartNavigation = ({dispatch, specification}) => {
         {key: "1d", text: "1d", value: "1d"},
         {key: "1M", text: "1M", value: "1M"},
     ]
-    const themeOptions                          = [
+    const themeOptions                        = [
         {key: "Dark", text: "Dark", value: "Dark"},
         {key: "Light", text: "Light", value: "Light"},
     ]
 
     const setInterval = (e, { value }) => dispatch({type: ACTIONS.INTERVAL, payload: value})
 
-    const setTheme = (e, { value }) => dispatch({type: ACTIONS.THEME, payload: value})
+    const setTheme = (e, { value })    => dispatch({type: ACTIONS.THEME, payload: value})
 
-    const triggerIndicators = () => setShowIndicators(prevState => !prevState)
+    const triggerIndicators = ()       => setShowIndicators(prevState => !prevState)
     
     return (
         <div style={{width: width}}>
             <Menu inverted pointing fluid>
                 <Dropdown
                     className="link item"
+                    value={interval}
                     onChange={setInterval}
-                    defaultValue={interval}
                     options={intervalOptions}
                 />
                 <Dropdown
                     className="link item"
+                    value={theme}
                     onChange={setTheme}
-                    defaultValue={theme}
                     options={themeOptions}
                 />
                 <Button icon inverted basic onClick={triggerIndicators}>
-                    <Icon name="chartline"/>
+                    <Icon className="chartline"/>
                 </Button>
             </Menu>
             <Indicator
@@ -60,9 +60,10 @@ export const ChartNavigation = ({dispatch, specification}) => {
             />
         </div>
     )
-}
+})
 
 ChartNavigation.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    width: PropTypes.number.isRequired,
     specification: PropTypes.object.isRequired
 }

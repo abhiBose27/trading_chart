@@ -19,22 +19,16 @@ export const Body = ({symbolsData}) => {
     return (
         <>
             <div className="symbol-nav-container">
-                <SymbolNavigation
-                    dispatch={dispatch}
-                    symbolsData={symbolsData}
-                    specification={specification}
+                <SymbolNavigation 
+                    dispatch={dispatch} 
+                    symbolsData={symbolsData} 
+                    symbol={specification.symbol}
                 />
             </div>
             <div className="main-container">
-                <div className="orderbook-container">
-                    <Orderbook orderbookSpecification={orderbookSpecification}/>
-                </div>
-                <div className="tradingchart-container">
-                    <TradingChart tradingChartSpecification={tradingChartSpecification}/>
-                </div>
-                <div className="tradebook-container">
-                    <Tradebook tradebookSpecification={tradebookSpecification}/>
-                </div>
+                <Orderbook orderbookSpecification={orderbookSpecification}/>
+                <TradingChart tradingChartSpecification={tradingChartSpecification}/>
+                <Tradebook tradebookSpecification={tradebookSpecification}/>
             </div>
         </>
     )

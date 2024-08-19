@@ -16,8 +16,7 @@ export const Footer = ({symbolsData}) => {
         const fetchData = async() => {
             const data = await get24hTicker(relevantSymbols)
             setFooterData(data)
-            setTimeout(() => setStartAnimation(true), 1000)
-            
+            setTimeout(() => setStartAnimation(true), 1000)  
         }
         const msgInterval = setInterval(fetchData, 3000)
         return () => clearInterval(msgInterval)

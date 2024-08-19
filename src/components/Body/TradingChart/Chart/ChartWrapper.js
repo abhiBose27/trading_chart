@@ -11,7 +11,7 @@ export const ChartWrapper = ({specification}) => {
     const { symbol, interval, indicators } = specification
     const [isFetching, klineData] = useFetchKline(symbol, interval, indicators)
 
-    const isIntervalCorrect = () => klineData?.interval === interval
+    const isIntervalCorrect = () => klineData.interval === interval
     
     useEffect(() => ReactTooltip.rebuild())
 
@@ -22,7 +22,7 @@ export const ChartWrapper = ({specification}) => {
         isIntervalCorrect() &&
         <>
             <Chart specification={specification} klineData={klineData.result}/>
-            <ReactTooltip id='mark-tooltip' place='right' effect='solid' html={true}/>
+            <ReactTooltip id="mark-tooltip" place="right" effect="solid" html={true}/>
         </>
     )
 }

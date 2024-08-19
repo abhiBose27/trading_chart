@@ -2,27 +2,21 @@
     position: absolute;
     height: 100dvh;
     width: 100dvw;
-    background-color: #282c34;
+    background: #16222A;  /* fallback for old browsers */
+    background: linear-gradient(to right, #1c2e38, #15222b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .main-container {
     display: flex;
+    justify-content: space-evenly;
 }
 
-.orderbook-container, .symbol-nav-container {
-    margin-left: 3.5%;
+.main-container, .symbol-nav-container {
+    margin-top:  1%;
 }
 
-.symbol-nav-container, .main-container {
-    margin-top: 1%;
-}
-
-.tradingchart-container, .tradebook-container {
-    margin-left: 2%;
-}
-
-.tradebook-container {
-    margin-right: 2%;
+.symbol-nav-container {
+    margin-left: 2.8%;
 }
 
 .orderbook, .tradebook, .chart {
