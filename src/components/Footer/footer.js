@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import React, { useEffect, useState } from "react"
-import { get24hTicker } from "../../Data/HttpBinance"
+import { get24hTicker } from "../../Data/Http/HttpBinance"
 import { schemeGreens, schemeReds, format } from "d3"
 import { COLORS } from "../../Tools"
 

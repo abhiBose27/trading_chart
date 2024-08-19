@@ -1,12 +1,13 @@
 {
   "name": "trading-chart_v3",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "homepage": "https://abhiBose27.github.io/trading_chart",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@reduxjs/toolkit": "^2.2.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -20,6 +21,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
     "react-dom": "^18.2.0",
+    "react-redux": "^9.1.2",
     "react-scripts": "^5.0.1",
     "react-tooltip": "^4.2.20",
     "react-use-websocket": "^4.8.1",
@@ -33,7 +35,7 @@
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --detectOpenHandles --forceExit",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

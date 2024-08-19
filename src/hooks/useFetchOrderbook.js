@@ -1,44 +1,6 @@
 import { useEffect, useState } from "react"
+import { addDepths, addPrecison, addTotalSums, getMaxTotalSum, sortOrders } from "../Data/Processing/Orders"
 
-
-const addTotalSums = (orders) => {
-    return orders.map((order) => {
-        const totalSum     = order[0] * order[1]
-        const updatedLevel = [...order, totalSum]
-        return updatedLevel
-    })
-}
-
-const addDepths = (orders, maxTotal) => {
-    return orders.map(order => {
-        const depth        = (order[2] / maxTotal) * 100
-        const updatedLevel = [...order, depth]
-        return updatedLevel
-    })
-}
-
-const addPrecison = (orders) => {
-    return orders.map((order, idx) => {
-        const orderPrice    = order[0]
-        const orderQty      = order[1]
-        const orderTotalSum = order[2]
-        return {
-            id: idx, 
-            level: [orderPrice, orderQty, orderTotalSum, order[3]]
-        }
-    })
-}
-
-const getMaxTotalSum = (orders) => {
-    const totalSum = orders.map(order => order[2])
-    return Math.max(...totalSum)
-}
-
-const sortOrders = (orders) => {
-    let updatedOrders = orders.map((order) => [parseFloat(order[0]), parseFloat(order[1])])
-    updatedOrders.sort((a, b) => b[0] - a[0])
-    return updatedOrders
-}
 
 const convertRawOrdersToOrders = (rawOrders) => {
     const ordersSorted    = sortOrders(rawOrders)
@@ -50,7 +12,7 @@ const convertRawOrdersToOrders = (rawOrders) => {
 }
 
 export const useFetchOrderbook = (symbol) => {
-    const [data, setData]         = useState(null)
+    const [data, setData]             = useState(null)
     const [isFetching, setIsFetching] = useState(false)
 
     useEffect(() => {
