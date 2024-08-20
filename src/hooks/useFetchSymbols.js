@@ -3,7 +3,7 @@ import { getExchangeInfo } from "../Data/Http/HttpBinance"
 
 
 export const useFetchSymbols = () => {
-    const [data, setData]              = useState(null)
+    const [data, setData]             = useState(null)
     const [isFetching, setIsFetching] = useState(false)
 
     useEffect(() => {

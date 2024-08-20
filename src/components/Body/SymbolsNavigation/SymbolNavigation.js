@@ -1,36 +1,32 @@
 import PropTypes from "prop-types"
 import { Dropdown } from "semantic-ui-react"
 import { ACTIONS } from "../../../Store/Actions"
-import React, { useState } from "react"
-
+import React, { useRef } from "react"
 
 export const SymbolNavigation = React.memo(({dispatch, symbol, symbolsData}) => {
-
-    const [localSymbol, setLocalSymbol] = useState(symbol)
+    const localSymbol    = useRef(symbol)
     const symbolsOptions = symbolsData.map(elm => {return {key: elm, text: elm, value: elm}})
 
     const setSymbol = (e, data) => {
-        if (localSymbol !== symbol)
-            dispatch({type: ACTIONS.SYMBOL, payload: localSymbol})
+        if (localSymbol.current !== symbol)
+            dispatch({type: ACTIONS.SYMBOL, payload: localSymbol.current})
     }
 
-    const onChange = (e, { value }) => {
-        setLocalSymbol(value)
-    }
+    const onChange = (e, { value }) => localSymbol.current = value
 
     return (
         <Dropdown
+            search
+            button
+            labeled
+            floating
+            selection
+            value={symbol}
             className="icon"
             icon="dollar sign"
-            floating
-            labeled 
-            button
-            search
-            selection
             onChange={onChange}
             onClose={setSymbol}
             options={symbolsOptions}
-            value={symbol}
         />
     )
 })
