@@ -38,18 +38,18 @@ export const AxisYticksText = React.memo(({theme, width, yPriceScale}) => {
         ))
 })
 
-export const AxisYCandleStickText = React.memo(({width, height, lastCandleStick, yPriceScale}) => {
+export const AxisYCandleStickText = React.memo(({width, height, currentCandleStick, yPriceScale}) => {
     return (
         <g 
             fontSize="0.8dvw" 
-            transform={`translate(0, ${yPriceScale(lastCandleStick.close) - height / 2})`}
+            transform={`translate(0, ${yPriceScale(currentCandleStick.close) - height / 2})`}
         >
             <rect
                 rx="9"
                 opacity="0.9"
                 width={width}
                 height={height}
-                fill={klineColor(lastCandleStick)}
+                fill={klineColor(currentCandleStick)}
             />
             <text
                 x={height / 2}
@@ -57,7 +57,7 @@ export const AxisYCandleStickText = React.memo(({width, height, lastCandleStick,
                 fill={COLORS.WHITE}
                 dominantBaseline="middle"
             >
-                {format("~f")(lastCandleStick.close)} 
+                {format("~f")(currentCandleStick.close)} 
             </text>
         </g>
     )
@@ -100,7 +100,7 @@ AxisYticksText.propTypes = {
 
 AxisYCandleStickText.propTypes = {
     yPriceScale: PropTypes.func.isRequired,
-    lastCandleStick: PropTypes.object,
+    currentCandleStick: PropTypes.object,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired
 }

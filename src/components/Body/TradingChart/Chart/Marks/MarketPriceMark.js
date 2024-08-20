@@ -3,14 +3,14 @@ import PropTypes from "prop-types"
 import { klineColor } from "../../../../../Tools"
 
 
-export const MarketPriceMark = React.memo(({width, lastCandleStick, yPriceScale}) => {
+export const MarketPriceMark = React.memo(({width, currentCandleStick, yPriceScale}) => {
     return (
         <g
             strokeWidth="2"
             strokeOpacity="0.9" 
             strokeDasharray="7"
-            stroke={klineColor(lastCandleStick)}
-            transform={`translate(0, ${yPriceScale(lastCandleStick.close)})`}
+            stroke={klineColor(currentCandleStick)}
+            transform={`translate(0, ${yPriceScale(currentCandleStick.close)})`}
         >
             <line x2={width}/>
         </g>
@@ -19,6 +19,6 @@ export const MarketPriceMark = React.memo(({width, lastCandleStick, yPriceScale}
 
 MarketPriceMark.propTypes = {
     width: PropTypes.number.isRequired,
-    lastCandleStick: PropTypes.object.isRequired,
+    currentCandleStick: PropTypes.object.isRequired,
     yPriceScale: PropTypes.func.isRequired
 }

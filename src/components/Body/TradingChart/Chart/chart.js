@@ -146,7 +146,13 @@ export const Chart = ({specification, klineData}) => {
                 onMouseLeave={onMouseLeave}
                 onWheel={changeBrushExtent}
             >
-                <VolumeMarks xScale={xScale} height={chartHeight} slicedData={slicedData} yVolumeScale={yVolumeScale}/>
+                <IndicatorMarks slicedData={slicedData} lineConfigs={lineConfigs}/>
+                <VolumeMarks 
+                    xScale={xScale} 
+                    height={chartHeight} 
+                    slicedData={slicedData} 
+                    yVolumeScale={yVolumeScale}
+                />
                 <CandleStickMarks 
                     xScale={xScale}
                     dispatch={dispatch}
@@ -154,10 +160,22 @@ export const Chart = ({specification, klineData}) => {
                     slicedData={slicedData}
                     yPriceScale={yPriceScale}
                 />
-                <VerticalTicks theme={theme} xScale={xScale} height={chartHeight} getXScaleTicks={getXScaleTicks}/>
-                <HorizontalTicks theme={theme} width={chartWidth} yPriceScale={yPriceScale}/>
-                <IndicatorMarks slicedData={slicedData} lineConfigs={lineConfigs}/>
-                <MarketPriceMark width={chartWidth} yPriceScale={yPriceScale} lastCandleStick={slicedData[slicedData.length - 1]}/>
+                <VerticalTicks 
+                    theme={theme} 
+                    xScale={xScale} 
+                    height={chartHeight} 
+                    getXScaleTicks={getXScaleTicks}
+                />
+                <HorizontalTicks 
+                    theme={theme} 
+                    width={chartWidth} 
+                    yPriceScale={yPriceScale}
+                />
+                <MarketPriceMark 
+                    width={chartWidth} 
+                    yPriceScale={yPriceScale} 
+                    currentCandleStick={slicedData[slicedData.length - 1]}
+                />
                 {
                     chartState.displayCrosshair && 
                     <Crosshair 
@@ -184,7 +202,7 @@ export const Chart = ({specification, klineData}) => {
                     yPriceScale={yPriceScale}  
                     width={yAxisTextBoxDimensionWidth} 
                     height={yAxisTextBoxDimensionHeight}
-                    lastCandleStick={slicedData[slicedData.length - 1]}
+                    currentCandleStick={slicedData[slicedData.length - 1]}
                 />
                 {
                     chartState.displayCrosshair && 
