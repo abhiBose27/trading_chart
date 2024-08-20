@@ -1,9 +1,9 @@
 # Trading Chart
 
-UI interface representing live movement of crypto assets using real time data from websockets and rest api.
+UI interface representing live movement of crypto assets using real time data from WebSockets and REST API.
 It has primarily 3 components, the trading chart, the orderbook, and the market trades.
-Includes the functionality of basic data modeling using indicators like VWAP, WMA, MA, EMA to analyse the trends and movements of the prices on different time periods.
-Tech stack involves ReactJs, D3.js, Semantic UI, Pure Websockets. REST API
+Includes the functionality of basic data modeling using indicators like VWAP, WMA, MA, EMA, BOLL to analyse the trends and movements of the prices on different time periods.
+Tech stack involves ReactJs, D3.js, Semantic UI, Pure Websockets. REST API.
 
 # Getting Started
 
