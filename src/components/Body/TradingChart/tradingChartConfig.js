@@ -2,7 +2,7 @@ export const config = {
     getInitialChartState: (brushSize, klineDataLength) => {
         return {
             brushExtent:  [Math.max(0, klineDataLength - brushSize), klineDataLength - 1],
-            mouseCoords: {x: 0, y: 0},
+            mouseCoords: {x: null, y: null},
             displayCrosshair: false,
             hoverData: null 
         }

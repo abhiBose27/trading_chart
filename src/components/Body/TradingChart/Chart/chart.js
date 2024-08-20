@@ -178,6 +178,8 @@ export const Chart = ({specification, klineData}) => {
                 />
                 {
                     chartState.displayCrosshair && 
+                    chartState.mouseCoords.x !== null &&
+                    chartState.mouseCoords.y !== null &&
                     <Crosshair 
                         theme={theme} 
                         x={chartState.mouseCoords.x} 
@@ -206,6 +208,7 @@ export const Chart = ({specification, klineData}) => {
                 />
                 {
                     chartState.displayCrosshair && 
+                    chartState.mouseCoords.y !== null &&
                     <AxisYhoverText
                         yPriceScale={yPriceScale}
                         y={chartState.mouseCoords.y}
@@ -230,6 +233,7 @@ export const Chart = ({specification, klineData}) => {
                 />
                 {
                     chartState.displayCrosshair && 
+                    chartState.mouseCoords.x !== null &&
                     <AxisXhoverText 
                         theme={theme} 
                         x={chartState.mouseCoords.x} 
