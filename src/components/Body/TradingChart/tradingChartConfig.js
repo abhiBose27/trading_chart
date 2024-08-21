@@ -26,6 +26,30 @@ export const config = {
             brushSize            : Math.floor(0.15 * width)
         }
     },
+    getChartNavigationIntervalOptions: [
+        {key: "1s", text: "1s", value: "1s"},
+        {key: "1m", text: "1m", value: "1m"},
+        {key: "3m", text: "3m", value: "3m"},
+        {key: "5m", text: "5m", value: "5m"},
+        {key: "15m", text: "15m", value: "15m"},
+        {key: "30m", text: "30m", value: "30m"},
+        {key: "1h", text: "1h", value: "1h"},
+        {key: "2h", text: "2h", value: "2h"},
+        {key: "6h", text: "6h", value: "6h"},
+        {key: "12h", text: "12h", value: "12h"},
+        {key: "1d", text: "1d", value: "1d"},
+        {key: "1M", text: "1M", value: "1M"},
+    ],
+    getChartNavigationThemeOptions: [
+        {key: "Dark", text: "Dark", value: "Dark"},
+        {key: "Light", text: "Light", value: "Light"}
+    ],
+    getIndicatorsStrokeWidthOption: [ 
+        { key: 1, text: 1, value: 1 },
+        { key: 2, text: 2, value: 2 },
+        { key: 3, text: 3, value: 3 },
+        { key: 4, text: 4, value: 4 }
+    ],
     getInitialTradingChartSpecification: {
         interval: "1m", 
         theme: "Dark",

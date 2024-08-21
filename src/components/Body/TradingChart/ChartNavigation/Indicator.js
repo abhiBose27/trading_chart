@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Modal, ModalContent, Grid, GridRow, Form, FormField, GridColumn, FormGroup, FormCheckbox, FormInput, Icon, Button, Dropdown, Message, MessageHeader } from "semantic-ui-react"
 import { ACTIONS } from "../../../../Store/Actions"
 import { INDICATORPROPERTYTYPES, INDICATORTYPES } from "../../../../Tools"
+import { config } from "../TradingChartConfig"
 
 
 export const Indicator = ({
@@ -15,12 +16,7 @@ export const Indicator = ({
     const [indicatorTypeClicked, setIndicatorTypeClicked] = useState(INDICATORTYPES.MA)
     const [isError, setIsError]                           = useState(false)
     const [localIndicators, setLocalIndicators]           = useState(() => JSON.parse(JSON.stringify(indicators)))
-    const optionsforStrokeWidth = [
-        { key: 1, text: 1, value: 1 },
-        { key: 2, text: 2, value: 2 },
-        { key: 3, text: 3, value: 3 },
-        { key: 4, text: 4, value: 4 }
-    ]
+    const strokeWidthOptions                              = config.getIndicatorsStrokeWidthOption
 
     const getIndicatorTypes = () => {
         const indicatorTypes = []
@@ -121,7 +117,7 @@ export const Indicator = ({
                     <Dropdown
                         selection
                         button
-                        options={optionsforStrokeWidth}
+                        options={strokeWidthOptions}
                         value={parameter.lineStrokeWidth}
                         onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.STROKEWIDTH)}
                     />
@@ -152,7 +148,7 @@ export const Indicator = ({
                     <Dropdown
                         selection
                         button
-                        options={optionsforStrokeWidth}
+                        options={strokeWidthOptions}
                         value={parameter.lineStrokeWidth}
                         onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.STROKEWIDTH)}
                     />
@@ -207,7 +203,7 @@ export const Indicator = ({
                                     selection
                                     button
                                     value={parameter.lineStrokeWidth}
-                                    options={optionsforStrokeWidth}
+                                    options={strokeWidthOptions}
                                     onChange={(e, { value }) => setValues(value, parameter.key, INDICATORPROPERTYTYPES.STROKEWIDTH)}
                                 />
                                 <Icon className="circle" color={parameter.color} size="large"/>
