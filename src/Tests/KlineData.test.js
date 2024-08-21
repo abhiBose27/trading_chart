@@ -1,3 +1,4 @@
+import { cleanup } from "@testing-library/react"
 import { 
     getExponentialMovingAverage, 
     getMovingAverage, 
@@ -5,6 +6,9 @@ import {
     getWeightedMovingAverage 
 } from "../Data/Processing/Indicators"
 
+afterEach(() => {
+    cleanup()
+})
 
 test("sma_test_valid", () => {
     const klineData = [
