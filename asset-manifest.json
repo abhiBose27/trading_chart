@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/trading_chart/static/css/main.500382ad.css",
+    "main.css": "/trading_chart/static/css/main.2414779b.css",
     "main.js": "/trading_chart/static/js/main.d64d96f5.js",
     "static/js/453.5da29eea.chunk.js": "/trading_chart/static/js/453.5da29eea.chunk.js",
     "static/media/Lato-Italic.woff": "/trading_chart/static/media/Lato-Italic.e67e575e2b5ee2fe795c.woff",
@@ -26,12 +26,12 @@
     "static/media/outline-icons.woff": "/trading_chart/static/media/outline-icons.bb58e57c48a3e911f15f.woff",
     "static/media/outline-icons.woff2": "/trading_chart/static/media/outline-icons.7a3337626410ca2f4071.woff2",
     "index.html": "/trading_chart/index.html",
-    "main.500382ad.css.map": "/trading_chart/static/css/main.500382ad.css.map",
+    "main.2414779b.css.map": "/trading_chart/static/css/main.2414779b.css.map",
     "main.d64d96f5.js.map": "/trading_chart/static/js/main.d64d96f5.js.map",
     "453.5da29eea.chunk.js.map": "/trading_chart/static/js/453.5da29eea.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.500382ad.css",
+    "static/css/main.2414779b.css",
     "static/js/main.d64d96f5.js"
   ]
 }
