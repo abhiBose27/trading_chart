@@ -49,13 +49,13 @@ export const isDataReady = (isLoading, data) => !isLoading && data
 export const isThemeDark = (theme) => theme === "Dark"
 
 export const getTradingChartSpecification = (appSpecification, height, width) => {
-    return {...appSpecification, height: height * 0.82, width: width * 0.65}
+    return {...appSpecification, height: height * 0.78, width: width * 0.65}
 }
 
 export const getOrderbookSpecification = (appSpecification, height, width) => {
-    return {...appSpecification, height: height * 0.84, width: width * 0.12}
+    return {...appSpecification, height: height * 0.80, width: width * 0.15}
 }
 
 export const getTradebookSpecification = (appSpecificationn, height, width) => {
-    return {...appSpecificationn, height: height * 0.84, width: width * 0.12}
+    return {...appSpecificationn, height: height * 0.80, width: width * 0.15}
 }

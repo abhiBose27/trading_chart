@@ -1,18 +1,8 @@
 import { useEffect, useState } from "react"
-import { addDepths, addPrecison, addTotalSums, getMaxTotalSum, sortOrders } from "../Data/Processing/Orders"
 
 
-const convertRawOrdersToOrders = (rawOrders) => {
-    const ordersSorted    = sortOrders(rawOrders)
-    const ordersTotalSums = addTotalSums(ordersSorted)
-    const ordersMaxSums   = getMaxTotalSum(ordersTotalSums)
-    const orderDepths     = addDepths(ordersTotalSums, ordersMaxSums)
-    const updatedOrders   = addPrecison(orderDepths)
-    return updatedOrders
-}
-
-export const useFetchOrderbook = (symbol) => {
-    const [data, setData]             = useState(null)
+export const useFetch24hrTicker = (symbol) => {
+    const [tickerData, setTicker] = useState(null)
     const [isFetching, setIsFetching] = useState(false)
 
     useEffect(() => {
@@ -23,17 +13,17 @@ export const useFetchOrderbook = (symbol) => {
         ws.onopen = () => {
             if (ws.readyState === ws.OPEN)
                 ws.send(JSON.stringify({
-                    id     : "310",
+                    id     : "314",
                     method : "SUBSCRIBE",
                     params : [
-                        `${symbol.toLowerCase()}@depth20@1000ms`
+                        `${symbol.toLowerCase()}@ticker@1000ms`
                     ]
                 }))
         }
 
         ws.onerror = (event) => {
-            if (event?.data) {
-                const errMsg = JSON.parse(event.data)
+            if (event?.ticker) {
+                const errMsg = JSON.parse(event.ticker)
                 console.log(errMsg)
             }
         }
@@ -41,14 +31,20 @@ export const useFetchOrderbook = (symbol) => {
         ws.onmessage = (event) => {
             const crudeMessaage = JSON.parse(event?.data)
             if (crudeMessaage.data) {
+                const ticker = crudeMessaage.data
                 const message = {
                     symbol: symbol,
                     result: {
-                        bids: convertRawOrdersToOrders(crudeMessaage.data.bids),
-                        asks: convertRawOrdersToOrders(crudeMessaage.data.asks)
+                        high: parseFloat(ticker.h),
+                        low: parseFloat(ticker.l),
+                        price: parseFloat(ticker.p),
+                        pricePercent: parseFloat(ticker.P),
+                        lastPrice: parseFloat(ticker.c),
+                        volumeBase: parseFloat(ticker.v),
+                        volumeQuote: parseFloat(ticker.q)
                     }
                 }
-                setData(message)
+                setTicker(message)
             }
             setIsFetching(false)
         }
@@ -56,10 +52,10 @@ export const useFetchOrderbook = (symbol) => {
         return () => {
             if (ws.readyState === ws.OPEN) {
                 ws.send(JSON.stringify({
-                    id     : "311",
+                    id     : "315",
                     method : "UNSUBSCRIBE",
                     params : [
-                        `${symbol.toLowerCase()}@depth20@1000ms`
+                        `${symbol.toLowerCase()}@ticker@1000ms`
                     ]
                 }))
                 ws.close()
@@ -67,5 +63,5 @@ export const useFetchOrderbook = (symbol) => {
         }
     }, [symbol])
 
-    return [isFetching, data]
+    return [isFetching, tickerData]
 }

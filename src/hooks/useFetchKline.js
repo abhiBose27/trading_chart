@@ -52,6 +52,7 @@ const convertRawKlinesToKlines = (crudeData, indicators) => {
             low: parseFloat(klineData[3]),
             close: parseFloat(klineData[4]),
             volume: parseFloat(klineData[5]),
+            volumeQuote: parseFloat(klineData[7]),
             change: parseFloat(((klineData[4] / klineData[1] - 1) * 100))
         }
     })
@@ -85,7 +86,6 @@ export const useFetchKline = (symbol, interval, indicators) => {
         ws.onopen = () => {
             const msgInterval = setInterval(() => sendData(), 1000)
             ws.onclose = () => clearInterval(msgInterval)
-            
         }
 
         ws.onerror = (event) => {

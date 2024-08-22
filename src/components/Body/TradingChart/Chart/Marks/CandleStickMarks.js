@@ -36,7 +36,8 @@ export const CandleStickMarks = React.memo(({xScale, yPriceScale, slicedData, di
                     `Close: ${format("~f")(d.close)}<br />` +
                     `Low: ${format("~f")(d.low)}<br />` +
                     `High: ${format("~f")(d.high)}<br />` +
-                    `Volume: ${format("~s")(d.volume)}`
+                    `Volume: ${format("~s")(d.volume)}<br />` +
+                    `VolumeQuote: ${format("~s")(d.volumeQuote)}`
                 }
                 data-for='mark-tooltip'
             />

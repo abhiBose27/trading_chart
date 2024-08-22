@@ -19,7 +19,8 @@ export const Body = ({symbolsData}) => {
     return (
         <>
             <div className="symbol-nav-container">
-                <SymbolNavigation 
+                <SymbolNavigation
+                    width={width}
                     dispatch={dispatch} 
                     symbolsData={symbolsData} 
                     symbol={specification.symbol}

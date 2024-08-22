@@ -89,7 +89,7 @@ export const Stats = React.memo(({theme, height, hoverData}) => {
                 </tspan>
                 <tspan opacity="0.5" dx="2%" fill={metricColor}>Vol(Quote): </tspan>
                 <tspan fill={valueColor}>
-                    {format("~s")(hoverData.volume * hoverData.close)}
+                    {format("~s")(hoverData.volumeQuote)}
                 </tspan>
                 <tspan opacity="0.5" dx="2%" fill={metricColor}>CHANGE: </tspan>
                 <tspan fill={valueColor}>

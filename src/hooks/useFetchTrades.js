@@ -27,7 +27,7 @@ export const useFetchTrades = (symbol) => {
         const sendData = () => {
             if (ws.readyState === ws.OPEN)
                 ws.send(JSON.stringify({
-                    id: "314",
+                    id: "313",
                     method: "trades.recent",
                     params: {
                         symbol: symbol,

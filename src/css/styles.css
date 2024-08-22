@@ -8,15 +8,15 @@
 
 .main-container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
 }
 
 .main-container, .symbol-nav-container {
     margin-top:  1%;
 }
 
-.symbol-nav-container {
-    margin-left: 2.8%;
+.ui.segment {
+    margin-bottom: 0;
 }
 
 .orderbook, .tradebook, .chart {
