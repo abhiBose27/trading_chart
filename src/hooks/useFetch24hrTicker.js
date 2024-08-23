@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 
 export const useFetch24hrTicker = (symbol) => {
-    const [tickerData, setTicker] = useState(null)
+    const [tickerData, setTickerData] = useState(null)
     const [isFetching, setIsFetching] = useState(false)
 
     useEffect(() => {
@@ -44,7 +44,7 @@ export const useFetch24hrTicker = (symbol) => {
                         volumeQuote: parseFloat(ticker.q)
                     }
                 }
-                setTicker(message)
+                setTickerData(message)
             }
             setIsFetching(false)
         }

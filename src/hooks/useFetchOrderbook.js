@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react"
-import { addDepths, addPrecison, addTotalSums, getMaxTotalSum, sortOrders } from "../Data/Processing/Orders"
+import { 
+    addDepths, 
+    addPrecison, 
+    addTotalSums, 
+    getMaxTotalSum, 
+    sortOrders 
+} from "../Data/Processing/Orders"
 
 
 const convertRawOrdersToOrders = (rawOrders) => {

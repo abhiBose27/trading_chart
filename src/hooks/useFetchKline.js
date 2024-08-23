@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { INDICATORTYPES } from "../Tools";
-import { getBollingerBands, getExponentialMovingAverage, getMovingAverage, getVolumeWeightedAveragePrice, getWeightedMovingAverage } from "../Data/Processing/Indicators";
+import { 
+    getBollingerBands, 
+    getExponentialMovingAverage, 
+    getMovingAverage, 
+    getVolumeWeightedAveragePrice, 
+    getWeightedMovingAverage 
+} from "../Data/Processing/Indicators";
 
 
 /*
@@ -16,7 +22,7 @@ Return :- {
 const addIndicatorsToKlineData = (klineData, indicators) => {
     const indicatorTypeToValues = {}
     for (const indicatorType in indicators) {
-        const checked = indicators[indicatorType].checked
+        const checked    = indicators[indicatorType].checked
         const parameters = indicators[indicatorType].parameters
         if (!checked)
             continue
