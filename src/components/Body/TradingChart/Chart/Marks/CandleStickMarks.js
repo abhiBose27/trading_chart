@@ -6,10 +6,14 @@ import { ACTIONS } from "../../../../../Store/Actions"
 
 
 export const CandleStickMarks = React.memo(({xScale, yPriceScale, slicedData, dispatch, height}) => {
+    const onMouseEnter = (d) => {
+        return (event) => dispatch({type: ACTIONS.HOVERDATA, payload: d})
+    }
+    
     return slicedData.map((d, idx) => (
         <g
             key={d.date}
-            onMouseEnter={() => dispatch({type: ACTIONS.HOVERDATA, payload: d})}
+            onMouseEnter={onMouseEnter(d)}
             transform={`translate(${xScale(d.date) + xScale.bandwidth() / 2}, 0)`}
         >
             <line

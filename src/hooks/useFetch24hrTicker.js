@@ -22,18 +22,16 @@ export const useFetch24hrTicker = (symbol) => {
         }
 
         ws.onerror = (event) => {
-            if (event?.ticker) {
-                const errMsg = JSON.parse(event.ticker)
-                console.log(errMsg)
-            }
+            const errMsg = JSON.parse(event.data)
+            throw new Error(errMsg)
         }
 
         ws.onmessage = (event) => {
-            const crudeMessaage = JSON.parse(event?.data)
+            const crudeMessaage = JSON.parse(event.data)
             if (crudeMessaage.data) {
                 const ticker = crudeMessaage.data
                 const message = {
-                    symbol: symbol,
+                    symbol,
                     result: {
                         high: parseFloat(ticker.h),
                         low: parseFloat(ticker.l),

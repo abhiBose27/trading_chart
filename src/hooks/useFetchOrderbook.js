@@ -18,7 +18,7 @@ const convertRawOrdersToOrders = (rawOrders) => {
 }
 
 export const useFetchOrderbook = (symbol) => {
-    const [data, setData]             = useState(null)
+    const [orderbook, setOrderbook]   = useState(null)
     const [isFetching, setIsFetching] = useState(false)
 
     useEffect(() => {
@@ -38,23 +38,21 @@ export const useFetchOrderbook = (symbol) => {
         }
 
         ws.onerror = (event) => {
-            if (event?.data) {
-                const errMsg = JSON.parse(event.data)
-                console.log(errMsg)
-            }
+            const errMsg = JSON.parse(event.data)
+            throw new Error(errMsg)
         }
 
         ws.onmessage = (event) => {
-            const crudeMessaage = JSON.parse(event?.data)
+            const crudeMessaage = JSON.parse(event.data)
             if (crudeMessaage.data) {
                 const message = {
-                    symbol: symbol,
+                    symbol,
                     result: {
                         bids: convertRawOrdersToOrders(crudeMessaage.data.bids),
                         asks: convertRawOrdersToOrders(crudeMessaage.data.asks)
                     }
                 }
-                setData(message)
+                setOrderbook(message)
             }
             setIsFetching(false)
         }
@@ -73,5 +71,5 @@ export const useFetchOrderbook = (symbol) => {
         }
     }, [symbol])
 
-    return [isFetching, data]
+    return [isFetching, orderbook]
 }

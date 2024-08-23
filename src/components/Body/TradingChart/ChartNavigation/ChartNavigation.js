@@ -11,11 +11,8 @@ export const ChartNavigation = React.memo(({dispatch, width, specification}) => 
     const { theme, interval, indicators}      = specification
     const intervalOptions                     = config.getChartNavigationIntervalOptions
     const themeOptions                        = config.getChartNavigationThemeOptions
-
     const setInterval = (e, { value }) => dispatch({type: ACTIONS.INTERVAL, payload: value})
-
-    const setTheme = (e, { value })    => dispatch({type: ACTIONS.THEME, payload: value})
-
+    const setTheme    = (e, { value }) => dispatch({type: ACTIONS.THEME, payload: value})
     const triggerIndicators = ()       => setShowIndicators(prevState => !prevState)
     
     return (

@@ -9,7 +9,6 @@ export const Footer = ({symbolsData}) => {
     const [startAnimation, setStartAnimation] = useState(false)
     const [footerData, setFooterData]         = useState([])
     const relevantSymbols                     = symbolsData.filter(symbol => symbol.endsWith("USDT"))
-
     const getFontColorOnPercent = (priceChangePercent) => Math.sign(priceChangePercent) === -1 ? schemeReds[6][4] : schemeGreens[6][4]
 
     useEffect(() => {

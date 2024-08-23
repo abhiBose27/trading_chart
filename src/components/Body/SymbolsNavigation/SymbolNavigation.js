@@ -6,15 +6,13 @@ import { Symbol24hTicker } from "./Symbol24hTicker"
 
 
 export const SymbolNavigation = React.memo(({dispatch, symbol, symbolsData, width}) => {
-    const localSymbol        = useRef(symbol)
-    const symbolsOptions     = symbolsData.map(elm => {return {key: elm, text: elm, value: elm}})
-
-    const setSymbol = (e, data) => {
-        if (localSymbol.current !== symbol)
-            dispatch({type: ACTIONS.SYMBOL, payload: localSymbol.current})
+    const symbolRef      = useRef(symbol)
+    const symbolsOptions = symbolsData.map(elm => {return {key: elm, text: elm, value: elm}})
+    const onChange  = (e, { value }) => symbolRef.current = value
+    const setSymbol = (e, data)      => {
+        if (symbolRef.current !== symbol)
+            dispatch({type: ACTIONS.SYMBOL, payload: symbolRef.current})
     }
-
-    const onChange = (e, { value }) => localSymbol.current = value
 
     return (
         <div style={{width: width}}>

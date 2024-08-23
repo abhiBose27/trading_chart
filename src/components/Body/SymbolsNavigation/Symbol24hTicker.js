@@ -7,8 +7,9 @@ import { klineColor } from "../../../Tools"
 
 
 export const Symbol24hTicker = ({symbol}) => {
-    const [, tickerData]     = useFetch24hrTicker(symbol)
+    const [, tickerData]  = useFetch24hrTicker(symbol)
     const isSymbolCorrect = () => tickerData?.symbol === symbol
+
     return (
         isSymbolCorrect() &&
         <>

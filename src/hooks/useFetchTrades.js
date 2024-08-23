@@ -16,7 +16,7 @@ const convertRawTradesToTrades = (rawTrades) => {
 }
 
 export const useFetchTrades = (symbol) => {
-    const [data, setData]             = useState(null)
+    const [tradebook, setTradebook] = useState(null)
     const [isFetching, setIsFetching] = useState(false)
 
     useEffect(() => {
@@ -42,16 +42,19 @@ export const useFetchTrades = (symbol) => {
         }
 
         ws.onerror = (event) => {
-            if (event?.data) {
-                const errMsg = JSON.parse(event.data)
-                console.log(errMsg)
-            }
+            const errMsg = JSON.parse(event.data)
+            throw new Error(errMsg)
         }
 
         ws.onmessage = (event) => {
             const newMessage = JSON.parse(event.data)
-            if (newMessage.status === 200)
-                setData({symbol: symbol, result: convertRawTradesToTrades(newMessage.result)})
+            if (newMessage.status === 200) {
+                const message = {
+                    symbol,
+                    result: convertRawTradesToTrades(newMessage.result)
+                }
+                setTradebook(message)
+            }
             setIsFetching(false)
         }
 
@@ -62,5 +65,5 @@ export const useFetchTrades = (symbol) => {
         
     }, [symbol])
 
-    return [isFetching, data]
+    return [isFetching, tradebook]
 }

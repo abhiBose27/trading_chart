@@ -66,7 +66,7 @@ const convertRawKlinesToKlines = (crudeData, indicators) => {
 }
 
 export const useFetchKline = (symbol, interval, indicators) => {
-    const [data, setData]             = useState(null)
+    const [klineData, setKlineData]   = useState(null)
     const [isFetching, setIsFetching] = useState(false)
     const [socket, setSocket]         = useState(null)
 
@@ -95,16 +95,14 @@ export const useFetchKline = (symbol, interval, indicators) => {
         }
 
         ws.onerror = (event) => {
-            if (event?.data) {
-                const errMsg = JSON.parse(event.data)
-                console.log(errMsg)
-            }
+            const errMsg = JSON.parse(event.data)
+            throw new Error(errMsg)
         }
 
         return () => {
             if (ws.readyState === ws.OPEN) {
                 ws.close()
-                setData(null)
+                setKlineData(null)
             }
         }
 
@@ -115,11 +113,16 @@ export const useFetchKline = (symbol, interval, indicators) => {
             return
         socket.onmessage = (event) => {
             const newMessage = JSON.parse(event.data) 
-            if (newMessage.status === 200)
-                setData({interval: interval, result: convertRawKlinesToKlines(newMessage.result, indicators)})
+            if (newMessage.status === 200) {
+                const message = {
+                    interval,
+                    result: convertRawKlinesToKlines(newMessage.result, indicators)
+                }
+                setKlineData(message)
+            }
             setIsFetching(false)
         }
     }, [socket, indicators, interval])
 
-    return [isFetching, data]
+    return [isFetching, klineData]
 }

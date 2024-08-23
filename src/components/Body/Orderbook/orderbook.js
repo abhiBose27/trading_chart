@@ -18,44 +18,43 @@ export const Orderbook = ({orderbookSpecification}) => {
 
     // Gives the gradient look to the orderbook based on the level
     const getCellBackground = (depthColor, color, level) => `linear-gradient(to left, ${depthColor} ${level[3]}%, ${color} ${level[3]}% ${100-level[3]}%)`
-
-    const isSymbolCorrect = () => orderbook?.symbol === symbol
+    const isSymbolCorrect   = () => orderbook.symbol === symbol
 
     return (
         <div className="orderbook" style={{width: width}}>
-            {
-                isDataReady(isFetching, orderbook) && 
-                isSymbolCorrect() && 
-                <table className="orderbook-table" cellSpacing="0">
-                    <thead style={{fontSize: cellHeaderFontSize, color: fontColor}}>
-                        <tr>
-                            <th>Price</th>
-                            <th>Amount</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
+            <table className="orderbook-table" cellSpacing="0">
+                <thead style={{fontSize: cellHeaderFontSize, color: fontColor}}>
+                    <tr>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                {
+                    isDataReady(isFetching, orderbook) && 
+                    isSymbolCorrect() && 
                     <tbody style={{height: height, fontSize: cellFontSize, color: fontColor}}>
-                        {
-                            orderbook.result.asks.map(order => (
-                                <tr key={order.id} style={{backgroundImage: getCellBackground(depthBidColor, bidColor, order.level)}}>
-                                    <td style={{color: schemeReds[6][4]}}>{order.level[0]}</td>
-                                    <td>{format(".4f")(order.level[1])}</td>
-                                    <td>{format(".4f")(order.level[2])}</td>
-                                </tr>
-                            ))
-                        }
-                        {
-                            orderbook.result.bids.map(order => (
-                                <tr key={order.id} style={{backgroundImage: getCellBackground(depthAskColor, askColor, order.level)}}>
-                                    <td style={{color: schemeGreens[6][4]}}>{order.level[0]}</td>
-                                    <td>{format(".4f")(order.level[1])}</td>
-                                    <td>{format(".4f")(order.level[2])}</td>
-                                </tr>
-                            ))
-                        }
+                    {
+                        orderbook.result.asks.map(order => (
+                            <tr key={order.id} style={{backgroundImage: getCellBackground(depthBidColor, bidColor, order.level)}}>
+                                <td style={{color: schemeReds[6][4]}}>{order.level[0]}</td>
+                                <td>{format(".4f")(order.level[1])}</td>
+                                <td>{format(".4f")(order.level[2])}</td>
+                            </tr>
+                        ))
+                    }
+                    {
+                        orderbook.result.bids.map(order => (
+                            <tr key={order.id} style={{backgroundImage: getCellBackground(depthAskColor, askColor, order.level)}}>
+                                <td style={{color: schemeGreens[6][4]}}>{order.level[0]}</td>
+                                <td>{format(".4f")(order.level[1])}</td>
+                                <td>{format(".4f")(order.level[2])}</td>
+                            </tr>
+                        ))
+                    }
                     </tbody>
-                </table>
-            }
+                }
+            </table>
         </div>
         
     )

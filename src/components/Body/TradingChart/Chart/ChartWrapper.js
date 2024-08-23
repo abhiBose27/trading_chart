@@ -9,8 +9,7 @@ import ReactTooltip from "react-tooltip"
 
 export const ChartWrapper = ({specification}) => {
     const { symbol, interval, indicators } = specification
-    const [isFetching, klineData] = useFetchKline(symbol, interval, indicators)
-
+    const [isFetching, klineData]          = useFetchKline(symbol, interval, indicators)
     const isIntervalCorrect = () => klineData.interval === interval
     
     useEffect(() => ReactTooltip.rebuild())
