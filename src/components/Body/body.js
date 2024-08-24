@@ -5,8 +5,13 @@ import { SymbolNavigation } from "./SymbolsNavigation/SymbolNavigation"
 import { Orderbook } from "./Orderbook/Orderbook"
 import { TradingChart } from "./TradingChart/TradingChart"
 import { Tradebook } from "./Tradebook/Tradebook"
-import { defaultAppSpecification, getOrderbookSpecification, getTradebookSpecification, getTradingChartSpecification } from "../../Tools"
 import { useWindowSize } from "../../Hooks/useWindowSize"
+import { 
+    defaultAppSpecification, 
+    getOrderbookSpecification, 
+    getTradebookSpecification, 
+    getTradingChartSpecification 
+} from "../../Tools"
 
 
 export const Body = ({symbolsData}) => {
