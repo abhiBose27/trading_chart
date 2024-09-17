@@ -3,28 +3,28 @@ import PropTypes from "prop-types"
 import { format } from "d3"
 import { Menu, MenuItem } from "semantic-ui-react"
 import { useFetch24hrTicker } from "../../../Hooks/useFetch24hrTicker"
-import { klineColor } from "../../../Tools"
+import { isDataReady, klineColor } from "../../../Tools"
 
 
 export const Symbol24hTicker = ({symbol}) => {
-    const [, tickerData]  = useFetch24hrTicker(symbol)
-    const isSymbolCorrect = () => tickerData?.symbol === symbol
+    const [isFetching, tickerData] = useFetch24hrTicker(symbol)
+    const isReadyToDisplay         = isDataReady(isFetching, tickerData) &&  tickerData.symbol === symbol
 
     return (
-        isSymbolCorrect() &&
+        isReadyToDisplay &&
         <>
             <MenuItem>
-                {`${format(".5f")(tickerData?.result.lastPrice)}`}
+                {`${format(".5f")(tickerData.result.lastPrice)}`}
             </MenuItem>
             <Menu vertical inverted>
                 <MenuItem>
                     <header style={{opacity: 0.6}}>24h Change</header>
                     <br/>
-                    <span style={{color: klineColor(tickerData?.result)}}>
-                        {format(".4f")(tickerData?.result.price)} &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span style={{color: klineColor(tickerData.result)}}>
+                        {format(".4f")(tickerData.result.price)} &nbsp;&nbsp;&nbsp;&nbsp;
                     </span>
                     <span style={{color: klineColor(tickerData.result)}}>
-                        {format(".4f")(tickerData?.result.pricePercent) + "%"}
+                        {format(".4f")(tickerData.result.pricePercent) + "%"}
                     </span>
                 </MenuItem>
             </Menu>
@@ -33,7 +33,7 @@ export const Symbol24hTicker = ({symbol}) => {
                     <header style={{opacity: 0.6}}>24h High</header>
                     <br/>
                     <span>
-                        {format(".4f")(tickerData?.result.high)}
+                        {format(".4f")(tickerData.result.high)}
                     </span>
                 </MenuItem>
             </Menu>
@@ -42,7 +42,7 @@ export const Symbol24hTicker = ({symbol}) => {
                     <header style={{opacity: 0.6}}>24h Low</header>
                     <br/>
                     <span>
-                        {format(".4f")(tickerData?.result.low)}
+                        {format(".4f")(tickerData.result.low)}
                     </span>
                 </MenuItem>
             </Menu>
@@ -51,7 +51,7 @@ export const Symbol24hTicker = ({symbol}) => {
                     <header style={{opacity: 0.6}}>24h Volume</header>
                     <br/>
                     <span>
-                        {format(".4f")(tickerData?.result.volumeBase)}
+                        {format(".4f")(tickerData.result.volumeBase)}
                     </span>
                 </MenuItem>
             </Menu>
@@ -60,7 +60,7 @@ export const Symbol24hTicker = ({symbol}) => {
                     <header style={{opacity: 0.6}}>24h Volume Quote</header>
                     <br/>
                     <span>
-                        {format(".4f")(tickerData?.result.volumeQuote)}
+                        {format(".4f")(tickerData.result.volumeQuote)}
                     </span>
                 </MenuItem>
             </Menu>
