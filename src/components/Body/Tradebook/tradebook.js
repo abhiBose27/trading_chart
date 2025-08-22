@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import { schemeGreens, schemeReds, utcFormat } from "d3"
-import { COLORS, isDataReady, SIDE } from "../../../Tools"
-import { useFetchTrades } from "../../../Hooks/useFetchTrades"
+import { COLORS, isDataReady, SIDE } from "../../../tools"
+import { useFetchTrades } from "../../../hooks/useFetchTrades"
 
 
 export const Tradebook = ({tradebookSpecification}) => {

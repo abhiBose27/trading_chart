@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { schemeReds, schemeGreens, format } from "d3"
-import { useFetchOrderbook } from "../../../Hooks/useFetchOrderbook"
-import { COLORS, isDataReady } from "../../../Tools"
+import { useFetchOrderbook } from "../../../hooks/useFetchOrderbook"
+import { COLORS, isDataReady } from "../../../tools"
 
 
 export const Orderbook = ({orderbookSpecification}) => {

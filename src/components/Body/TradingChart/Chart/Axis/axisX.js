@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { utcFormat } from "d3"
-import { COLORS, isThemeDark } from "../../../../../Tools"
+import { COLORS, isThemeDark } from "../../../../../tools"
 
 
 export const VerticalTicks = React.memo(({xScale, theme, height, getXScaleTicks}) => {

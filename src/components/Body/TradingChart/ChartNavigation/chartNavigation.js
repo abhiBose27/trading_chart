@@ -1,9 +1,9 @@
 import PropTypes from "prop-types"
 import { Button, Dropdown, Icon, Menu } from "semantic-ui-react"
-import { ACTIONS } from "../../../../Store/Actions"
+import { ACTIONS } from "../../../../store/actions"
 import React, { useState } from "react"
-import { Indicator } from "./Indicator"
-import { config } from "../TradingChartConfig"
+import { Indicator } from "./indicator"
+import { config } from "../tradingChartConfig"
 
 
 export const ChartNavigation = React.memo(({dispatch, width, specification}) => {

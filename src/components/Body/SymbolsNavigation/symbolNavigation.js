@@ -1,8 +1,8 @@
 import PropTypes from "prop-types"
 import React, { useRef } from "react"
 import { Dropdown, Menu, Segment } from "semantic-ui-react"
-import { ACTIONS } from "../../../Store/Actions"
-import { Symbol24hTicker } from "./Symbol24hTicker"
+import { ACTIONS } from "../../../store/actions"
+import { Symbol24hTicker } from "./symbol24hTicker"
 
 
 export const SymbolNavigation = React.memo(({dispatch, symbol, symbolsData, width}) => {

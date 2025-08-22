@@ -1,17 +1,17 @@
 import PropTypes from "prop-types"
 import { useReducer } from "react"
-import { rootReducer } from "../../Store/Reducer"
-import { SymbolNavigation } from "./SymbolsNavigation/SymbolNavigation"
-import { Orderbook } from "./Orderbook/Orderbook"
-import { TradingChart } from "./TradingChart/TradingChart"
-import { Tradebook } from "./Tradebook/Tradebook"
-import { useWindowSize } from "../../Hooks/useWindowSize"
+import { rootReducer } from "../../store/reducer"
+import { SymbolNavigation } from "./SymbolsNavigation/symbolNavigation"
+import { Orderbook } from "./Orderbook/orderbook"
+import { TradingChart } from "./TradingChart/tradingChart"
+import { Tradebook } from "./Tradebook/tradebook"
+import { useWindowSize } from "../../hooks/useWindowSize"
 import { 
     defaultAppSpecification, 
     getOrderbookSpecification, 
     getTradebookSpecification, 
     getTradingChartSpecification 
-} from "../../Tools"
+} from "../../tools"
 
 
 export const Body = ({symbolsData}) => {

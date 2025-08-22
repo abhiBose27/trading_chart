@@ -1,9 +1,9 @@
 import "fomantic-ui-css/semantic.css"
-import "./Css/styles.css"
-import { useFetchSymbols } from "./Hooks/useFetchSymbols"
-import { isDataReady } from "./Tools"
-import { Footer } from "./Components/Footer/Footer"
-import { Body } from "./Components/Body/Body"
+import "./css/styles.css"
+import { useFetchSymbols } from "./hooks/useFetchSymbols"
+import { isDataReady } from "./tools"
+import { Footer } from "./components/Footer/footer"
+import { Body } from "./components/Body/body"
 
 
 const App = () => {

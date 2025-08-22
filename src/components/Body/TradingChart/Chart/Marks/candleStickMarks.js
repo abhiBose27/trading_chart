@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { utcFormat, format } from "d3"
-import { klineColor } from "../../../../../Tools"
-import { ACTIONS } from "../../../../../Store/Actions"
+import { klineColor } from "../../../../../tools"
+import { ACTIONS } from "../../../../../store/actions"
 
 
 export const CandleStickMarks = React.memo(({xScale, yPriceScale, slicedData, dispatch, height}) => {

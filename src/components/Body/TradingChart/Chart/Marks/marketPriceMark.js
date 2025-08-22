@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { klineColor } from "../../../../../Tools"
+import { klineColor } from "../../../../../tools"
 
 
 export const MarketPriceMark = React.memo(({width, currentCandleStick, yPriceScale}) => {

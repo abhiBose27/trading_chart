@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { format } from "d3"
-import { klineColor, isThemeDark, COLORS } from "../../../../../Tools"
+import { klineColor, isThemeDark, COLORS } from "../../../../../tools"
 
 
 export const HorizontalTicks = React.memo(({theme, width, yPriceScale}) => {

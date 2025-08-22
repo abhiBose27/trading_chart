@@ -1,9 +1,9 @@
 import PropTypes from "prop-types"
 import { useState } from "react"
 import { Modal, ModalContent, Grid, GridRow, Form, FormField, GridColumn, FormGroup, FormCheckbox, FormInput, Icon, Button, Dropdown, Message, MessageHeader } from "semantic-ui-react"
-import { ACTIONS } from "../../../../Store/Actions"
-import { INDICATORPROPERTYTYPES, INDICATORTYPES } from "../../../../Tools"
-import { config } from "../TradingChartConfig"
+import { ACTIONS } from "../../../../store/actions"
+import { INDICATORPROPERTYTYPES, INDICATORTYPES } from "../../../../tools"
+import { config } from "../tradingChartConfig"
 
 
 export const Indicator = ({

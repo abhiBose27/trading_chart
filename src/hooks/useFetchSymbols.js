@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { getExchangeInfo } from "../Data/Http/HttpBinance"
+import { getExchangeInfo } from "../data/Http/httpBinance"
 
 
 export const useFetchSymbols = () => {

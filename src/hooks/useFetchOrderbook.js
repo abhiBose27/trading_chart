@@ -5,7 +5,7 @@ import {
     addTotalSums, 
     getMaxTotalSum, 
     sortOrders 
-} from "../Data/Processing/Orders"
+} from "../data/Processing/orders"
 
 
 const convertRawOrdersToOrders = (rawOrders) => {

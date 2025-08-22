@@ -2,8 +2,8 @@ import React from "react"
 import PropTypes from "prop-types"
 import { format } from "d3"
 import { Menu, MenuItem } from "semantic-ui-react"
-import { useFetch24hrTicker } from "../../../Hooks/useFetch24hrTicker"
-import { isDataReady, klineColor } from "../../../Tools"
+import { useFetch24hrTicker } from "../../../hooks/useFetch24hrTicker"
+import { isDataReady, klineColor } from "../../../tools"
 
 
 export const Symbol24hTicker = ({symbol}) => {

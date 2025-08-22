@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { format, utcFormat } from "d3"
-import { klineColor, isThemeDark, COLORS, INDICATORTYPES } from "../../../../../Tools"
+import { klineColor, isThemeDark, COLORS, INDICATORTYPES } from "../../../../../tools"
 
 
 export const Stats = React.memo(({theme, height, hoverData}) => {

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { INDICATORTYPES } from "../Tools";
+import { INDICATORTYPES } from "../tools";
 import { 
     getBollingerBands, 
     getExponentialMovingAverage, 
     getMovingAverage, 
     getVolumeWeightedAveragePrice, 
     getWeightedMovingAverage 
-} from "../Data/Processing/Indicators";
+} from "../data/Processing/indicators";
 
 
 /*

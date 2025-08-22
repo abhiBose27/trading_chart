@@ -4,7 +4,7 @@ import {
     getMovingAverage, 
     getVolumeWeightedAveragePrice, 
     getWeightedMovingAverage 
-} from "../Data/Processing/Indicators"
+} from "../data/Processing/indicators"
 
 afterEach(() => {
     cleanup()

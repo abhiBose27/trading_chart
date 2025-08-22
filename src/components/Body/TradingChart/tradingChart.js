@@ -1,10 +1,10 @@
 import ReactTooltip from "react-tooltip"
 import PropTypes from "prop-types"
 import { useEffect, useReducer} from "react"
-import { rootReducer } from "../../../Store/Reducer"
-import { ChartNavigation } from "./ChartNavigation/ChartNavigation"
-import { ChartWrapper } from "./Chart/ChartWrapper"
-import { config } from "./TradingChartConfig"
+import { rootReducer } from "../../../store/reducer"
+import { ChartNavigation } from "./ChartNavigation/chartNavigation"
+import { ChartWrapper } from "./Chart/chartWrapper"
+import { config } from "./tradingChartConfig"
 
 /**
  * @param {object} tradingChartSpecification = {
